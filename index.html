@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebCraft Studio — Diseño y desarrollo de páginas web</title>
+  <meta name="description" content="WebCraft Studio diseña y desarrolla páginas web modernas, rápidas y optimizadas para captar clientes. Landing pages, webs corporativas y tiendas online.">
+  <meta name="theme-color" content="#07080d">
+  <meta property="og:title" content="WebCraft Studio — Tu web, a otro nivel">
+  <meta property="og:description" content="Diseño web a medida, rápido y 100 % adaptable a móviles.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+
+  <!-- ===== Header ===== -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="#inicio" class="logo" aria-label="WebCraft Studio, inicio">
+        <img src="assets/favicon.svg" alt="" width="32" height="32">
+        <span>WebCraft<em>Studio</em></span>
+      </a>
+
+      <nav class="nav" id="nav" aria-label="Principal">
+        <ul class="nav__list">
+          <li><a href="#servicios">Servicios</a></li>
+          <li><a href="#proyectos">Proyectos</a></li>
+          <li><a href="#proceso">Proceso</a></li>
+          <li><a href="#planes">Planes</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+        <a href="#contacto" class="btn btn--primary nav__cta">Pide tu presupuesto</a>
+      </nav>
+
+      <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav">
+        <span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ===== Hero ===== -->
+    <section class="hero" id="inicio">
+      <div class="hero__bg" aria-hidden="true">
+        <div class="hero__grid"></div>
+        <div class="hero__glow hero__glow--a"></div>
+        <div class="hero__glow hero__glow--b"></div>
+      </div>
+
+      <div class="container hero__inner">
+        <div class="hero__content">
+          <p class="eyebrow reveal"><span class="dot"></span> Plazas abiertas para nuevos proyectos</p>
+          <h1 class="hero__title reveal">
+            Webs que <span class="gradient-text">convierten</span> visitas en clientes.
+          </h1>
+          <p class="hero__lead reveal">
+            Diseñamos y desarrollamos páginas web a medida: rápidas, elegantes y pensadas para que tu negocio crezca.
+            Desde la idea hasta el lanzamiento, nos ocupamos de todo.
+          </p>
+          <div class="hero__actions reveal">
+            <a href="#contacto" class="btn btn--primary btn--lg">
+              Empezar mi proyecto
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <a href="#proyectos" class="btn btn--ghost btn--lg">Ver proyectos</a>
+          </div>
+          <ul class="hero__trust reveal">
+            <li><strong>+120</strong> webs lanzadas</li>
+            <li><strong>98</strong> PageSpeed medio</li>
+            <li><strong>4,9★</strong> valoración</li>
+          </ul>
+        </div>
+
+        <!-- Mockup de navegador -->
+        <div class="hero__visual reveal" aria-hidden="true">
+          <div class="browser">
+            <div class="browser__bar">
+              <span></span><span></span><span></span>
+              <div class="browser__url">tunegocio.com</div>
+            </div>
+            <div class="browser__body">
+              <div class="mock-nav"><i></i><b></b><b></b><b></b></div>
+              <div class="mock-hero">
+                <i class="w-70"></i><i class="w-50"></i>
+                <div class="mock-btns"><u></u><u class="ghost"></u></div>
+              </div>
+              <div class="mock-cards"><div></div><div></div><div></div></div>
+            </div>
+          </div>
+          <div class="float-card float-card--score">
+            <div class="ring"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.9"/><circle class="ring__val" cx="18" cy="18" r="15.9"/></svg><span>98</span></div>
+            <div><strong>Rendimiento</strong><small>Core Web Vitals ✓</small></div>
+          </div>
+          <div class="float-card float-card--leads">
+            <svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>
+            <div><strong>+214 %</strong><small>contactos / mes</small></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Tecnologías ===== -->
+    <section class="marquee" aria-label="Tecnologías con las que trabajamos">
+      <div class="marquee__track">
+        <span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>React</span><span>Next.js</span><span>WordPress</span><span>Shopify</span><span>Figma</span><span>SEO</span><span>Google Analytics</span>
+        <span aria-hidden="true">HTML5</span><span aria-hidden="true">CSS3</span><span aria-hidden="true">JavaScript</span><span aria-hidden="true">React</span><span aria-hidden="true">Next.js</span><span aria-hidden="true">WordPress</span><span aria-hidden="true">Shopify</span><span aria-hidden="true">Figma</span><span aria-hidden="true">SEO</span><span aria-hidden="true">Google Analytics</span>
+      </div>
+    </section>
+
+    <!-- ===== Servicios ===== -->
+    <section class="section" id="servicios">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Servicios</p>
+          <h2>Todo lo que tu web necesita, en un solo equipo</h2>
+          <p>Combinamos diseño, desarrollo y estrategia para que tu presencia online trabaje por ti las 24 horas.</p>
+        </header>
+
+        <div class="services">
+          <article class="card service reveal">
+            <div class="service__icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 14h8"/></svg></div>
+            <h3>Landing pages</h3>
+            <p>Páginas de una sola sección orientadas a un objetivo: captar contactos, vender un servicio o lanzar un producto.</p>
+          </article>
+          <article class="card service reveal">
+            <div class="service__icon"><svg viewBox="0 0 24 24"><path d="M4 21V8l8-5 8 5v13"/><path d="M9 21v-6h6v6"/></svg></div>
+            <h3>Webs corporativas</h3>
+            <p>Sitios multipágina que transmiten la profesionalidad de tu marca, con blog y panel para editar tú mismo.</p>
+          </article>
+          <article class="card service reveal">
+            <div class="service__icon"><svg viewBox="0 0 24 24"><path d="M5 7h14l-1.5 9h-11z"/><path d="M9 7V5a3 3 0 016 0v2"/><circle cx="9" cy="20" r="1"/><circle cx="16" cy="20" r="1"/></svg></div>
+            <h3>Tiendas online</h3>
+            <p>E-commerce con pasarela de pago, gestión de stock y una experiencia de compra fluida en cualquier dispositivo.</p>
+          </article>
+          <article class="card service reveal">
+            <div class="service__icon"><svg viewBox="0 0 24 24"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg></div>
+            <h3>Diseño UI/UX</h3>
+            <p>Interfaces cuidadas al detalle y prototipos en Figma validados antes de escribir una sola línea de código.</p>
+          </article>
+          <article class="card service reveal">
+            <div class="service__icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/></svg></div>
+            <h3>SEO y rendimiento</h3>
+            <p>Optimizamos velocidad, estructura y contenido para que Google te encuentre y tus visitantes no se vayan.</p>
+          </article>
+          <article class="card service reveal">
+            <div class="service__icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
+            <h3>Mantenimiento</h3>
+            <p>Hosting, copias de seguridad, actualizaciones y soporte técnico para que solo te preocupes de tu negocio.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Proyectos ===== -->
+    <section class="section section--alt" id="proyectos">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Proyectos</p>
+          <h2>Algunos trabajos recientes</h2>
+          <p>Cada proyecto es único. Estos son ejemplos del tipo de webs que creamos para nuestros clientes.</p>
+        </header>
+
+        <div class="projects">
+          <article class="project reveal">
+            <div class="project__preview project__preview--a" aria-hidden="true">
+              <div class="pv"><i class="w-60"></i><i class="w-40"></i><u></u></div>
+            </div>
+            <div class="project__info">
+              <span class="tag">Restauración</span>
+              <h3>Catering &amp; eventos</h3>
+              <p>Landing con reserva de reuniones online. <strong>+65 %</strong> solicitudes.</p>
+            </div>
+          </article>
+          <article class="project reveal">
+            <div class="project__preview project__preview--b" aria-hidden="true">
+              <div class="pv pv--grid"><b></b><b></b><b></b><b></b></div>
+            </div>
+            <div class="project__info">
+              <span class="tag">E-commerce</span>
+              <h3>Tienda de moda sostenible</h3>
+              <p>Shopify a medida con checkout optimizado. <strong>x2,3</strong> ventas.</p>
+            </div>
+          </article>
+          <article class="project reveal">
+            <div class="project__preview project__preview--c" aria-hidden="true">
+              <div class="pv pv--split"><span><i class="w-80"></i><i class="w-50"></i><u></u></span><em></em></div>
+            </div>
+            <div class="project__info">
+              <span class="tag">Salud</span>
+              <h3>Clínica de fisioterapia</h3>
+              <p>Web corporativa con cita previa y SEO local. <strong>Top 3</strong> en Google.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Proceso ===== -->
+    <section class="section" id="proceso">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Proceso</p>
+          <h2>De la idea al lanzamiento en 4 pasos</h2>
+          <p>Un método claro, sin sorpresas. Sabrás en todo momento en qué punto está tu proyecto.</p>
+        </header>
+
+        <ol class="steps">
+          <li class="step reveal">
+            <span class="step__num">01</span>
+            <h3>Descubrimiento</h3>
+            <p>Una llamada para entender tu negocio, tus clientes y tus objetivos. Te enviamos propuesta y presupuesto cerrado.</p>
+          </li>
+          <li class="step reveal">
+            <span class="step__num">02</span>
+            <h3>Diseño</h3>
+            <p>Creamos el diseño en Figma y lo ajustamos contigo hasta que sea exactamente lo que imaginabas.</p>
+          </li>
+          <li class="step reveal">
+            <span class="step__num">03</span>
+            <h3>Desarrollo</h3>
+            <p>Programamos tu web rápida, segura y adaptada a móvil, tablet y escritorio. Puedes verla avanzar en tiempo real.</p>
+          </li>
+          <li class="step reveal">
+            <span class="step__num">04</span>
+            <h3>Lanzamiento</h3>
+            <p>Publicamos, conectamos dominio y analítica, y te formamos para que puedas gestionarla sin depender de nadie.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ===== Cifras ===== -->
+    <section class="stats-band">
+      <div class="container stats">
+        <div class="stat reveal"><strong data-count="120" data-prefix="+">+120</strong><span>proyectos entregados</span></div>
+        <div class="stat reveal"><strong data-count="15">15</strong><span>días de entrega media</span></div>
+        <div class="stat reveal"><strong data-count="98" data-suffix=" %">98 %</strong><span>clientes satisfechos</span></div>
+        <div class="stat reveal"><strong>24/7</strong><span>web activa y monitorizada</span></div>
+      </div>
+    </section>
+
+    <!-- ===== Planes ===== -->
+    <section class="section" id="planes">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Planes</p>
+          <h2>Precios claros, sin letra pequeña</h2>
+          <p>Elige un punto de partida. Todos los planes incluyen diseño responsive, SSL y formulario de contacto.</p>
+        </header>
+
+        <div class="plans">
+          <article class="card plan reveal">
+            <h3>Landing</h3>
+            <p class="plan__desc">Ideal para lanzar un servicio o captar contactos.</p>
+            <p class="plan__price"><small>desde</small> 490 €</p>
+            <ul class="plan__list">
+              <li>1 página optimizada para conversión</li>
+              <li>Diseño a medida</li>
+              <li>Formulario + WhatsApp</li>
+              <li>SEO básico</li>
+              <li>Entrega en 7 días</li>
+            </ul>
+            <a href="#contacto" class="btn btn--ghost btn--block" data-plan="Landing">Elegir Landing</a>
+          </article>
+
+          <article class="card plan plan--featured reveal">
+            <span class="plan__badge">Más elegido</span>
+            <h3>Business</h3>
+            <p class="plan__desc">La web completa para empresas y profesionales.</p>
+            <p class="plan__price"><small>desde</small> 1.290 €</p>
+            <ul class="plan__list">
+              <li>Hasta 6 secciones / páginas</li>
+              <li>Blog y panel autogestionable</li>
+              <li>SEO on-page y Google Business</li>
+              <li>Analítica y píxeles de conversión</li>
+              <li>3 meses de soporte incluidos</li>
+            </ul>
+            <a href="#contacto" class="btn btn--primary btn--block" data-plan="Business">Elegir Business</a>
+          </article>
+
+          <article class="card plan reveal">
+            <h3>E-commerce</h3>
+            <p class="plan__desc">Tu tienda online lista para vender.</p>
+            <p class="plan__price"><small>desde</small> 2.490 €</p>
+            <ul class="plan__list">
+              <li>Catálogo ilimitado</li>
+              <li>Pagos con tarjeta, Bizum y PayPal</li>
+              <li>Gestión de envíos y stock</li>
+              <li>Emails automáticos</li>
+              <li>Formación personalizada</li>
+            </ul>
+            <a href="#contacto" class="btn btn--ghost btn--block" data-plan="E-commerce">Elegir E-commerce</a>
+          </article>
+        </div>
+        <p class="plans__note reveal">¿Necesitas algo distinto? <a href="#contacto">Cuéntanos tu idea</a> y preparamos un presupuesto a medida.</p>
+      </div>
+    </section>
+
+    <!-- ===== Testimonios ===== -->
+    <section class="section section--alt" id="testimonios">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Testimonios</p>
+          <h2>Lo que dicen nuestros clientes</h2>
+        </header>
+
+        <div class="testimonials">
+          <figure class="card testimonial reveal">
+            <div class="stars" aria-label="5 de 5 estrellas">★★★★★</div>
+            <blockquote>“En dos semanas teníamos una web que por fin refleja lo que somos. Las solicitudes de presupuesto se han duplicado.”</blockquote>
+            <figcaption><span class="avatar">LM</span><div><strong>Laura M.</strong><small>Estudio de interiorismo</small></div></figcaption>
+          </figure>
+          <figure class="card testimonial reveal">
+            <div class="stars" aria-label="5 de 5 estrellas">★★★★★</div>
+            <blockquote>“Profesionales, rápidos y muy claros con los plazos. La tienda carga al instante y vendemos más desde el móvil que nunca.”</blockquote>
+            <figcaption><span class="avatar">JR</span><div><strong>Javier R.</strong><small>Tienda online de café</small></div></figcaption>
+          </figure>
+          <figure class="card testimonial reveal">
+            <div class="stars" aria-label="5 de 5 estrellas">★★★★★</div>
+            <blockquote>“Me explicaron todo sin tecnicismos y ahora actualizo la web yo misma. Un trato cercano de principio a fin.”</blockquote>
+            <figcaption><span class="avatar">CP</span><div><strong>Carmen P.</strong><small>Psicóloga</small></div></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FAQ ===== -->
+    <section class="section" id="faq">
+      <div class="container container--narrow">
+        <header class="section__head reveal">
+          <p class="eyebrow">FAQ</p>
+          <h2>Preguntas frecuentes</h2>
+        </header>
+
+        <div class="faq">
+          <details class="faq__item reveal">
+            <summary>¿Cuánto tarda en estar lista mi web?</summary>
+            <p>Una landing page suele estar lista en 7 días y una web corporativa en 2–3 semanas. Te damos una fecha concreta antes de empezar.</p>
+          </details>
+          <details class="faq__item reveal">
+            <summary>¿Podré modificar la web yo mismo?</summary>
+            <p>Sí. Los planes Business y E-commerce incluyen un panel sencillo para editar textos, imágenes y publicar entradas, y una sesión de formación.</p>
+          </details>
+          <details class="faq__item reveal">
+            <summary>¿Se verá bien en móviles?</summary>
+            <p>Siempre. Diseñamos primero para móvil y probamos cada web en teléfonos, tablets y ordenadores antes de publicarla.</p>
+          </details>
+          <details class="faq__item reveal">
+            <summary>¿Incluye dominio y hosting?</summary>
+            <p>Te ayudamos a registrar el dominio y podemos alojar tu web en nuestros servidores con SSL, copias diarias y monitorización, o publicarla en tu propio hosting.</p>
+          </details>
+          <details class="faq__item reveal">
+            <summary>¿Cómo es el pago?</summary>
+            <p>50 % al aprobar el presupuesto y 50 % al lanzamiento. Sin permanencias ni costes ocultos.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Contacto ===== -->
+    <section class="section contact" id="contacto">
+      <div class="container contact__inner">
+        <div class="contact__intro reveal">
+          <p class="eyebrow">Contacto</p>
+          <h2>Hablemos de tu <span class="gradient-text">próxima web</span></h2>
+          <p>Cuéntanos qué necesitas y te enviaremos una propuesta personalizada en menos de 24 horas laborables. Sin compromiso.</p>
+          <ul class="contact__list">
+            <li><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><a href="mailto:hola@webcraftstudio.com" id="contact-email">hola@webcraftstudio.com</a></li>
+            <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Lunes a viernes · 9:00 – 18:00</li>
+            <li><svg viewBox="0 0 24 24"><path d="M12 22s7-6 7-12a7 7 0 00-14 0c0 6 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>Trabajamos en remoto con clientes de toda España y Latinoamérica</li>
+          </ul>
+        </div>
+
+        <form class="card form reveal" id="contact-form" novalidate>
+          <div class="form__row">
+            <div class="field">
+              <label for="name">Nombre *</label>
+              <input id="name" name="nombre" type="text" autocomplete="name" required placeholder="Tu nombre">
+            </div>
+            <div class="field">
+              <label for="email">Email *</label>
+              <input id="email" name="email" type="email" autocomplete="email" required placeholder="tu@email.com">
+            </div>
+          </div>
+          <div class="form__row">
+            <div class="field">
+              <label for="phone">Teléfono</label>
+              <input id="phone" name="telefono" type="tel" autocomplete="tel" placeholder="+34 600 000 000">
+            </div>
+            <div class="field">
+              <label for="company">Empresa / proyecto</label>
+              <input id="company" name="empresa" type="text" autocomplete="organization" placeholder="Nombre de tu negocio">
+            </div>
+          </div>
+
+          <fieldset class="field">
+            <legend>¿Qué tipo de web necesitas? *</legend>
+            <div class="chips" id="type-chips">
+              <label class="chip"><input type="radio" name="tipo" value="Landing page" required><span>Landing page</span></label>
+              <label class="chip"><input type="radio" name="tipo" value="Web corporativa"><span>Web corporativa</span></label>
+              <label class="chip"><input type="radio" name="tipo" value="Tienda online"><span>Tienda online</span></label>
+              <label class="chip"><input type="radio" name="tipo" value="Rediseño"><span>Rediseño</span></label>
+              <label class="chip"><input type="radio" name="tipo" value="Otro"><span>Otro</span></label>
+            </div>
+          </fieldset>
+
+          <div class="form__row">
+            <div class="field">
+              <label for="budget">Presupuesto aproximado</label>
+              <select id="budget" name="presupuesto">
+                <option value="">Selecciona una opción</option>
+                <option>Menos de 1.000 €</option>
+                <option>1.000 – 2.500 €</option>
+                <option>2.500 – 5.000 €</option>
+                <option>Más de 5.000 €</option>
+                <option>Aún no lo sé</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="plan">Plan de interés</label>
+              <select id="plan" name="plan">
+                <option value="">Sin decidir</option>
+                <option>Landing</option>
+                <option>Business</option>
+                <option>E-commerce</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="message">Cuéntanos tu proyecto *</label>
+            <textarea id="message" name="mensaje" rows="4" required minlength="10" placeholder="¿A qué se dedica tu negocio? ¿Qué te gustaría conseguir con tu web?"></textarea>
+          </div>
+
+          <!-- Honeypot anti-spam -->
+          <div class="hp" aria-hidden="true">
+            <label for="website">No rellenar</label>
+            <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+          </div>
+
+          <label class="check">
+            <input type="checkbox" name="privacidad" id="privacy" required>
+            <span>Acepto la política de privacidad y que me contactéis sobre mi solicitud. *</span>
+          </label>
+
+          <button type="submit" class="btn btn--primary btn--lg btn--block" id="submit-btn">
+            Solicitar presupuesto gratis
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+          <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <a href="#inicio" class="logo"><img src="assets/favicon.svg" alt="" width="28" height="28"><span>WebCraft<em>Studio</em></span></a>
+        <p>Diseño y desarrollo web a medida para negocios que quieren crecer.</p>
+      </div>
+      <nav class="footer__nav" aria-label="Pie de página">
+        <a href="#servicios">Servicios</a>
+        <a href="#proyectos">Proyectos</a>
+        <a href="#planes">Planes</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+      <p class="footer__copy">© <span id="year">2026</span> WebCraft Studio. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- Botón flotante móvil -->
+  <a href="#contacto" class="mobile-cta" id="mobile-cta">Pide tu presupuesto gratis</a>
+
+  <script src="js/config.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
