@@ -447,6 +447,7 @@ fieldset.field legend { margin-bottom: 8px; }
 .check { display: flex; gap: 12px; align-items: flex-start; font-size: .88rem; color: var(--muted); cursor: pointer; }
 .check input { width: 20px; height: 20px; margin: 1px 0 0; accent-color: var(--violet); flex-shrink: 0; cursor: pointer; }
 .check.has-error span { color: var(--error); }
+.check a { color: var(--cyan); text-decoration: underline; text-underline-offset: 3px; }
 
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 

@@ -11,7 +11,11 @@ Sitio estático (HTML + CSS + JavaScript, sin dependencias ni build).
 ├── css/styles.css    # Estilos (colores y tipografías en :root)
 ├── js/config.js      # Configuración del formulario (endpoint, email)
 ├── js/main.js        # Menú móvil, animaciones, contadores y envío del formulario
-└── assets/favicon.svg
+├── privacidad.html   # Política de privacidad, aviso legal y cookies
+├── 404.html          # Página de error
+├── css/pages.css     # Estilos de las páginas secundarias
+├── netlify.toml      # Configuración de Netlify (sin build, cabeceras de seguridad)
+└── assets/           # favicon.svg y og-image.png (imagen al compartir en redes)
 ```
 
 ## Ver en local
@@ -39,6 +43,11 @@ CONTACT_EMAIL: "hola@webcraftstudio.com",
 
 - Colores (cian/violeta) y tipografías: variables en `:root` de `css/styles.css`.
 - Textos, precios, proyectos y testimonios: `index.html` (los proyectos y testimonios son de ejemplo, sustitúyelos por los reales).
+
+## Antes de publicar
+
+- Rellena los datos marcados entre corchetes en `privacidad.html` (titular, NIF y domicilio).
+- Cuando tengas el dominio definitivo, cambia `og:image` en `index.html` a la URL absoluta (`https://tudominio/assets/og-image.png`).
 
 ## Despliegue
 
