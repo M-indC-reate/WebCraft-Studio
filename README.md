@@ -14,7 +14,6 @@ Sitio estático (HTML + CSS + JavaScript, sin dependencias ni build).
 ├── privacidad.html   # Política de privacidad, aviso legal y cookies
 ├── 404.html          # Página de error
 ├── css/pages.css     # Estilos de las páginas secundarias
-├── netlify.toml      # Configuración de Netlify (sin build, cabeceras de seguridad)
 └── assets/           # favicon.svg y og-image.png (imagen al compartir en redes)
 ```
 
@@ -47,8 +46,10 @@ CONTACT_EMAIL: "hola@webcraftstudio.com",
 ## Antes de publicar
 
 - Rellena los datos marcados entre corchetes en `privacidad.html` (titular, NIF y domicilio).
-- Cuando tengas el dominio definitivo, cambia `og:image` en `index.html` a la URL absoluta (`https://tudominio/assets/og-image.png`).
+- Si cambias de dominio, actualiza `og:image` en `index.html` con la nueva URL.
 
 ## Despliegue
 
-Incluye un workflow de GitHub Pages (`.github/workflows/pages.yml`) que publica en cada push a `master`. También funciona en Netlify, Vercel o cualquier hosting estático.
+Publicado en GitHub Pages: https://mind-glitch-ceate.github.io/WebCraft-Studio/
+
+El workflow `.github/workflows/pages.yml` publica automáticamente en cada push a `master`.
