@@ -1,6 +1,6 @@
 # WebCraft Studio
 
-Web del estudio de diseño y desarrollo web **WebCraft Studio** (Barcelona). Variante de estilo **«Obsidiana»**: metal líquido de roca volcánica, con fondos basalto, texto ceniza y acentos de acero y bronce apagado.
+Web del estudio de diseño y desarrollo web **WebCraft Studio** (Barcelona). Estilo **«Galaxia volcánica»**: fondo de galaxia nocturna que se recorre al bajar, con estrellas, estrellas fugaces y rocas volcánicas flotando. El suelo del hero y el pie son de roca volcánica, y las palabras destacadas van en celeste o lila.
 
 Sitio estático (HTML + CSS + JS). Las librerías están copiadas en `vendor/` y no hay que compilar nada.
 
@@ -12,6 +12,9 @@ Sitio estático (HTML + CSS + JS). Las librerías están copiadas en `vendor/` y
 ├── css/styles.css           # Estilos (paleta y tipografías en :root)
 ├── js/config.js             # ⚙️ TODO lo configurable: pre-apertura, fecha, redes, formulario, legales
 ├── js/main.js               # Menú, formulario, secuencia con scroll, animaciones
+├── js/space.js              # Fondo espacial: galaxia, estrellas, estrellas fugaces, rocas
+├── assets/space/            # galaxia.webp y rocas flotantes (generadas por código)
+├── assets/textures/roca.webp # Textura de roca volcánica (generada por código, se repite sin cortes)
 ├── vendor/                  # GSAP, ScrollTrigger, SplitText y Lenis
 ├── assets/fonts/            # Syne y Manrope (alojadas en la propia web)
 ├── assets/hero/escritorio/  # 96 fotogramas WebP 1600×900

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>WebCraft Studio · Diseño y desarrollo web a medida en Barcelona</title>
   <meta name="description" content="Estudio de diseño y desarrollo web en Barcelona. Webs a medida, sin plantillas, rápidas y pensadas para que tus clientes te contacten. Abrimos muy pronto.">
-  <meta name="theme-color" content="#0F0E0D">
+  <meta name="theme-color" content="#05070F">
   <link rel="canonical" href="https://mind-glitch-ceate.github.io/WebCraft-Studio/"><!-- TODO: cambiar si cambia el dominio -->
   <meta property="og:type" content="website">
   <meta property="og:locale" content="es_ES">
@@ -26,6 +26,12 @@
 </head>
 <body>
   <a class="skip-link" href="#main">Saltar al contenido</a>
+
+  <!-- Fondo: galaxia fija con estrellas, estrellas fugaces y rocas volcánicas flotando -->
+  <div class="space" aria-hidden="true">
+    <img class="space__galaxy" id="space-galaxy" src="assets/space/galaxia.webp" alt="" decoding="async">
+    <canvas class="space__canvas" id="space-canvas"></canvas>
+  </div>
 
   <!-- SVG sprite: iconos propios, trazo 1.5 -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -73,7 +79,7 @@
     <section class="hero" id="inicio">
       <div class="container">
         <p class="eyebrow" data-reveal>Estudio de diseño web · Barcelona</p>
-        <h1 class="hero__title" data-reveal="lines">Webs a medida con forma propia.</h1>
+        <h1 class="hero__title" data-reveal="lines">Webs a medida con forma <span class="hl">propia.</span></h1>
         <div class="hero__bottom">
           <p class="hero__lead" data-reveal>Diseñamos y desarrollamos páginas web para negocios de Barcelona. Sin plantillas: claras, rápidas en el móvil y pensadas para que tus clientes te contacten.</p>
           <!-- TODO: concretar el tipo de negocio al que nos dirigimos cuando lo tengas definido -->
@@ -88,6 +94,7 @@
           <li data-only="pre"><span>Apertura</span><b data-fecha>muy pronto</b></li>
         </ul>
       </div>
+      <div class="ground" aria-hidden="true"><div class="ground__rock"></div></div>
     </section>
 
     <!-- ===== Diapositiva animada (secuencia de imágenes ligada al scroll) ===== -->
@@ -114,7 +121,7 @@
       <div class="container">
         <header class="section__head">
           <p class="eyebrow" data-reveal>Servicios</p>
-          <h2 data-reveal="lines">Lo que hacemos, sin rodeos.</h2>
+          <h2 data-reveal="lines">Lo que hacemos, <span class="hl hl--violet">sin rodeos.</span></h2>
         </header>
         <ol class="services">
           <li class="service" data-reveal>
@@ -146,7 +153,7 @@
       <div class="container">
         <header class="section__head">
           <p class="eyebrow" data-reveal>Cómo trabajamos</p>
-          <h2 data-reveal="lines">Cuatro pasos, sin sorpresas.</h2>
+          <h2 data-reveal="lines">Cuatro pasos, <span class="hl">sin sorpresas.</span></h2>
         </header>
         <ol class="steps">
           <li class="step" data-reveal>
@@ -178,11 +185,11 @@
       <div class="container">
         <header class="section__head">
           <p class="eyebrow" data-reveal>Proyectos</p>
-          <h2 data-reveal="lines">Trabajo real y conceptos.</h2>
+          <h2 data-reveal="lines">Trabajo real y <span class="hl hl--violet">conceptos.</span></h2>
           <p class="section__sub" data-reveal>Estamos empezando, así que te enseñamos lo que hay: un proyecto real y conceptos de estudio, marcados como tal.</p>
         </header>
         <div class="projects">
-          <article class="project project--real" data-reveal>
+          <article class="project project--real rock-surface" data-reveal>
             <div class="project__media">
               <img src="assets/proyectos/vesta.webp" alt="Página de inicio de la web de Vesta Caterings" width="1200" height="750" loading="lazy" decoding="async">
             </div>
@@ -194,7 +201,7 @@
               <a class="link-arrow" id="vesta-link" href="#" target="_blank" rel="noopener" hidden>Ver web <svg aria-hidden="true"><use href="#i-arrow-up"/></svg></a>
             </div>
           </article>
-          <article class="project project--concept" data-reveal>
+          <article class="project project--concept rock-surface" data-reveal>
             <div class="project__media project__media--concept concept-a" aria-hidden="true">
               <span class="concept__name">Panadería<br>de barrio</span>
               <span class="concept__line"></span>
@@ -205,7 +212,7 @@
               <p>Estudio de diseño: carta del día, horarios y encargos por WhatsApp.</p>
             </div>
           </article>
-          <article class="project project--concept" data-reveal>
+          <article class="project project--concept rock-surface" data-reveal>
             <div class="project__media project__media--concept concept-b" aria-hidden="true">
               <span class="concept__name">Estudio de<br>fisioterapia</span>
               <span class="concept__line"></span>
@@ -226,7 +233,7 @@
       <div class="container container--narrow">
         <header class="section__head">
           <p class="eyebrow" data-reveal>Preguntas frecuentes</p>
-          <h2 data-reveal="lines">Lo que nos suelen preguntar.</h2>
+          <h2 data-reveal="lines">Lo que nos suelen <span class="hl">preguntar.</span></h2>
         </header>
         <div class="faq">
           <details class="faq__item" data-reveal>
@@ -258,7 +265,7 @@
       <div class="container contact__grid">
         <div class="contact__intro">
           <p class="eyebrow" data-reveal>Contacto</p>
-          <h2 data-reveal="lines"><span data-only="pre">Te avisamos cuando abramos.</span><span data-only="open">Cuéntanos tu proyecto.</span></h2>
+          <h2 data-reveal="lines"><span data-only="pre">Te avisamos cuando <span class="hl hl--violet">abramos.</span></span><span data-only="open">Cuéntanos tu <span class="hl hl--violet">proyecto.</span></span></h2>
           <p class="contact__lead" data-reveal data-only="pre">Déjanos tu email y serás de los primeros en saberlo. Un solo aviso, sin newsletters.</p>
           <p class="contact__lead" data-reveal data-only="open">Cuéntanos qué necesitas y te respondemos con una propuesta y un presupuesto cerrado.</p>
           <ul class="socials" id="socials" data-reveal>
@@ -268,7 +275,7 @@
           </ul>
         </div>
 
-        <form class="form" id="contact-form" novalidate data-reveal>
+        <form class="form rock-surface" id="contact-form" novalidate data-reveal>
           <div class="field">
             <label for="f-email">Email *</label>
             <input type="email" id="f-email" name="email" autocomplete="email" inputmode="email" required>
@@ -338,6 +345,7 @@
   <script src="vendor/ScrollTrigger.min.js" defer></script>
   <script src="vendor/SplitText.min.js" defer></script>
   <script src="vendor/lenis.min.js" defer></script>
+  <script src="js/space.js" defer></script>
   <script src="js/main.js" defer></script>
 </body>
 </html>
