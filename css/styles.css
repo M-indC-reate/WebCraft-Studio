@@ -309,9 +309,18 @@ html.is-open [data-only="pre"], html:not(.is-open) [data-only="open"] { display:
   mask: var(--ridge-top) top / 100% var(--ridge-h) no-repeat, linear-gradient(#000 35%, transparent) 0 calc(var(--ridge-h) - 1px) / 100% calc(100% - var(--ridge-h) + 1px) no-repeat; }
 .hero { padding-bottom: 0; }
 
-/* ---------- Palabras destacadas ---------- */
+/* ---------- Palabras destacadas (una estrella fugaz las escribe) ---------- */
 .hl { color: var(--cyan); }
 .hl--violet { color: var(--violet); }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.fx-canvas { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 60; pointer-events: none; }
+html.fx-writing .hl .ch { opacity: 0; }
+html.fx-writing .hl .ch.lit { opacity: 1; animation: litup 1s ease-out; }
+@keyframes litup {
+  0% { opacity: 0; color: #fff; text-shadow: 0 0 22px #fff, 0 0 40px currentColor; }
+  35% { opacity: 1; color: #fff; text-shadow: 0 0 16px rgba(255,255,255,.8), 0 0 30px currentColor; }
+  100% { text-shadow: 0 0 0 transparent; }
+}
 
 /* ---------- CTA móvil ---------- */
 .mobile-cta { display: none; }
