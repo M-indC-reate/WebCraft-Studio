@@ -2,47 +2,66 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WebCraft Studio — Diseño y desarrollo de páginas web</title>
-  <meta name="description" content="WebCraft Studio diseña y desarrolla páginas web modernas, rápidas y optimizadas para captar clientes. Landing pages, webs corporativas y tiendas online.">
-  <meta name="theme-color" content="#07080d">
-  <meta property="og:title" content="WebCraft Studio — Tu web, a otro nivel">
-  <meta property="og:description" content="Diseño web a medida, rápido y 100 % adaptable a móviles.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>WebCraft Studio · Diseño y desarrollo web a medida en Barcelona</title>
+  <meta name="description" content="Estudio de diseño y desarrollo web en Barcelona. Webs a medida, sin plantillas, rápidas y pensadas para que tus clientes te contacten. Abrimos muy pronto.">
+  <meta name="theme-color" content="#0F0E0D">
+  <link rel="canonical" href="https://mind-glitch-ceate.github.io/WebCraft-Studio/"><!-- TODO: cambiar si cambia el dominio -->
   <meta property="og:type" content="website">
   <meta property="og:locale" content="es_ES">
   <meta property="og:site_name" content="WebCraft Studio">
+  <meta property="og:title" content="WebCraft Studio · Webs a medida en Barcelona">
+  <meta property="og:description" content="Diseño y desarrollo web a medida, sin plantillas. Abrimos muy pronto: apúntate y te avisamos.">
+  <meta property="og:url" content="https://mind-glitch-ceate.github.io/WebCraft-Studio/">
   <meta property="og:image" content="https://mind-glitch-ceate.github.io/WebCraft-Studio/assets/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="WebCraft Studio, estudio de diseño web en Barcelona">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="preload" href="assets/fonts/syne-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/manrope-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/styles.css">
+  <script>document.documentElement.classList.add("js");</script>
 </head>
 <body>
   <a class="skip-link" href="#main">Saltar al contenido</a>
 
-  <!-- ===== Header ===== -->
+  <!-- SVG sprite: iconos propios, trazo 1.5 -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></g></symbol>
+    <symbol id="i-instagram" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".6" fill="currentColor"/></g></symbol>
+    <symbol id="i-whatsapp" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 19.5 5.6 16A8.5 8.5 0 1 1 8.4 18.6Z"/><path d="M9.2 8.6c.3-.5.8-.5 1-.1l.6 1.4c.1.3 0 .6-.2.8l-.4.4c.4 1 1.3 1.9 2.4 2.4l.4-.4c.2-.2.5-.3.8-.2l1.4.6c.4.2.4.7-.1 1-1 .7-2.2.5-3.9-.7-1.6-1.2-2.6-2.6-2.6-3.8 0-.5.2-1 .6-1.4Z"/></g></symbol>
+  </svg>
+
+  <!-- ===== Aviso de pre-apertura ===== -->
+  <div class="prelaunch" id="prelaunch" data-only="pre">
+    <div class="container prelaunch__inner">
+      <span class="prelaunch__dot" aria-hidden="true"></span>
+      <p><strong>WebCraft Studio está arrancando.</strong> Aún no aceptamos proyectos: abrimos <span data-fecha>muy pronto</span>.</p>
+      <a href="#contacto" class="prelaunch__link">Avísame cuando abráis <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    </div>
+  </div>
+
+  <!-- ===== Cabecera ===== -->
   <header class="header" id="header">
     <div class="container header__inner">
       <a href="#inicio" class="logo" aria-label="WebCraft Studio, inicio">
-        <img src="assets/favicon.svg" alt="" width="32" height="32">
-        <span>WebCraft<em>Studio</em></span>
+        <img src="assets/favicon.svg" alt="" width="30" height="30">
+        <span>WebCraft <em>Studio</em></span>
       </a>
-
       <nav class="nav" id="nav" aria-label="Principal">
         <ul class="nav__list">
           <li><a href="#servicios">Servicios</a></li>
-          <li><a href="#proyectos">Proyectos</a></li>
           <li><a href="#proceso">Proceso</a></li>
-          <li><a href="#planes">Planes</a></li>
-          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#proyectos">Proyectos</a></li>
+          <li><a href="#preguntas">Preguntas</a></li>
+          <li><a href="#contacto">Contacto</a></li>
         </ul>
-        <a href="#contacto" class="btn btn--primary nav__cta">Pide tu presupuesto</a>
+        <a href="#contacto" class="btn btn--primary btn--sm nav__cta" data-cta>Avísame cuando abráis</a>
       </nav>
-
       <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav">
         <span></span><span></span>
       </button>
@@ -52,317 +71,183 @@
   <main id="main">
     <!-- ===== Hero ===== -->
     <section class="hero" id="inicio">
-      <div class="hero__bg" aria-hidden="true">
-        <div class="hero__grid"></div>
-        <div class="hero__glow hero__glow--a"></div>
-        <div class="hero__glow hero__glow--b"></div>
-      </div>
-
-      <div class="container hero__inner">
-        <div class="hero__content">
-          <p class="eyebrow reveal"><span class="dot"></span> Plazas abiertas para nuevos proyectos</p>
-          <h1 class="hero__title reveal">
-            Webs que <span class="gradient-text">convierten</span> visitas en clientes.
-          </h1>
-          <p class="hero__lead reveal">
-            Diseñamos y desarrollamos páginas web a medida: rápidas, elegantes y pensadas para que tu negocio crezca.
-            Desde la idea hasta el lanzamiento, nos ocupamos de todo.
-          </p>
-          <div class="hero__actions reveal">
-            <a href="#contacto" class="btn btn--primary btn--lg">
-              Empezar mi proyecto
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </a>
-            <a href="#proyectos" class="btn btn--ghost btn--lg">Ver proyectos</a>
-          </div>
-          <ul class="hero__trust reveal">
-            <li><strong>+120</strong> webs lanzadas</li>
-            <li><strong>98</strong> PageSpeed medio</li>
-            <li><strong>4,9★</strong> valoración</li>
-          </ul>
-        </div>
-
-        <!-- Mockup de navegador -->
-        <div class="hero__visual reveal" aria-hidden="true">
-          <div class="browser">
-            <div class="browser__bar">
-              <span></span><span></span><span></span>
-              <div class="browser__url">tunegocio.com</div>
-            </div>
-            <div class="browser__body">
-              <div class="mock-nav"><i></i><b></b><b></b><b></b></div>
-              <div class="mock-hero">
-                <i class="w-70"></i><i class="w-50"></i>
-                <div class="mock-btns"><u></u><u class="ghost"></u></div>
-              </div>
-              <div class="mock-cards"><div></div><div></div><div></div></div>
-            </div>
-          </div>
-          <div class="float-card float-card--score">
-            <div class="ring"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.9"/><circle class="ring__val" cx="18" cy="18" r="15.9"/></svg><span>98</span></div>
-            <div><strong>Rendimiento</strong><small>Core Web Vitals ✓</small></div>
-          </div>
-          <div class="float-card float-card--leads">
-            <svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>
-            <div><strong>+214 %</strong><small>contactos / mes</small></div>
+      <div class="container">
+        <p class="eyebrow" data-reveal>Estudio de diseño web · Barcelona</p>
+        <h1 class="hero__title" data-reveal="lines">Webs a medida con forma propia.</h1>
+        <div class="hero__bottom">
+          <p class="hero__lead" data-reveal>Diseñamos y desarrollamos páginas web para negocios de Barcelona. Sin plantillas: claras, rápidas en el móvil y pensadas para que tus clientes te contacten.</p>
+          <!-- TODO: concretar el tipo de negocio al que nos dirigimos cuando lo tengas definido -->
+          <div class="hero__actions" data-reveal>
+            <a href="#contacto" class="btn btn--primary magnetic" data-cta>Avísame cuando abráis <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a href="#proceso" class="btn btn--ghost magnetic">Ver cómo trabajamos</a>
           </div>
         </div>
+        <ul class="hero__meta" data-reveal>
+          <li><span>Ubicación</span>Barcelona</li>
+          <li><span>Estado</span><b data-only="pre">Pre-apertura</b><b data-only="open">Abierto</b></li>
+          <li data-only="pre"><span>Apertura</span><b data-fecha>muy pronto</b></li>
+        </ul>
       </div>
     </section>
 
-    <!-- ===== Tecnologías ===== -->
-    <section class="marquee" aria-label="Tecnologías con las que trabajamos">
-      <div class="marquee__track">
-        <span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>React</span><span>Next.js</span><span>WordPress</span><span>Shopify</span><span>Figma</span><span>SEO</span><span>Google Analytics</span>
-        <span aria-hidden="true">HTML5</span><span aria-hidden="true">CSS3</span><span aria-hidden="true">JavaScript</span><span aria-hidden="true">React</span><span aria-hidden="true">Next.js</span><span aria-hidden="true">WordPress</span><span aria-hidden="true">Shopify</span><span aria-hidden="true">Figma</span><span aria-hidden="true">SEO</span><span aria-hidden="true">Google Analytics</span>
+    <!-- ===== Diapositiva animada (secuencia de imágenes ligada al scroll) ===== -->
+    <section class="slide" id="animacion" aria-label="Animación: de metal líquido a portátil">
+      <div class="slide__pin">
+        <div class="container slide__container">
+          <figure class="slide__card">
+            <canvas class="slide__canvas" id="seq-canvas" aria-hidden="true"></canvas>
+            <img class="slide__still" id="seq-still" alt="Portátil de obsidiana pulida con una web en pantalla" src="assets/hero/escritorio/f_096.webp" width="1600" height="900" loading="lazy" decoding="async">
+            <span class="slide__badge" id="seq-badge" hidden>Marcador de posición · vídeo pendiente</span>
+            <figcaption class="slide__captions" aria-hidden="true">
+              <span class="slide__caption is-active">Partimos de una idea en bruto.</span>
+              <span class="slide__caption">Le damos forma, a medida.</span>
+              <span class="slide__caption">Y te la entregamos lista para trabajar.</span>
+            </figcaption>
+            <div class="slide__progress" aria-hidden="true"><span id="seq-progress"></span></div>
+          </figure>
+        </div>
       </div>
     </section>
 
     <!-- ===== Servicios ===== -->
     <section class="section" id="servicios">
       <div class="container">
-        <header class="section__head reveal">
-          <p class="eyebrow">Servicios</p>
-          <h2>Todo lo que tu web necesita, en un solo equipo</h2>
-          <p>Combinamos diseño, desarrollo y estrategia para que tu presencia online trabaje por ti las 24 horas.</p>
+        <header class="section__head">
+          <p class="eyebrow" data-reveal>Servicios</p>
+          <h2 data-reveal="lines">Lo que hacemos, sin rodeos.</h2>
         </header>
-
-        <div class="services">
-          <article class="card service reveal">
-            <div class="service__icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 14h8"/></svg></div>
-            <h3>Landing pages</h3>
-            <p>Páginas de una sola sección orientadas a un objetivo: captar contactos, vender un servicio o lanzar un producto.</p>
-          </article>
-          <article class="card service reveal">
-            <div class="service__icon"><svg viewBox="0 0 24 24"><path d="M4 21V8l8-5 8 5v13"/><path d="M9 21v-6h6v6"/></svg></div>
-            <h3>Webs corporativas</h3>
-            <p>Sitios multipágina que transmiten la profesionalidad de tu marca, con blog y panel para editar tú mismo.</p>
-          </article>
-          <article class="card service reveal">
-            <div class="service__icon"><svg viewBox="0 0 24 24"><path d="M5 7h14l-1.5 9h-11z"/><path d="M9 7V5a3 3 0 016 0v2"/><circle cx="9" cy="20" r="1"/><circle cx="16" cy="20" r="1"/></svg></div>
-            <h3>Tiendas online</h3>
-            <p>E-commerce con pasarela de pago, gestión de stock y una experiencia de compra fluida en cualquier dispositivo.</p>
-          </article>
-          <article class="card service reveal">
-            <div class="service__icon"><svg viewBox="0 0 24 24"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg></div>
-            <h3>Diseño UI/UX</h3>
-            <p>Interfaces cuidadas al detalle y prototipos en Figma validados antes de escribir una sola línea de código.</p>
-          </article>
-          <article class="card service reveal">
-            <div class="service__icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/></svg></div>
-            <h3>SEO y rendimiento</h3>
-            <p>Optimizamos velocidad, estructura y contenido para que Google te encuentre y tus visitantes no se vayan.</p>
-          </article>
-          <article class="card service reveal">
-            <div class="service__icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
-            <h3>Mantenimiento</h3>
-            <p>Hosting, copias de seguridad, actualizaciones y soporte técnico para que solo te preocupes de tu negocio.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== Proyectos ===== -->
-    <section class="section section--alt" id="proyectos">
-      <div class="container">
-        <header class="section__head reveal">
-          <p class="eyebrow">Proyectos</p>
-          <h2>Algunos trabajos recientes</h2>
-          <p>Cada proyecto es único. Estos son ejemplos del tipo de webs que creamos para nuestros clientes.</p>
-        </header>
-
-        <div class="projects">
-          <article class="project reveal">
-            <div class="project__preview project__preview--a" aria-hidden="true">
-              <div class="pv"><i class="w-60"></i><i class="w-40"></i><u></u></div>
-            </div>
-            <div class="project__info">
-              <span class="tag">Restauración</span>
-              <h3>Catering &amp; eventos</h3>
-              <p>Landing con reserva de reuniones online. <strong>+65 %</strong> solicitudes.</p>
-            </div>
-          </article>
-          <article class="project reveal">
-            <div class="project__preview project__preview--b" aria-hidden="true">
-              <div class="pv pv--grid"><b></b><b></b><b></b><b></b></div>
-            </div>
-            <div class="project__info">
-              <span class="tag">E-commerce</span>
-              <h3>Tienda de moda sostenible</h3>
-              <p>Shopify a medida con checkout optimizado. <strong>x2,3</strong> ventas.</p>
-            </div>
-          </article>
-          <article class="project reveal">
-            <div class="project__preview project__preview--c" aria-hidden="true">
-              <div class="pv pv--split"><span><i class="w-80"></i><i class="w-50"></i><u></u></span><em></em></div>
-            </div>
-            <div class="project__info">
-              <span class="tag">Salud</span>
-              <h3>Clínica de fisioterapia</h3>
-              <p>Web corporativa con cita previa y SEO local. <strong>Top 3</strong> en Google.</p>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== Proceso ===== -->
-    <section class="section" id="proceso">
-      <div class="container">
-        <header class="section__head reveal">
-          <p class="eyebrow">Proceso</p>
-          <h2>De la idea al lanzamiento en 4 pasos</h2>
-          <p>Un método claro, sin sorpresas. Sabrás en todo momento en qué punto está tu proyecto.</p>
-        </header>
-
-        <ol class="steps">
-          <li class="step reveal">
-            <span class="step__num">01</span>
-            <h3>Descubrimiento</h3>
-            <p>Una llamada para entender tu negocio, tus clientes y tus objetivos. Te enviamos propuesta y presupuesto cerrado.</p>
+        <ol class="services">
+          <li class="service" data-reveal>
+            <span class="service__num">01</span>
+            <h3>Diseño web a medida</h3>
+            <p>Partimos de tu negocio, no de una plantilla. Estructura, textos y diseño pensados para lo que vendes y para quién lo compra.</p>
           </li>
-          <li class="step reveal">
-            <span class="step__num">02</span>
-            <h3>Diseño</h3>
-            <p>Creamos el diseño en Figma y lo ajustamos contigo hasta que sea exactamente lo que imaginabas.</p>
+          <li class="service" data-reveal>
+            <span class="service__num">02</span>
+            <h3>Desarrollo y publicación</h3>
+            <p>Construimos la web con código limpio, rápida en el móvil y lista para aparecer en Google. Nos ocupamos de dejarla publicada.</p>
           </li>
-          <li class="step reveal">
-            <span class="step__num">03</span>
-            <h3>Desarrollo</h3>
-            <p>Programamos tu web rápida, segura y adaptada a móvil, tablet y escritorio. Puedes verla avanzar en tiempo real.</p>
+          <li class="service" data-reveal>
+            <span class="service__num">03</span>
+            <h3>Dominio, correo y puesta en marcha</h3>
+            <p>Te ayudamos a elegir el dominio, conectarlo y dejar el formulario de contacto funcionando, para que no tengas que pelearte con nada técnico.</p>
           </li>
-          <li class="step reveal">
-            <span class="step__num">04</span>
-            <h3>Lanzamiento</h3>
-            <p>Publicamos, conectamos dominio y analítica, y te formamos para que puedas gestionarla sin depender de nadie.</p>
+          <li class="service" data-reveal>
+            <span class="service__num">04</span>
+            <h3>Cambios y mantenimiento</h3>
+            <p>Cuando necesites actualizar textos, fotos u horarios, nos lo pides y lo hacemos. Tu web no se queda abandonada.</p>
           </li>
         </ol>
       </div>
     </section>
 
-    <!-- ===== Cifras ===== -->
-    <section class="stats-band">
-      <div class="container stats">
-        <div class="stat reveal"><strong data-count="120" data-prefix="+">+120</strong><span>proyectos entregados</span></div>
-        <div class="stat reveal"><strong data-count="15">15</strong><span>días de entrega media</span></div>
-        <div class="stat reveal"><strong data-count="98" data-suffix=" %">98 %</strong><span>clientes satisfechos</span></div>
-        <div class="stat reveal"><strong>24/7</strong><span>web activa y monitorizada</span></div>
+    <!-- ===== Proceso ===== -->
+    <section class="section section--alt" id="proceso">
+      <div class="container">
+        <header class="section__head">
+          <p class="eyebrow" data-reveal>Cómo trabajamos</p>
+          <h2 data-reveal="lines">Cuatro pasos, sin sorpresas.</h2>
+        </header>
+        <ol class="steps">
+          <li class="step" data-reveal>
+            <span class="step__num">1</span>
+            <h3>Hablamos</h3>
+            <p>Nos cuentas qué hace tu negocio, a quién quieres llegar y qué necesitas que haga tu web.</p>
+          </li>
+          <li class="step" data-reveal>
+            <span class="step__num">2</span>
+            <h3>Propuesta</h3>
+            <p>Te enviamos qué secciones tendrá, cómo se verá, el plazo y el presupuesto cerrado. Sin compromiso.</p>
+          </li>
+          <li class="step" data-reveal>
+            <span class="step__num">3</span>
+            <h3>Diseño y desarrollo</h3>
+            <p>Primero ves el diseño y lo ajustamos contigo. Cuando te convence, lo construimos.</p>
+          </li>
+          <li class="step" data-reveal>
+            <span class="step__num">4</span>
+            <h3>Publicación</h3>
+            <p>La revisamos juntos en móvil y ordenador, la publicamos y te explicamos cómo funciona.</p>
+          </li>
+        </ol>
       </div>
     </section>
 
-    <!-- ===== Planes ===== -->
-    <section class="section" id="planes">
+    <!-- ===== Proyectos ===== -->
+    <section class="section" id="proyectos">
       <div class="container">
-        <header class="section__head reveal">
-          <p class="eyebrow">Planes</p>
-          <h2>Precios claros, sin letra pequeña</h2>
-          <p>Elige un punto de partida. Todos los planes incluyen diseño responsive, SSL y formulario de contacto.</p>
+        <header class="section__head">
+          <p class="eyebrow" data-reveal>Proyectos</p>
+          <h2 data-reveal="lines">Trabajo real y conceptos.</h2>
+          <p class="section__sub" data-reveal>Estamos empezando, así que te enseñamos lo que hay: un proyecto real y conceptos de estudio, marcados como tal.</p>
         </header>
-
-        <div class="plans">
-          <article class="card plan reveal">
-            <h3>Landing</h3>
-            <p class="plan__desc">Ideal para lanzar un servicio o captar contactos.</p>
-            <p class="plan__price"><small>desde</small> 490 €</p>
-            <ul class="plan__list">
-              <li>1 página optimizada para conversión</li>
-              <li>Diseño a medida</li>
-              <li>Formulario + WhatsApp</li>
-              <li>SEO básico</li>
-              <li>Entrega en 7 días</li>
-            </ul>
-            <a href="#contacto" class="btn btn--ghost btn--block" data-plan="Landing">Elegir Landing</a>
+        <div class="projects">
+          <article class="project project--real" data-reveal>
+            <div class="project__media">
+              <img src="assets/proyectos/vesta.webp" alt="Página de inicio de la web de Vesta Caterings" width="1200" height="750" loading="lazy" decoding="async">
+            </div>
+            <div class="project__body">
+              <span class="tag tag--real">Proyecto real</span>
+              <h3>Vesta Caterings</h3>
+              <p>Web para un servicio de catering de bodas y eventos, con formulario para agendar reuniones.</p>
+              <!-- TODO: confirmar que Vesta es un proyecto real publicado y su enlace (VESTA_URL en config.js) -->
+              <a class="link-arrow" id="vesta-link" href="#" target="_blank" rel="noopener" hidden>Ver web <svg aria-hidden="true"><use href="#i-arrow-up"/></svg></a>
+            </div>
           </article>
-
-          <article class="card plan plan--featured reveal">
-            <span class="plan__badge">Más elegido</span>
-            <h3>Business</h3>
-            <p class="plan__desc">La web completa para empresas y profesionales.</p>
-            <p class="plan__price"><small>desde</small> 1.290 €</p>
-            <ul class="plan__list">
-              <li>Hasta 6 secciones / páginas</li>
-              <li>Blog y panel autogestionable</li>
-              <li>SEO on-page y Google Business</li>
-              <li>Analítica y píxeles de conversión</li>
-              <li>3 meses de soporte incluidos</li>
-            </ul>
-            <a href="#contacto" class="btn btn--primary btn--block" data-plan="Business">Elegir Business</a>
+          <article class="project project--concept" data-reveal>
+            <div class="project__media project__media--concept concept-a" aria-hidden="true">
+              <span class="concept__name">Panadería<br>de barrio</span>
+              <span class="concept__line"></span>
+            </div>
+            <div class="project__body">
+              <span class="tag">Concepto</span>
+              <h3>Web para una panadería</h3>
+              <p>Estudio de diseño: carta del día, horarios y encargos por WhatsApp.</p>
+            </div>
           </article>
-
-          <article class="card plan reveal">
-            <h3>E-commerce</h3>
-            <p class="plan__desc">Tu tienda online lista para vender.</p>
-            <p class="plan__price"><small>desde</small> 2.490 €</p>
-            <ul class="plan__list">
-              <li>Catálogo ilimitado</li>
-              <li>Pagos con tarjeta, Bizum y PayPal</li>
-              <li>Gestión de envíos y stock</li>
-              <li>Emails automáticos</li>
-              <li>Formación personalizada</li>
-            </ul>
-            <a href="#contacto" class="btn btn--ghost btn--block" data-plan="E-commerce">Elegir E-commerce</a>
+          <article class="project project--concept" data-reveal>
+            <div class="project__media project__media--concept concept-b" aria-hidden="true">
+              <span class="concept__name">Estudio de<br>fisioterapia</span>
+              <span class="concept__line"></span>
+            </div>
+            <div class="project__body">
+              <span class="tag">Concepto</span>
+              <h3>Web para una clínica</h3>
+              <p>Estudio de diseño: tratamientos claros y reserva de cita en dos pasos.</p>
+            </div>
           </article>
-        </div>
-        <p class="plans__note reveal">¿Necesitas algo distinto? <a href="#contacto">Cuéntanos tu idea</a> y preparamos un presupuesto a medida.</p>
-      </div>
-    </section>
-
-    <!-- ===== Testimonios ===== -->
-    <section class="section section--alt" id="testimonios">
-      <div class="container">
-        <header class="section__head reveal">
-          <p class="eyebrow">Testimonios</p>
-          <h2>Lo que dicen nuestros clientes</h2>
-        </header>
-
-        <div class="testimonials">
-          <figure class="card testimonial reveal">
-            <div class="stars" aria-label="5 de 5 estrellas">★★★★★</div>
-            <blockquote>“En dos semanas teníamos una web que por fin refleja lo que somos. Las solicitudes de presupuesto se han duplicado.”</blockquote>
-            <figcaption><span class="avatar">LM</span><div><strong>Laura M.</strong><small>Estudio de interiorismo</small></div></figcaption>
-          </figure>
-          <figure class="card testimonial reveal">
-            <div class="stars" aria-label="5 de 5 estrellas">★★★★★</div>
-            <blockquote>“Profesionales, rápidos y muy claros con los plazos. La tienda carga al instante y vendemos más desde el móvil que nunca.”</blockquote>
-            <figcaption><span class="avatar">JR</span><div><strong>Javier R.</strong><small>Tienda online de café</small></div></figcaption>
-          </figure>
-          <figure class="card testimonial reveal">
-            <div class="stars" aria-label="5 de 5 estrellas">★★★★★</div>
-            <blockquote>“Me explicaron todo sin tecnicismos y ahora actualizo la web yo misma. Un trato cercano de principio a fin.”</blockquote>
-            <figcaption><span class="avatar">CP</span><div><strong>Carmen P.</strong><small>Psicóloga</small></div></figcaption>
-          </figure>
+          <!-- TODO: sustituir los conceptos por diseños reales de concepto (o por proyectos reales) cuando los tengas -->
         </div>
       </div>
     </section>
 
-    <!-- ===== FAQ ===== -->
-    <section class="section" id="faq">
+    <!-- ===== Preguntas frecuentes ===== -->
+    <section class="section section--alt" id="preguntas">
       <div class="container container--narrow">
-        <header class="section__head reveal">
-          <p class="eyebrow">FAQ</p>
-          <h2>Preguntas frecuentes</h2>
+        <header class="section__head">
+          <p class="eyebrow" data-reveal>Preguntas frecuentes</p>
+          <h2 data-reveal="lines">Lo que nos suelen preguntar.</h2>
         </header>
-
         <div class="faq">
-          <details class="faq__item reveal">
-            <summary>¿Cuánto tarda en estar lista mi web?</summary>
-            <p>Una landing page suele estar lista en 7 días y una web corporativa en 2–3 semanas. Te damos una fecha concreta antes de empezar.</p>
+          <details class="faq__item" data-reveal>
+            <summary>¿Cuándo empezáis a aceptar proyectos?</summary>
+            <div class="faq__body"><p data-only="pre">Abrimos <span data-fecha>muy pronto</span>. Si te apuntas a la lista, te escribimos en cuanto podamos atender tu proyecto.</p><p data-only="open">Ya estamos aceptando proyectos. Escríbenos y te respondemos lo antes posible.</p></div>
           </details>
-          <details class="faq__item reveal">
-            <summary>¿Podré modificar la web yo mismo?</summary>
-            <p>Sí. Los planes Business y E-commerce incluyen un panel sencillo para editar textos, imágenes y publicar entradas, y una sesión de formación.</p>
+          <details class="faq__item" data-reveal>
+            <summary>¿Cuánto cuesta una web?</summary>
+            <div class="faq__body"><p>Depende de lo que necesites: no es lo mismo una página de presentación que una web con varias secciones o tienda. Por eso no publicamos precios: te preparamos un presupuesto cerrado después de hablar contigo.</p></div>
           </details>
-          <details class="faq__item reveal">
-            <summary>¿Se verá bien en móviles?</summary>
-            <p>Siempre. Diseñamos primero para móvil y probamos cada web en teléfonos, tablets y ordenadores antes de publicarla.</p>
+          <details class="faq__item" data-reveal>
+            <summary>¿Cuánto se tarda?</summary>
+            <div class="faq__body"><p>Te damos un plazo concreto en la propuesta, antes de empezar. Depende sobre todo del tamaño de la web y de tener los textos y fotos a tiempo.</p></div>
           </details>
-          <details class="faq__item reveal">
-            <summary>¿Incluye dominio y hosting?</summary>
-            <p>Te ayudamos a registrar el dominio y podemos alojar tu web en nuestros servidores con SSL, copias diarias y monitorización, o publicarla en tu propio hosting.</p>
+          <details class="faq__item" data-reveal>
+            <summary>¿La web se verá bien en el móvil?</summary>
+            <div class="faq__body"><p>Sí. La mayoría de tus clientes te buscará desde el móvil, así que diseñamos pensando primero en él y revisamos cada página en móvil y ordenador antes de publicarla.</p></div>
           </details>
-          <details class="faq__item reveal">
-            <summary>¿Cómo es el pago?</summary>
-            <p>50 % al aprobar el presupuesto y 50 % al lanzamiento. Sin permanencias ni costes ocultos.</p>
+          <details class="faq__item" data-reveal>
+            <summary>No tengo dominio ni nada técnico, ¿es un problema?</summary>
+            <div class="faq__body"><p>No. Te ayudamos a elegir y conectar el dominio y dejamos todo funcionando. Tú solo tienes que contarnos tu negocio.</p></div>
           </details>
         </div>
       </div>
@@ -370,122 +255,89 @@
 
     <!-- ===== Contacto ===== -->
     <section class="section contact" id="contacto">
-      <div class="container contact__inner">
-        <div class="contact__intro reveal">
-          <p class="eyebrow">Contacto</p>
-          <h2>Hablemos de tu <span class="gradient-text">próxima web</span></h2>
-          <p>Cuéntanos qué necesitas y te enviaremos una propuesta personalizada en menos de 24 horas laborables. Sin compromiso.</p>
-          <ul class="contact__list">
-            <li><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><a href="mailto:hola@webcraftstudio.com" id="contact-email">hola@webcraftstudio.com</a></li>
-            <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Lunes a viernes · 9:00 – 18:00</li>
-            <li><svg viewBox="0 0 24 24"><path d="M12 22s7-6 7-12a7 7 0 00-14 0c0 6 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>Trabajamos en remoto con clientes de toda España y Latinoamérica</li>
+      <div class="container contact__grid">
+        <div class="contact__intro">
+          <p class="eyebrow" data-reveal>Contacto</p>
+          <h2 data-reveal="lines"><span data-only="pre">Te avisamos cuando abramos.</span><span data-only="open">Cuéntanos tu proyecto.</span></h2>
+          <p class="contact__lead" data-reveal data-only="pre">Déjanos tu email y serás de los primeros en saberlo. Un solo aviso, sin newsletters.</p>
+          <p class="contact__lead" data-reveal data-only="open">Cuéntanos qué necesitas y te respondemos con una propuesta y un presupuesto cerrado.</p>
+          <ul class="socials" id="socials" data-reveal>
+            <li data-social="email" hidden><a href="#" class="social"><svg aria-hidden="true"><use href="#i-mail"/></svg><span><small>Email</small><b></b></span></a></li>
+            <li data-social="instagram" hidden><a href="#" class="social" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-instagram"/></svg><span><small>Instagram</small><b></b></span></a></li>
+            <li data-social="whatsapp" hidden><a href="#" class="social" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg><span><small>WhatsApp</small><b>Escríbenos</b></span></a></li>
           </ul>
         </div>
 
-        <form class="card form reveal" id="contact-form" novalidate>
-          <div class="form__row">
-            <div class="field">
-              <label for="name">Nombre *</label>
-              <input id="name" name="nombre" type="text" autocomplete="name" required placeholder="Tu nombre">
-            </div>
-            <div class="field">
-              <label for="email">Email *</label>
-              <input id="email" name="email" type="email" autocomplete="email" required placeholder="tu@email.com">
-            </div>
-          </div>
-          <div class="form__row">
-            <div class="field">
-              <label for="phone">Teléfono</label>
-              <input id="phone" name="telefono" type="tel" autocomplete="tel" placeholder="+34 600 000 000">
-            </div>
-            <div class="field">
-              <label for="company">Empresa / proyecto</label>
-              <input id="company" name="empresa" type="text" autocomplete="organization" placeholder="Nombre de tu negocio">
-            </div>
-          </div>
-
-          <fieldset class="field">
-            <legend>¿Qué tipo de web necesitas? *</legend>
-            <div class="chips" id="type-chips">
-              <label class="chip"><input type="radio" name="tipo" value="Landing page" required><span>Landing page</span></label>
-              <label class="chip"><input type="radio" name="tipo" value="Web corporativa"><span>Web corporativa</span></label>
-              <label class="chip"><input type="radio" name="tipo" value="Tienda online"><span>Tienda online</span></label>
-              <label class="chip"><input type="radio" name="tipo" value="Rediseño"><span>Rediseño</span></label>
-              <label class="chip"><input type="radio" name="tipo" value="Otro"><span>Otro</span></label>
-            </div>
-          </fieldset>
-
-          <div class="form__row">
-            <div class="field">
-              <label for="budget">Presupuesto aproximado</label>
-              <select id="budget" name="presupuesto">
-                <option value="">Selecciona una opción</option>
-                <option>Menos de 1.000 €</option>
-                <option>1.000 – 2.500 €</option>
-                <option>2.500 – 5.000 €</option>
-                <option>Más de 5.000 €</option>
-                <option>Aún no lo sé</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="plan">Plan de interés</label>
-              <select id="plan" name="plan">
-                <option value="">Sin decidir</option>
-                <option>Landing</option>
-                <option>Business</option>
-                <option>E-commerce</option>
-              </select>
-            </div>
-          </div>
-
+        <form class="form" id="contact-form" novalidate data-reveal>
           <div class="field">
-            <label for="message">Cuéntanos tu proyecto *</label>
-            <textarea id="message" name="mensaje" rows="4" required minlength="10" placeholder="¿A qué se dedica tu negocio? ¿Qué te gustaría conseguir con tu web?"></textarea>
+            <label for="f-email">Email *</label>
+            <input type="email" id="f-email" name="email" autocomplete="email" inputmode="email" required>
           </div>
-
-          <!-- Honeypot anti-spam -->
+          <div class="field">
+            <label for="f-nombre">Nombre <span class="opt">(opcional)</span></label>
+            <input type="text" id="f-nombre" name="nombre" autocomplete="name">
+          </div>
+          <div class="field">
+            <label for="f-negocio">¿A qué se dedica tu negocio? <span class="opt">(opcional)</span></label>
+            <input type="text" id="f-negocio" name="negocio" placeholder="Ej.: restaurante, peluquería, tienda…">
+          </div>
+          <div class="field" data-only="open">
+            <label for="f-mensaje">¿Qué necesitas? *</label>
+            <textarea id="f-mensaje" name="mensaje" rows="4"></textarea>
+          </div>
           <div class="hp" aria-hidden="true">
-            <label for="website">No rellenar</label>
-            <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+            <label for="f-web">No rellenar</label>
+            <input type="text" id="f-web" name="website" tabindex="-1" autocomplete="off">
           </div>
-
           <label class="check">
-            <input type="checkbox" name="privacidad" id="privacy" required>
-            <span>Acepto la <a href="privacidad.html#privacidad" target="_blank" rel="noopener">política de privacidad</a> y que me contactéis sobre mi solicitud. *</span>
+            <input type="checkbox" name="consentimiento" id="f-consent" required>
+            <span><span data-only="pre">Acepto que uséis mi email solo para avisarme de la apertura.</span><span data-only="open">Acepto que uséis mis datos solo para responder a mi solicitud.</span> <a href="#" id="privacy-link" target="_blank" rel="noopener" hidden>Política de privacidad</a> *</span>
+            <!-- TODO: enlazar la política de privacidad (PRIVACIDAD_URL en config.js) antes de activar el formulario -->
           </label>
-
-          <button type="submit" class="btn btn--primary btn--lg btn--block" id="submit-btn">
-            Solicitar presupuesto gratis
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </button>
+          <button type="submit" class="btn btn--primary btn--block magnetic" id="submit-btn" data-cta>Avísame cuando abráis</button>
           <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
         </form>
       </div>
     </section>
   </main>
 
-  <!-- ===== Footer ===== -->
+  <!-- ===== Pie ===== -->
   <footer class="footer">
-    <div class="container footer__inner">
-      <div class="footer__brand">
-        <a href="#inicio" class="logo"><img src="assets/favicon.svg" alt="" width="28" height="28"><span>WebCraft<em>Studio</em></span></a>
-        <p>Diseño y desarrollo web a medida para negocios que quieren crecer.</p>
+    <div class="container">
+      <p class="footer__word" aria-hidden="true">WebCraft Studio</p>
+      <div class="footer__row">
+        <nav class="footer__nav" aria-label="Pie de página">
+          <a href="#servicios">Servicios</a>
+          <a href="#proceso">Proceso</a>
+          <a href="#proyectos">Proyectos</a>
+          <a href="#preguntas">Preguntas</a>
+          <a href="#contacto">Contacto</a>
+        </nav>
+        <ul class="footer__social" id="footer-social">
+          <li data-social="email" hidden><a href="#" aria-label="Email"><svg aria-hidden="true"><use href="#i-mail"/></svg></a></li>
+          <li data-social="instagram" hidden><a href="#" target="_blank" rel="noopener" aria-label="Instagram"><svg aria-hidden="true"><use href="#i-instagram"/></svg></a></li>
+          <li data-social="whatsapp" hidden><a href="#" target="_blank" rel="noopener" aria-label="WhatsApp"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg></a></li>
+        </ul>
       </div>
-      <nav class="footer__nav" aria-label="Pie de página">
-        <a href="#servicios">Servicios</a>
-        <a href="#proyectos">Proyectos</a>
-        <a href="#planes">Planes</a>
-        <a href="#contacto">Contacto</a>
-        <a href="privacidad.html">Privacidad y aviso legal</a>
-      </nav>
-      <p class="footer__copy">© <span id="year">2026</span> WebCraft Studio. Todos los derechos reservados.</p>
+      <div class="footer__bottom">
+        <p>© <span id="year">2026</span> WebCraft Studio · Barcelona</p>
+        <p class="footer__legal">
+          <a href="#" id="legal-link" hidden>Aviso legal</a>
+          <a href="#" id="privacy-footer-link" hidden>Privacidad</a>
+          <!-- TODO: páginas de aviso legal y privacidad (AVISO_LEGAL_URL / PRIVACIDAD_URL en config.js) -->
+        </p>
+      </div>
     </div>
   </footer>
 
-  <!-- Botón flotante móvil -->
-  <a href="#contacto" class="mobile-cta" id="mobile-cta">Pide tu presupuesto gratis</a>
+  <a href="#contacto" class="mobile-cta" id="mobile-cta" data-cta>Avísame cuando abráis</a>
+  <div class="cursor" aria-hidden="true"><span class="cursor__ring"></span></div>
 
   <script src="js/config.js"></script>
-  <script src="js/main.js"></script>
+  <script src="vendor/gsap.min.js" defer></script>
+  <script src="vendor/ScrollTrigger.min.js" defer></script>
+  <script src="vendor/SplitText.min.js" defer></script>
+  <script src="vendor/lenis.min.js" defer></script>
+  <script src="js/main.js" defer></script>
 </body>
 </html>

@@ -1,21 +1,46 @@
-# WebCraft Studio — Landing page
+# WebCraft Studio
 
-Landing page para **WebCraft Studio**, agencia de diseño y desarrollo de páginas web. Diseño futurista y minimalista en tonos oscuros, orientado a captar clientes que buscan su propia web. 100 % adaptable a móviles.
+Web del estudio de diseño y desarrollo web **WebCraft Studio** (Barcelona). Variante de estilo **«Obsidiana»**: metal líquido de roca volcánica, con fondos basalto, texto ceniza y acentos de acero y bronce apagado.
 
-Sitio estático (HTML + CSS + JavaScript, sin dependencias ni build).
+Sitio estático (HTML + CSS + JS). Las librerías están copiadas en `vendor/` y no hay que compilar nada.
 
 ## Estructura
 
 ```
-├── index.html        # Hero, tecnologías, servicios, proyectos, proceso, cifras, planes, testimonios, FAQ, contacto
-├── css/styles.css    # Estilos (colores y tipografías en :root)
-├── js/config.js      # Configuración del formulario (endpoint, email)
-├── js/main.js        # Menú móvil, animaciones, contadores y envío del formulario
-├── privacidad.html   # Política de privacidad, aviso legal y cookies
-├── 404.html          # Página de error
-├── css/pages.css     # Estilos de las páginas secundarias
-└── assets/           # favicon.svg y og-image.png (imagen al compartir en redes)
+├── index.html               # Aviso, hero, diapositiva animada, servicios, proceso, proyectos, preguntas, contacto, pie
+├── 404.html                 # Página de error con el mismo diseño
+├── css/styles.css           # Estilos (paleta y tipografías en :root)
+├── js/config.js             # ⚙️ TODO lo configurable: pre-apertura, fecha, redes, formulario, legales
+├── js/main.js               # Menú, formulario, secuencia con scroll, animaciones
+├── vendor/                  # GSAP, ScrollTrigger, SplitText y Lenis
+├── assets/fonts/            # Syne y Manrope (alojadas en la propia web)
+├── assets/hero/escritorio/  # 96 fotogramas WebP 1600×900
+├── assets/hero/movil/       # 48 fotogramas WebP 720×960 (recorte vertical)
+├── assets/proyectos/        # Capturas de proyectos
+├── assets/og-image.png      # Vista previa al compartir
+├── tools/extraer-fotogramas.sh
+├── robots.txt · sitemap.xml
 ```
+
+## Configuración (`js/config.js`)
+
+| Variable | Qué hace |
+|---|---|
+| `PREAPERTURA` | `true`: aviso arriba, botones "Avísame cuando abráis" y formulario de lista de espera. `false`: botones "Pedir presupuesto" y formulario de proyecto. |
+| `FECHA_APERTURA` | Texto de la fecha ("muy pronto" por defecto). |
+| `EMAIL`, `INSTAGRAM`, `WHATSAPP` | Si están vacías, su enlace no aparece. WhatsApp se abre con el mensaje ya escrito. |
+| `FORM_ENDPOINT` | Endpoint de Formspree. |
+| `AVISO_LEGAL_URL`, `PRIVACIDAD_URL` | Si están vacías, sus enlaces no aparecen. |
+| `VESTA_URL` | Enlace "Ver web" del proyecto Vesta. |
+| `ANIMACION.MARCADOR` | Muestra la etiqueta "Marcador de posición". Ponlo en `false` con el vídeo real. |
+
+## Animación de la diapositiva
+
+1. Pon el vídeo (8 s, 16:9) en `assets/hero/`.
+2. Ejecuta `bash tools/extraer-fotogramas.sh assets/hero/tu-video.mp4` (necesita ffmpeg).
+3. En `js/config.js`, pon `ANIMACION.MARCADOR: false`.
+
+En móvil se usan menos fotogramas y en vertical. En móviles lentos o con "reducir movimiento" se muestra el último fotograma como imagen fija.
 
 ## Ver en local
 
@@ -24,32 +49,15 @@ python3 -m http.server 8000
 # abre http://localhost:8000
 ```
 
-## Formulario de presupuesto
-
-Recoge nombre, email, teléfono, empresa, tipo de web, presupuesto, plan y descripción del proyecto. Incluye validación en el navegador, campo *honeypot* anti-spam y los botones de cada plan preseleccionan el formulario.
-
-Edita `js/config.js`:
-
-```js
-FORM_ENDPOINT: "https://formspree.io/f/TU_ID",   // o tu backend (POST JSON)
-CONTACT_EMAIL: "hola@webcraftstudio.com",
-```
-
-- **Con `FORM_ENDPOINT`**: se envía como JSON (Formspree, Getform, Basin…).
-- **Sin `FORM_ENDPOINT`**: abre el cliente de correo del visitante con la solicitud redactada.
-
-## Personalización
-
-- Colores (cian/violeta) y tipografías: variables en `:root` de `css/styles.css`.
-- Textos, precios, proyectos y testimonios: `index.html` (los proyectos y testimonios son de ejemplo, sustitúyelos por los reales).
-
-## Antes de publicar
-
-- Rellena los datos marcados entre corchetes en `privacidad.html` (titular, NIF y domicilio).
-- Si cambias de dominio, actualiza `og:image` en `index.html` con la nueva URL.
-
 ## Despliegue
 
-Publicado en GitHub Pages: https://mind-glitch-ceate.github.io/WebCraft-Studio/
+`.github/workflows/pages.yml` publica en GitHub Pages en cada push a `master`. Si cambia el dominio, actualiza:
+- `canonical`, `og:url` y `og:image` en `index.html`
+- `robots.txt` y `sitemap.xml`
+- `<base href>` en `404.html`
 
-El workflow `.github/workflows/pages.yml` publica automáticamente en cada push a `master`.
+## Licencias
+
+- GSAP: licencia estándar de GSAP, gratuita también para uso comercial.
+- Lenis: MIT.
+- Syne y Manrope: SIL Open Font License.
