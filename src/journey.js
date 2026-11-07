@@ -253,17 +253,39 @@ function init() {
   // Planetas del sistema solar con sus colores reales.
   // Los 4 interiores (Mercurio, Venus, Tierra, Marte) corresponden a los 4 servicios.
   function earthTexture() {
-    const c = document.createElement("canvas"); c.width = 512; c.height = 256; const x = c.getContext("2d");
-    let s = 77; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
-    const g = x.createLinearGradient(0, 0, 0, 256); g.addColorStop(0, "#1d3f78"); g.addColorStop(0.5, "#2a62a8"); g.addColorStop(1, "#1d3f78");
-    x.fillStyle = g; x.fillRect(0, 0, 512, 256);
-    for (let k = 0; k < 7; k++) { // continentes
-      const cx = r() * 512, cy = 50 + r() * 156, n = 14 + (r() * 16 | 0);
-      for (let i = 0; i < n; i++) { x.fillStyle = r() < 0.6 ? "#3f7a3a" : r() < 0.5 ? "#8a7a4a" : "#2f5e2e"; x.beginPath(); x.ellipse(cx + (r() - .5) * 90, cy + (r() - .5) * 50, 8 + r() * 26, 6 + r() * 16, r() * 3, 0, 7); x.fill(); }
+    const W = 1024, H = 512, c = document.createElement("canvas"); c.width = W; c.height = H; const x = c.getContext("2d");
+    const img = x.createImageData(W, H), d = img.data;
+    // ruido de valor periódico en longitud para que no haya costura
+    let s = 1337; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
+    const G = 64, grid = Array.from({ length: G * G }, r);
+    const lerp = (a, b, t) => a + (b - a) * t, sm = t => t * t * (3 - 2 * t);
+    function vn(u, v, f) { // u en [0,1) periódico
+      const X = u * f, Y = v * f, x0 = Math.floor(X), y0 = Math.floor(Y), fx = sm(X - x0), fy = sm(Y - y0);
+      const g = (i, j) => grid[(((j % G) + G) % G) * G + (((i % f) + f) % f) % G];
+      return lerp(lerp(g(x0, y0), g(x0 + 1, y0), fx), lerp(g(x0, y0 + 1), g(x0 + 1, y0 + 1), fx), fy);
     }
-    x.fillStyle = "#e8eef5"; x.fillRect(0, 0, 512, 14); x.fillRect(0, 242, 512, 14);           // polos
-    x.globalAlpha = 0.35; for (let i = 0; i < 70; i++) { x.fillStyle = "#ffffff"; x.beginPath(); x.ellipse(r() * 512, r() * 256, 20 + r() * 50, 2 + r() * 5, 0, 0, 7); x.fill(); } // nubes
-    x.globalAlpha = 1;
+    const fbm = (u, v, o) => { let a = 0, amp = 0.5, f = 4; for (let k = 0; k < 6; k++) { a += amp * vn(u + o, v + o * 0.7, f); amp *= 0.5; f *= 2; } return a; };
+    for (let y = 0; y < H; y++) {
+      const lat = Math.abs(y / H - 0.5) * 2;
+      for (let xx = 0; xx < W; xx++) {
+        const u = xx / W, v = y / H;
+        const h = fbm(u, v * 0.5, 0.0), cl = fbm(u, v * 0.5, 7.3);
+        let R, Gc, B;
+        if (h > 0.53) { // tierra: verde → marrón → claro
+          const k = Math.min(1, (h - 0.53) * 5);
+          R = lerp(52, 150, k * (1 - lat * 0.3)); Gc = lerp(110, 120, k); B = lerp(55, 80, k);
+          if (lat > 0.35 && lat < 0.6) { R *= 1.25; Gc *= 0.95; } // desiertos
+        } else { // océano
+          const k = Math.min(1, (0.53 - h) * 4);
+          R = lerp(32, 14, k); Gc = lerp(92, 48, k); B = lerp(160, 112, k);
+        }
+        if (lat > 0.84) { R = Gc = 236; B = 244; }        // casquetes polares
+        const cloud = Math.max(0, (cl - 0.56) * 3.2);    // nubes
+        R = lerp(R, 245, Math.min(0.85, cloud)); Gc = lerp(Gc, 248, Math.min(0.85, cloud)); B = lerp(B, 252, Math.min(0.85, cloud));
+        const i = (y * W + xx) * 4; d[i] = R; d[i + 1] = Gc; d[i + 2] = B; d[i + 3] = 255;
+      }
+    }
+    x.putImageData(img, 0, 0);
     const t = new CanvasTexture(c); t.colorSpace = SRGBColorSpace; return t;
   }
   function jupiterTexture() {
@@ -275,19 +297,24 @@ function init() {
   const planetDefs = [
     { name: "Mercurio", r: 0.9, size: 0.05, speed: 0.48, mat: () => std(rockTex, { color: 0xa39a90, roughness: 1 }) },
     { name: "Venus", r: 1.2, size: 0.085, speed: 0.35, mat: () => std(bandTexture(["#e9d3a2", "#dcc08a", "#f1e2bd", "#d4b57e"], 5)) },
-    { name: "Tierra", r: 1.55, size: 0.09, speed: 0.3, mat: () => std(earthTexture(), { roughness: 0.75 }) },
+    { name: "Tierra", r: 1.55, size: 0.09, speed: 0.3, mat: () => std(mobile ? bandTexture(["#1d4f8f", "#2a62a8", "#3f7a3a", "#e8eef5"], 9) : earthTexture(), { roughness: 0.7 }) },
     { name: "Marte", r: 1.9, size: 0.065, speed: 0.24, mat: () => std(rockTex, { color: 0xd06a3c, roughness: 1 }) },
-    { name: "Júpiter", r: 2.7, size: 0.24, speed: 0.13, mat: () => std(jupiterTexture()) },
+    { name: "Júpiter", r: 2.7, size: 0.24, speed: 0.13, mat: () => std(jupiterTexture()), ring: 0x9c8a74, ringOpacity: 0.32, ringIn: 1.45, ringOut: 1.95 },
     { name: "Saturno", r: 3.5, size: 0.2, speed: 0.1, mat: () => std(bandTexture(["#e8d4a0", "#d3b97e", "#f3e6c0", "#c9ad74"], 13)), ring: 0xd9c49a },
     { name: "Urano", r: 4.2, size: 0.13, speed: 0.07, mat: () => std(bandTexture(["#a6dde2", "#9ad3d9", "#b4e5e8"], 17)) },
     { name: "Neptuno", r: 4.8, size: 0.125, speed: 0.06, mat: () => std(bandTexture(["#3a64c8", "#2f52aa", "#4a74d6", "#294a9a"], 23)) }
   ];
+  // Ángulo (en el plano del sistema) hacia donde está la cámara cuando ves el Sol
+  const aN = Math.atan2(-n.z, n.x);
+  // Posición de cada planeta respecto a ese ángulo: la ruta pasa por el cinturón, Júpiter y la Tierra
+  const BASE = [-0.7, 0.55, 1.6, -1.25, 1.25, -0.95, 2.6, -2.3];
+  const polar = (r, a, y) => new Vector3(Math.cos(a) * r, y || 0, -Math.sin(a) * r); // local del sistema
   const planets = planetDefs.map((d, i) => {
     const pivot = new Group(); system.add(pivot);
     const m = new Mesh(new SphereGeometry(d.size, 40, 28), d.mat()); m.position.set(d.r, 0, 0); pivot.add(m);
     if (d.ring) {
-      const ring = new Mesh(new RingGeometry(d.size * 1.35, d.size * 2.35, 64), new MeshBasicMaterial({ color: d.ring, transparent: true, opacity: 0.5, side: DoubleSide, depthWrite: false }));
-      ring.rotation.x = Math.PI / 2.3; m.add(ring);
+      const ring = new Mesh(new RingGeometry(d.size * (d.ringIn || 1.35), d.size * (d.ringOut || 2.35), 96), new MeshBasicMaterial({ color: d.ring, transparent: true, opacity: d.ringOpacity || 0.5, side: DoubleSide, depthWrite: false }));
+      ring.rotation.x = d.ringIn ? Math.PI / 2 : Math.PI / 2.3; m.add(ring);
     }
     // órbita
     const pts = []; for (let k = 0; k <= 128; k++) { const a = k / 128 * Math.PI * 2; pts.push(new Vector3(Math.cos(a) * d.r, 0, Math.sin(a) * d.r)); }
@@ -296,8 +323,8 @@ function init() {
     // anillo de "activo" (cuando su servicio está en pantalla)
     const mark = new Sprite(new SpriteMaterial({ map: glowTexture([[0, "rgba(0,0,0,0)"], [0.62, "rgba(0,0,0,0)"], [0.7, "rgba(34,211,238,0.9)"], [0.76, "rgba(34,211,238,0.15)"], [1, "rgba(0,0,0,0)"]]), blending: AdditiveBlending, depthWrite: false, transparent: true, opacity: 0 }));
     mark.scale.set(Math.max(0.42, d.size * 4.2), Math.max(0.42, d.size * 4.2), 1); m.add(mark);
-    pivot.rotation.y = i * 2.4 + 0.6;
-    return { pivot, mesh: m, def: d, mark, orbit };
+    pivot.rotation.y = aN + BASE[i];
+    return { pivot, mesh: m, def: d, mark, orbit, base: aN + BASE[i] };
   });
 
   /* ---------------------------------------------------------
@@ -328,6 +355,44 @@ function init() {
     }
     system.add(mesh);
   });
+  // Cinturón de asteroides principal (entre Marte y Júpiter): parada de "Cómo trabajamos"
+  const AST_R = 2.25, astCount = mobile ? 160 : 380;
+  const asts = [rockGeometry(71), rockGeometry(83), rockGeometry(97)].map(g => new InstancedMesh(g, rockMat, Math.ceil(astCount / 3)));
+  asts.forEach(mesh => {
+    for (let i = 0; i < mesh.count; i++) {
+      // más densidad en el tramo que recorre la cámara
+      const a = Math.random() < 0.55 ? aN + rand(0.2, 1.2) : Math.random() * Math.PI * 2;
+      const r = AST_R + randn() * 0.07, y = randn() * 0.025;
+      const sc = Math.random() < 0.05 ? rand(0.012, 0.02) : rand(0.0025, 0.009);
+      beltData.push({ mesh, i, a, r, y, sc, rot: new Euler(rand(0, 6), rand(0, 6), rand(0, 6)), spin: rand(-0.6, 0.6), speed: 0.004 });
+    }
+    system.add(mesh);
+  });
+  // 4 rocas grandes con el número de cada paso (beige, como en la web)
+  function numberTexture(num) {
+    const c = document.createElement("canvas"); c.width = c.height = 128; const x = c.getContext("2d");
+    const g = x.createRadialGradient(50, 44, 6, 64, 64, 58); g.addColorStop(0, "#EEE9E1"); g.addColorStop(0.6, "#CEC9C1"); g.addColorStop(1, "#ADA69B");
+    x.fillStyle = g; x.beginPath(); x.arc(64, 64, 56, 0, 7); x.fill();
+    x.fillStyle = "#161412"; x.font = "800 64px Syne, 'Arial Black', sans-serif"; x.textAlign = "center"; x.textBaseline = "middle"; x.fillText(String(num), 64, 68);
+    const t = new CanvasTexture(c); t.colorSpace = SRGBColorSpace; return t;
+  }
+  const stepRocks = [0, 1, 2, 3].map(k => {
+    const g = new Group(); g.position.copy(polar(AST_R + 0.03 + (k % 2 ? 0.03 : -0.03), aN + 0.5 + k * 0.13, 0.026));
+    const rock = new Mesh(rockGeometry(301 + k * 13), rockMat); rock.scale.setScalar(0.028); g.add(rock);
+    const label = new Sprite(new SpriteMaterial({ map: numberTexture(k + 1), transparent: true, depthWrite: false }));
+    label.scale.set(0.022, 0.022, 1); label.position.set(0, 0.042, 0); g.add(label);
+    g.userData = { rock, spin: rand(0.2, 0.5) };
+    system.add(g); return g;
+  });
+  if (document.fonts) document.fonts.ready.then(() => stepRocks.forEach((g, k) => { const l = g.children[1]; l.material.map = numberTexture(k + 1); l.material.needsUpdate = true; }));
+
+  // La Luna (basalto volcánico, como nuestra roca): aterrizaje final
+  const earth = planets[2], jupiter = planets[4];
+  const MOON_R = 0.035;
+  const moonTex = rockTex.clone(); moonTex.repeat.set(5, 3); moonTex.needsUpdate = true;
+  const moon = new Mesh(new SphereGeometry(MOON_R, 128, 96), new MeshStandardMaterial({ map: moonTex, color: 0x9a9aa2, roughness: 1 }));
+  system.add(moon);
+
   // Rocas "protagonistas" alrededor de la diapositiva (grandes y cerca de la cámara)
   const heroRocks = [];
   const beltCam = P.clone().add(n.clone().multiplyScalar(BELT_R + 1.6)).add(new Vector3(0, 0.35, 0));
@@ -342,19 +407,62 @@ function init() {
      t: 0 galaxia · .5 cinturón · .58 sale del cinturón · .8 el Sol · 1 órbita
      --------------------------------------------------------- */
   const right = new Vector3().crossVectors(n.clone().negate(), up).normalize(); // derecha de la pantalla mirando al Sol
-  const K = (t, pos, look) => ({ t, pos, look });
+  const K = (t, pos, look, upd) => ({ t, pos, look, upd });
+  const sys = v => v.clone().add(P);                 // local del sistema → local de la galaxia
+  const V = () => new Vector3();
   const keys = [
     K(0, new Vector3(0, mobile ? 175 : 120, mobile ? 245 : 170), mobile ? new Vector3(-10, 62, 10) : new Vector3(-98, -22, 18)),
-    K(0.08, new Vector3(P.x * 0.2, mobile ? 135 : 100, (mobile ? 190 : 140)), mobile ? new Vector3(P.x * 0.3, 20, P.z * 0.3) : new Vector3(P.x * 0.3 - 30, -6, P.z * 0.3)),
-    K(0.26, P.clone().add(n.clone().multiplyScalar(26)).add(new Vector3(0, 30, 0)), P.clone()),
-    K(0.4, P.clone().add(n.clone().multiplyScalar(11)).add(tang.clone().multiplyScalar(3)).add(new Vector3(0, 4.5, 0)), P.clone().add(n.clone().multiplyScalar(3))),
-    K(0.5, beltCam.clone(), P.clone().add(n.clone().multiplyScalar(BELT_R - 0.6)).add(new Vector3(0, 0.25, 0))),
-    K(0.58, beltCam.clone().add(n.clone().multiplyScalar(-0.9)).add(tang.clone().multiplyScalar(0.5)), P.clone().add(n.clone().multiplyScalar(BELT_R - 1.8))),
-    K(0.8, P.clone().add(n.clone().multiplyScalar(mobile ? 7.6 : 6.6)).add(new Vector3(0, mobile ? 3.8 : 1.8, 0)),
+    K(0.03, new Vector3(P.x * 0.2, mobile ? 135 : 100, (mobile ? 190 : 140)), mobile ? new Vector3(P.x * 0.3, 20, P.z * 0.3) : new Vector3(P.x * 0.3 - 30, -6, P.z * 0.3)),
+    K(0.12, P.clone().add(n.clone().multiplyScalar(26)).add(new Vector3(0, 30, 0)), P.clone()),
+    K(0.2, P.clone().add(n.clone().multiplyScalar(11)).add(tang.clone().multiplyScalar(3)).add(new Vector3(0, 4.5, 0)), P.clone().add(n.clone().multiplyScalar(3))),
+    // Cinturón de rocas (diapositiva)
+    K(0.27, beltCam.clone(), P.clone().add(n.clone().multiplyScalar(BELT_R - 0.6)).add(new Vector3(0, 0.25, 0))),
+    K(0.32, beltCam.clone().add(n.clone().multiplyScalar(-0.9)).add(tang.clone().multiplyScalar(0.5)), P.clone().add(n.clone().multiplyScalar(BELT_R - 1.8))),
+    // El Sol (servicios)
+    K(0.42, P.clone().add(n.clone().multiplyScalar(mobile ? 7.6 : 6.6)).add(new Vector3(0, mobile ? 3.8 : 1.8, 0)),
       mobile ? P.clone().add(right.clone().multiplyScalar(-1.25)).add(new Vector3(0, -2.9, 0)) : P.clone().add(right.clone().multiplyScalar(-2.9))),
-    K(1, P.clone().add(n.clone().applyAxisAngle(up, 0.9).multiplyScalar(mobile ? 8 : 6.8)).add(new Vector3(0, mobile ? 4 : 2.6, 0)),
-      mobile ? P.clone().add(right.clone().applyAxisAngle(up, 0.9).multiplyScalar(-1.25)).add(new Vector3(0, -2.9, 0)) : P.clone().add(right.clone().applyAxisAngle(up, 0.9).multiplyScalar(-3)))
+    K(0.45, P.clone().add(n.clone().applyAxisAngle(up, 0.18).multiplyScalar(mobile ? 7.3 : 6.3)).add(new Vector3(0, mobile ? 3.5 : 1.6, 0)),
+      mobile ? P.clone().add(right.clone().applyAxisAngle(up, 0.18).multiplyScalar(-1.25)).add(new Vector3(0, -2.6, 0)) : P.clone().add(right.clone().applyAxisAngle(up, 0.18).multiplyScalar(-2.9))),
+    // Cinturón de asteroides (cómo trabajamos): las 4 rocas numeradas pasan a un lado
+    K(0.5, sys(polar(2.75, aN + 0.18, 0.22)), sys(polar(AST_R, aN + 0.5, 0))),
+    K(0.56, sys(polar(AST_R + 0.13, aN + 0.38, 0.03)), sys(polar(AST_R - 0.03, aN + 0.62, 0.0))),
+    K(0.62, sys(polar(AST_R + 0.13, aN + 0.92, 0.03)), sys(polar(AST_R + 0.05, aN + 1.15, 0.0))),
+    // Júpiter (proyectos): llegada y paso a través de su anillo
+    K(0.72, V(), V(), (pos, look) => {
+      const J = sys(jupiter.mesh.position.clone().applyAxisAngle(up, jupiter.pivot.rotation.y));
+      const out = J.clone().sub(P).setY(0).normalize(), tg = new Vector3().crossVectors(up, out);
+      pos.copy(J).addScaledVector(tg, mobile ? -1.05 : -0.9).addScaledVector(out, 0.28).add(new Vector3(0, mobile ? 0.16 : 0.09, 0));
+      look.copy(J).addScaledVector(out, mobile ? 0 : -0.38).add(new Vector3(0, mobile ? -0.18 : 0, 0));
+    }),
+    K(0.78, V(), V(), (pos, look) => {
+      const J = sys(jupiter.mesh.position.clone().applyAxisAngle(up, jupiter.pivot.rotation.y));
+      const out = J.clone().sub(P).setY(0).normalize(), tg = new Vector3().crossVectors(up, out);
+      pos.copy(J).addScaledVector(tg, mobile ? -0.62 : -0.52).addScaledVector(out, 0.2).add(new Vector3(0, -0.03, 0));
+      look.copy(J).addScaledVector(out, mobile ? -0.05 : -0.36).add(new Vector3(0, mobile ? -0.12 : -0.01, 0));
+    }),
+    // La Tierra (preguntas)
+    K(0.87, V(), V(), (pos, look) => {
+      const E = sys(earth.mesh.position.clone().applyAxisAngle(up, earth.pivot.rotation.y));
+      const out = E.clone().sub(P).setY(0).normalize(), tg = new Vector3().crossVectors(up, out);
+      pos.copy(E).addScaledVector(tg, mobile ? -0.4 : -0.34).addScaledVector(out, 0.12).add(new Vector3(0, 0.05, 0));
+      look.copy(E).addScaledVector(out, mobile ? 0 : -0.13).add(new Vector3(0, mobile ? -0.08 : 0, 0));
+    }),
+    // Aterrizaje en la Luna (contacto), con la Tierra en el horizonte
+    K(0.96, V(), V(), landing(0)),
+    K(1, V(), V(), landing(1))
   ];
+  function landing(k) {
+    return (pos, look) => {
+      const M = sys(moon.position), E = sys(earth.mesh.position.clone().applyAxisAngle(up, earth.pivot.rotation.y));
+      const d = E.clone().sub(M).normalize();
+      const w = new Vector3().crossVectors(d, up).normalize();
+      const elev = 0.12 + k * 0.03;                                   // altura de la Tierra sobre el horizonte
+      const nrm = w.clone().multiplyScalar(Math.cos(elev)).addScaledVector(d, Math.sin(elev)).addScaledVector(up, 0.25).normalize();
+      pos.copy(M).addScaledVector(nrm, MOON_R * (1.06 + 0.02 * (1 - k)));
+      const horiz = d.clone().addScaledVector(nrm, -d.dot(nrm)).normalize();
+      look.copy(pos).addScaledVector(horiz, 1).addScaledVector(nrm, (mobile ? 0.12 : 0.06) + k * 0.02);
+    };
+  }
   const posCurve = new CatmullRomCurve3(keys.map(k => k.pos), false, "centripetal");
   const lookCurve = new CatmullRomCurve3(keys.map(k => k.look), false, "centripetal");
   function curveU(t) { // t (0..1 por paradas) → u (0..1 a lo largo de la curva)
@@ -376,8 +484,11 @@ function init() {
     if (ST) { const pin = ST.getAll().find(s => s.pin && s.trigger && s.trigger.closest && s.trigger.closest("#animacion")); if (pin) { pinStart = pin.start; pinEnd = pin.end; } }
     const heroEnd = top("#animacion") - vh * 0.85;
     const serv = top("#servicios") - vh * 0.15;
-    anchors = [[0, 0], [Math.max(1, heroEnd * 0.55), 0.04], [pinStart, 0.5], [pinEnd, 0.58], [serv, 0.8], [end, 1]]
-      .sort((a, b) => a[0] - b[0]);
+    const proc = top("#proceso"), proy = top("#proyectos"), preg = top("#preguntas"), cont = top("#contacto");
+    anchors = [[0, 0], [Math.max(1, heroEnd * 0.55), 0.02], [pinStart, 0.27], [pinEnd, 0.32], [serv, 0.42], [proc - vh * 0.75, 0.45],
+      [proc - vh * 0.15, 0.56], [proy - vh * 0.6, 0.62], [proy - vh * 0.15, 0.72], [preg - vh * 0.6, 0.78], [preg - vh * 0.15, 0.87],
+      [cont - vh * 0.25, 0.96], [end, 1]];
+    for (let i = 1; i < anchors.length; i++) if (anchors[i][0] <= anchors[i - 1][0]) anchors[i][0] = anchors[i - 1][0] + 1;
   }
   function scrollToT(y) {
     if (y <= anchors[0][0]) return anchors[0][1];
@@ -423,14 +534,15 @@ function init() {
     tCur += (target - tCur) * Math.min(1, dt * 3.2);
 
     // La galaxia gira despacio solo mientras la ves desde fuera
-    galaxySpin += dt * 0.025 * (1 - smooth(0.02, 0.2, tCur));
+    galaxySpin += dt * 0.025 * (1 - smooth(0.01, 0.1, tCur));
     galaxy.rotation.y = 0.4 + galaxySpin;
     galaxy.updateMatrixWorld();
 
     // Cámara: la clave 0 es fija en el mundo; el resto viaja con la galaxia
+    for (const k of keys) if (k.upd) k.upd(k.pos, k.look);
     const u = curveU(tCur);
     posCurve.getPoint(u, camLocal); lookCurve.getPoint(u, lookW);
-    const w0 = 1 - smooth(0, 0.08, tCur); // mezcla mundo/galaxia al principio
+    const w0 = 1 - smooth(0, 0.03, tCur); // mezcla mundo/galaxia al principio
     tmpV.copy(camLocal).applyMatrix4(galaxy.matrixWorld);
     camera.position.copy(camLocal).lerp(tmpV, 1 - w0);
     tmpV.copy(lookW).applyMatrix4(galaxy.matrixWorld);
@@ -438,22 +550,25 @@ function init() {
     camera.lookAt(lookW);
 
     // Núcleo de la galaxia: se apaga al entrar
-    galaxy.userData.core.material.opacity = 1 - smooth(0.15, 0.4, tCur);
-    galaxyMat.uniforms.uFade.value = 1 - 0.5 * smooth(0.3, 0.55, tCur);
+    galaxy.userData.core.material.opacity = 1 - smooth(0.08, 0.2, tCur);
+    galaxyMat.uniforms.uFade.value = 1 - 0.5 * smooth(0.18, 0.3, tCur);
 
     // Sol
     const pulse = 1 + Math.sin(time * 1.3) * 0.03;
-    halo.scale.setScalar(7 * (2 - pulse)); sun.rotation.y += dt * 0.02;
-    sun.visible = corona.visible = halo.visible = tCur > 0.18;
-    light.intensity = 2.6 * smooth(0.2, 0.45, tCur);
+    const sunK = 1 - 0.5 * smooth(0.47, 0.56, tCur); // más pequeño visto desde los planetas cercanos
+    sun.scale.setScalar(sunK); corona.scale.setScalar(sunK);
+    halo.scale.setScalar(7 * (2 - pulse) * sunK); sun.rotation.y += dt * 0.02;
+    sun.visible = corona.visible = halo.visible = tCur > 0.08;
+    light.intensity = 2.6 * smooth(0.1, 0.24, tCur);
 
     // Planetas
     planets.forEach((p, i) => {
-      p.pivot.rotation.y += dt * p.def.speed * 0.25;
+      // vaivén orbital suave: se mueven, pero la ruta siempre los encuentra en su sitio
+      p.pivot.rotation.y = p.base + 0.08 * Math.sin(time * p.def.speed * 0.6 + i);
       p.mesh.rotation.y += dt * 0.3;
-      const on = i === activePlanet && i < 4 && tCur > 0.7 ? 1 : 0;
+      const on = i === activePlanet && i < 4 && tCur > 0.38 && tCur < 0.47 ? 1 : 0;
       p.mark.material.opacity += (on - p.mark.material.opacity) * Math.min(1, dt * 5);
-      p.orbit.material.opacity = 0.04 + 0.08 * smooth(0.6, 0.8, tCur) + on * 0.2;
+      p.orbit.material.opacity = 0.04 + 0.08 * smooth(0.36, 0.42, tCur) * (1 - smooth(0.47, 0.52, tCur)) + on * 0.2;
     });
 
     // Cinturón
@@ -467,7 +582,7 @@ function init() {
     belts.forEach(m => { m.instanceMatrix.needsUpdate = true; });
 
     // Rocas protagonistas: se colocan alrededor del encuadre durante la diapositiva
-    const showRocks = smooth(0.38, 0.47, tCur) * (1 - smooth(0.62, 0.72, tCur));
+    const showRocks = smooth(0.2, 0.26, tCur) * (1 - smooth(0.33, 0.38, tCur));
     const fwd = new Vector3(); camera.getWorldDirection(fwd);
     const camRight = new Vector3().crossVectors(fwd, camera.up).normalize();
     const camUp = new Vector3().crossVectors(camRight, fwd).normalize();
@@ -484,9 +599,24 @@ function init() {
       r.scale.multiplyScalar(0.3 + 0.7 * showRocks);
     });
 
-    scene.traverse(o => { if (o.material && o.material.uniforms && o.material.uniforms.uTime) o.material.uniforms.uTime.value = time; });
+    // Luna: orbita la Tierra (también con vaivén suave)
+    const Ew = earth.mesh.position.clone().applyAxisAngle(up, earth.pivot.rotation.y);
+    const ma = earth.pivot.rotation.y + 0.55 + 0.05 * Math.sin(time * 0.05);
+    moon.position.copy(Ew).add(new Vector3(Math.cos(ma) * 0.42, 0.03, -Math.sin(ma) * 0.42));
+    moon.rotation.y += dt * 0.01;
+    stepRocks.forEach(g => { g.userData.rock.rotation.y += dt * g.userData.spin; g.userData.rock.rotation.x += dt * g.userData.spin * 0.4; });
+
+    // Plano cercano dinámico: permite acercarse mucho a la Luna y a los planetas
+    const camSys = system.worldToLocal(camera.position.clone());
+    const dMin = Math.min(camSys.distanceTo(moon.position) - MOON_R, camSys.distanceTo(Ew) - earth.def.size,
+      camSys.distanceTo(jupiter.mesh.position.clone().applyAxisAngle(up, jupiter.pivot.rotation.y)) - jupiter.def.size);
+    const near = MathUtils.clamp(dMin * 0.25, 0.0002, 0.01);
+    if (Math.abs(near - camera.near) > 1e-5) { camera.near = near; camera.updateProjectionMatrix(); }
+
+    timeMats.forEach(m => { m.uniforms.uTime.value = time; });
     renderer.render(scene, camera);
   }
+  const timeMats = []; scene.traverse(o => { if (o.material && o.material.uniforms && o.material.uniforms.uTime) timeMats.push(o.material); });
   frame();
   root.classList.add("journey-ready");
   window.__journey = { camera, sun, get t() { return tCur; }, anchors: () => anchors, P, galaxy };
