@@ -253,7 +253,7 @@ function init() {
   // Planetas del sistema solar con sus colores reales.
   // Los 4 interiores (Mercurio, Venus, Tierra, Marte) corresponden a los 4 servicios.
   function earthTexture() {
-    const W = 1024, H = 512, c = document.createElement("canvas"); c.width = W; c.height = H; const x = c.getContext("2d");
+    const W = mobile ? 512 : 1024, H = W / 2, c = document.createElement("canvas"); c.width = W; c.height = H; const x = c.getContext("2d");
     const img = x.createImageData(W, H), d = img.data;
     // ruido de valor periódico en longitud para que no haya costura
     let s = 1337; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
@@ -297,7 +297,7 @@ function init() {
   const planetDefs = [
     { name: "Mercurio", r: 0.9, size: 0.05, speed: 0.48, mat: () => std(rockTex, { color: 0xa39a90, roughness: 1 }) },
     { name: "Venus", r: 1.2, size: 0.085, speed: 0.35, mat: () => std(bandTexture(["#e9d3a2", "#dcc08a", "#f1e2bd", "#d4b57e"], 5)) },
-    { name: "Tierra", r: 1.55, size: 0.09, speed: 0.3, mat: () => std(mobile ? bandTexture(["#1d4f8f", "#2a62a8", "#3f7a3a", "#e8eef5"], 9) : earthTexture(), { roughness: 0.7 }) },
+    { name: "Tierra", r: 1.55, size: 0.09, speed: 0.3, mat: () => std(earthTexture(), { roughness: 0.7 }) },
     { name: "Marte", r: 1.9, size: 0.065, speed: 0.24, mat: () => std(rockTex, { color: 0xd06a3c, roughness: 1 }) },
     { name: "Júpiter", r: 2.7, size: 0.24, speed: 0.13, mat: () => std(jupiterTexture()), ring: 0x9c8a74, ringOpacity: 0.32, ringIn: 1.45, ringOut: 1.95 },
     { name: "Saturno", r: 3.5, size: 0.2, speed: 0.1, mat: () => std(bandTexture(["#e8d4a0", "#d3b97e", "#f3e6c0", "#c9ad74"], 13)), ring: 0xd9c49a },
@@ -377,8 +377,8 @@ function init() {
     const t = new CanvasTexture(c); t.colorSpace = SRGBColorSpace; return t;
   }
   const stepRocks = [0, 1, 2, 3].map(k => {
-    const g = new Group(); g.position.copy(polar(AST_R + 0.03 + (k % 2 ? 0.03 : -0.03), aN + 0.5 + k * 0.13, 0.026));
-    const rock = new Mesh(rockGeometry(301 + k * 13), rockMat); rock.scale.setScalar(0.028); g.add(rock);
+    const g = new Group(); g.position.copy(polar(AST_R + (mobile ? -0.02 : 0.03) + (k % 2 ? 0.03 : -0.03), aN + 0.5 + k * 0.13, mobile ? 0.045 : 0.026));
+    const rock = new Mesh(rockGeometry(301 + k * 13), rockMat); rock.scale.setScalar(mobile ? 0.018 : 0.028); g.add(rock);
     const label = new Sprite(new SpriteMaterial({ map: numberTexture(k + 1), transparent: true, depthWrite: false }));
     label.scale.set(0.022, 0.022, 1); label.position.set(0, 0.042, 0); g.add(label);
     g.userData = { rock, spin: rand(0.2, 0.5) };
@@ -432,20 +432,20 @@ function init() {
       const J = sys(jupiter.mesh.position.clone().applyAxisAngle(up, jupiter.pivot.rotation.y));
       const out = J.clone().sub(P).setY(0).normalize(), tg = new Vector3().crossVectors(up, out);
       pos.copy(J).addScaledVector(tg, mobile ? -1.05 : -0.9).addScaledVector(out, 0.28).add(new Vector3(0, mobile ? 0.16 : 0.09, 0));
-      look.copy(J).addScaledVector(out, mobile ? 0 : -0.38).add(new Vector3(0, mobile ? -0.18 : 0, 0));
+      look.copy(J).addScaledVector(out, mobile ? 0 : -0.38).add(new Vector3(0, mobile ? -0.34 : 0, 0));
     }),
     K(0.78, V(), V(), (pos, look) => {
       const J = sys(jupiter.mesh.position.clone().applyAxisAngle(up, jupiter.pivot.rotation.y));
       const out = J.clone().sub(P).setY(0).normalize(), tg = new Vector3().crossVectors(up, out);
       pos.copy(J).addScaledVector(tg, mobile ? -0.62 : -0.52).addScaledVector(out, 0.2).add(new Vector3(0, -0.03, 0));
-      look.copy(J).addScaledVector(out, mobile ? -0.05 : -0.36).add(new Vector3(0, mobile ? -0.12 : -0.01, 0));
+      look.copy(J).addScaledVector(out, mobile ? -0.05 : -0.36).add(new Vector3(0, mobile ? -0.26 : -0.01, 0));
     }),
     // La Tierra (preguntas)
     K(0.87, V(), V(), (pos, look) => {
       const E = sys(earth.mesh.position.clone().applyAxisAngle(up, earth.pivot.rotation.y));
       const out = E.clone().sub(P).setY(0).normalize(), tg = new Vector3().crossVectors(up, out);
       pos.copy(E).addScaledVector(tg, mobile ? -0.4 : -0.34).addScaledVector(out, 0.12).add(new Vector3(0, 0.05, 0));
-      look.copy(E).addScaledVector(out, mobile ? 0 : -0.13).add(new Vector3(0, mobile ? -0.08 : 0, 0));
+      look.copy(E).addScaledVector(out, mobile ? 0 : -0.13).add(new Vector3(0, mobile ? -0.17 : 0, 0));
     }),
     // Aterrizaje en la Luna (contacto), con la Tierra en el horizonte
     K(0.96, V(), V(), landing(0)),
