@@ -162,6 +162,13 @@ function init() {
   const system = new Group(); system.position.copy(P); galaxy.add(system);
   const loader = new TextureLoader();
   const rockTex = loader.load("assets/textures/roca.webp"); rockTex.colorSpace = SRGBColorSpace; rockTex.wrapS = rockTex.wrapT = RepeatWrapping;
+  const ANISO = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+  // Texturas de planetas: Tierra y Luna con imágenes de la NASA; el resto generadas (assets/planets)
+  const MOBILE_SET = ["jupiter", "saturn", "mars", "clouds", "earth", "moon"];
+  function tex(name, color) {
+    const file = "assets/planets/" + name + (mobile && MOBILE_SET.includes(name) ? "-m" : "") + ".webp";
+    const t = loader.load(file); t.anisotropy = ANISO; if (color !== false) t.colorSpace = SRGBColorSpace; return t;
+  }
 
   // Sol: plasma animado con granulado, manchas solares, oscurecimiento del borde y corona
   const NOISE = `
@@ -252,58 +259,45 @@ function init() {
 
   // Planetas del sistema solar con sus colores reales.
   // Los 4 interiores (Mercurio, Venus, Tierra, Marte) corresponden a los 4 servicios.
-  function earthTexture() {
-    const W = mobile ? 512 : 1024, H = W / 2, c = document.createElement("canvas"); c.width = W; c.height = H; const x = c.getContext("2d");
-    const img = x.createImageData(W, H), d = img.data;
-    // ruido de valor periódico en longitud para que no haya costura
-    let s = 1337; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
-    const G = 64, grid = Array.from({ length: G * G }, r);
-    const lerp = (a, b, t) => a + (b - a) * t, sm = t => t * t * (3 - 2 * t);
-    function vn(u, v, f) { // u en [0,1) periódico
-      const X = u * f, Y = v * f, x0 = Math.floor(X), y0 = Math.floor(Y), fx = sm(X - x0), fy = sm(Y - y0);
-      const g = (i, j) => grid[(((j % G) + G) % G) * G + (((i % f) + f) % f) % G];
-      return lerp(lerp(g(x0, y0), g(x0 + 1, y0), fx), lerp(g(x0, y0 + 1), g(x0 + 1, y0 + 1), fx), fy);
-    }
-    const fbm = (u, v, o) => { let a = 0, amp = 0.5, f = 4; for (let k = 0; k < 6; k++) { a += amp * vn(u + o, v + o * 0.7, f); amp *= 0.5; f *= 2; } return a; };
-    for (let y = 0; y < H; y++) {
-      const lat = Math.abs(y / H - 0.5) * 2;
-      for (let xx = 0; xx < W; xx++) {
-        const u = xx / W, v = y / H;
-        const h = fbm(u, v * 0.5, 0.0), cl = fbm(u, v * 0.5, 7.3);
-        let R, Gc, B;
-        if (h > 0.53) { // tierra: verde → marrón → claro
-          const k = Math.min(1, (h - 0.53) * 5);
-          R = lerp(52, 150, k * (1 - lat * 0.3)); Gc = lerp(110, 120, k); B = lerp(55, 80, k);
-          if (lat > 0.35 && lat < 0.6) { R *= 1.25; Gc *= 0.95; } // desiertos
-        } else { // océano
-          const k = Math.min(1, (0.53 - h) * 4);
-          R = lerp(32, 14, k); Gc = lerp(92, 48, k); B = lerp(160, 112, k);
-        }
-        if (lat > 0.84) { R = Gc = 236; B = 244; }        // casquetes polares
-        const cloud = Math.max(0, (cl - 0.56) * 3.2);    // nubes
-        R = lerp(R, 245, Math.min(0.85, cloud)); Gc = lerp(Gc, 248, Math.min(0.85, cloud)); B = lerp(B, 252, Math.min(0.85, cloud));
-        const i = (y * W + xx) * 4; d[i] = R; d[i + 1] = Gc; d[i + 2] = B; d[i + 3] = 255;
-      }
-    }
-    x.putImageData(img, 0, 0);
-    const t = new CanvasTexture(c); t.colorSpace = SRGBColorSpace; return t;
+  const SEG = mobile ? [64, 40] : [96, 64];
+  function ringTexture(stops, alphaScale) { // perfil radial de un anillo (u = radio)
+    const c = document.createElement("canvas"); c.width = 1024; c.height = 4; const x = c.getContext("2d");
+    const g = x.createLinearGradient(0, 0, 1024, 0); stops.forEach(([o, col]) => g.addColorStop(o, col));
+    x.fillStyle = g; x.fillRect(0, 0, 1024, 4);
+    let s = 9; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;   // anillos finos
+    x.globalCompositeOperation = "destination-out";
+    for (let i = 0; i < 260; i++) { x.fillStyle = `rgba(0,0,0,${(r() * 0.35 * alphaScale).toFixed(3)})`; x.fillRect(r() * 1024, 0, 1 + r() * 3, 4); }
+    const t = new CanvasTexture(c); t.colorSpace = SRGBColorSpace; t.anisotropy = ANISO; return t;
   }
-  function jupiterTexture() {
-    const t = bandTexture(["#d9b98f", "#b98258", "#efe0c4", "#9a6a46", "#cfa06e", "#e6cfa8"], 31);
-    const x = t.image.getContext("2d"); x.fillStyle = "#b5583a"; x.globalAlpha = 0.85;
-    x.beginPath(); x.ellipse(330, 165, 34, 16, 0, 0, 7); x.fill(); x.globalAlpha = 1; t.needsUpdate = true; return t;
+  function radialRing(inner, outer, map, opacity) {
+    const g = new RingGeometry(inner, outer, 160, 1); const pos = g.attributes.position, uv = g.attributes.uv, v = new Vector3();
+    for (let i = 0; i < pos.count; i++) { v.fromBufferAttribute(pos, i); uv.setXY(i, (v.length() - inner) / (outer - inner), 0.5); }
+    return new Mesh(g, new MeshBasicMaterial({ map, transparent: true, opacity, side: DoubleSide, depthWrite: false }));
   }
-  const std = (map, extra) => new MeshStandardMaterial(Object.assign({ map, roughness: 0.9 }, extra || {}));
+  const saturnRingTex = ringTexture([[0, "rgba(120,110,95,0)"], [0.08, "rgba(140,128,110,0.25)"], [0.3, "rgba(150,138,118,0.35)"],
+    [0.34, "rgba(222,206,172,0.9)"], [0.62, "rgba(236,222,190,0.95)"], [0.64, "rgba(20,18,16,0.05)"], [0.68, "rgba(20,18,16,0.05)"],
+    [0.7, "rgba(205,190,160,0.8)"], [0.9, "rgba(196,182,152,0.7)"], [0.91, "rgba(0,0,0,0.05)"], [0.92, "rgba(190,176,148,0.6)"], [1, "rgba(170,158,135,0)"]], 1);
+  const jupiterRingTex = ringTexture([[0, "rgba(160,140,115,0)"], [0.3, "rgba(170,150,125,0.35)"], [0.75, "rgba(180,160,130,0.55)"], [1, "rgba(160,140,115,0)"]], 0.4);
+  const std = (map, extra) => new MeshStandardMaterial(Object.assign({ map, roughness: 0.92, metalness: 0 }, extra || {}));
   const planetDefs = [
-    { name: "Mercurio", r: 0.9, size: 0.05, speed: 0.48, mat: () => std(rockTex, { color: 0xa39a90, roughness: 1 }) },
-    { name: "Venus", r: 1.2, size: 0.085, speed: 0.35, mat: () => std(bandTexture(["#e9d3a2", "#dcc08a", "#f1e2bd", "#d4b57e"], 5)) },
-    { name: "Tierra", r: 1.55, size: 0.09, speed: 0.3, mat: () => std(earthTexture(), { roughness: 0.7 }) },
-    { name: "Marte", r: 1.9, size: 0.065, speed: 0.24, mat: () => std(rockTex, { color: 0xd06a3c, roughness: 1 }) },
-    { name: "Júpiter", r: 2.7, size: 0.24, speed: 0.13, mat: () => std(jupiterTexture()), ring: 0x9c8a74, ringOpacity: 0.32, ringIn: 1.45, ringOut: 1.95 },
-    { name: "Saturno", r: 3.5, size: 0.2, speed: 0.1, mat: () => std(bandTexture(["#e8d4a0", "#d3b97e", "#f3e6c0", "#c9ad74"], 13)), ring: 0xd9c49a },
-    { name: "Urano", r: 4.2, size: 0.13, speed: 0.07, mat: () => std(bandTexture(["#a6dde2", "#9ad3d9", "#b4e5e8"], 17)) },
-    { name: "Neptuno", r: 4.8, size: 0.125, speed: 0.06, mat: () => std(bandTexture(["#3a64c8", "#2f52aa", "#4a74d6", "#294a9a"], 23)) }
+    { name: "Mercurio", r: 0.9, size: 0.05, speed: 0.48, mat: () => std(tex("mercury"), { bumpMap: tex("mercury_bump", false), bumpScale: 2 }) },
+    { name: "Venus", r: 1.2, size: 0.085, speed: 0.35, mat: () => std(tex("venus"), { roughness: 1 }) },
+    { name: "Tierra", r: 1.55, size: 0.09, speed: 0.3, earth: true, mat: () => std(tex("earth"), { bumpMap: tex("earth_bump", false), bumpScale: 1.5, roughnessMap: tex("earth_rough", false), roughness: 1, metalness: 0.05 }) },
+    { name: "Marte", r: 1.9, size: 0.065, speed: 0.24, mat: () => std(tex("mars"), { bumpMap: tex("mars_bump", false), bumpScale: 2, roughness: 1 }) },
+    { name: "Júpiter", r: 2.7, size: 0.24, speed: 0.13, mat: () => std(tex("jupiter"), { roughness: 0.95 }), ringMap: jupiterRingTex, ringIn: 1.4, ringOut: 1.85, ringOpacity: 0.55, ringTilt: Math.PI / 2 },
+    { name: "Saturno", r: 3.5, size: 0.2, speed: 0.1, mat: () => std(tex("saturn"), { roughness: 0.95 }), ringMap: saturnRingTex, ringIn: 1.25, ringOut: 2.3, ringOpacity: 1, ringTilt: Math.PI / 2.35 },
+    { name: "Urano", r: 4.2, size: 0.13, speed: 0.07, mat: () => std(tex("uranus"), { roughness: 0.9 }) },
+    { name: "Neptuno", r: 4.8, size: 0.125, speed: 0.06, mat: () => std(tex("neptune"), { roughness: 0.9 }) }
   ];
+  // Atmósfera: brillo en el borde (Tierra azul; gigantes gaseosos muy suave)
+  function atmosphere(radius, color, power, strength) {
+    return new Mesh(new SphereGeometry(radius, 64, 48), new ShaderMaterial({
+      transparent: true, depthWrite: false, blending: AdditiveBlending, side: 1,
+      uniforms: { uColor: { value: new Color(color) }, uP: { value: power }, uS: { value: strength } },
+      vertexShader: "varying vec3 vN; varying vec3 vV; void main(){ vec4 mv = modelViewMatrix * vec4(position,1.0); vN = normalize(normalMatrix * normal); vV = normalize(-mv.xyz); gl_Position = projectionMatrix * mv; }",
+      fragmentShader: "uniform vec3 uColor; uniform float uP; uniform float uS; varying vec3 vN; varying vec3 vV; void main(){ float f = 1.0 - abs(dot(normalize(vN), normalize(vV))); float a = pow(smoothstep(0.0, 0.42, 1.0 - f) * smoothstep(0.12, 0.3, f), uP) * uS; gl_FragColor = vec4(uColor * a, a); }"
+    }));
+  }
   // Ángulo (en el plano del sistema) hacia donde está la cámara cuando ves el Sol
   const aN = Math.atan2(-n.z, n.x);
   // Posición de cada planeta respecto a ese ángulo: la ruta pasa por el cinturón, Júpiter y la Tierra
@@ -311,11 +305,17 @@ function init() {
   const polar = (r, a, y) => new Vector3(Math.cos(a) * r, y || 0, -Math.sin(a) * r); // local del sistema
   const planets = planetDefs.map((d, i) => {
     const pivot = new Group(); system.add(pivot);
-    const m = new Mesh(new SphereGeometry(d.size, 40, 28), d.mat()); m.position.set(d.r, 0, 0); pivot.add(m);
-    if (d.ring) {
-      const ring = new Mesh(new RingGeometry(d.size * (d.ringIn || 1.35), d.size * (d.ringOut || 2.35), 96), new MeshBasicMaterial({ color: d.ring, transparent: true, opacity: d.ringOpacity || 0.5, side: DoubleSide, depthWrite: false }));
-      ring.rotation.x = d.ringIn ? Math.PI / 2 : Math.PI / 2.3; m.add(ring);
+    const m = new Mesh(new SphereGeometry(d.size, SEG[0], SEG[1]), d.mat()); m.position.set(d.r, 0, 0); pivot.add(m);
+    if (d.ringMap) {
+      const ring = radialRing(d.size * d.ringIn, d.size * d.ringOut, d.ringMap, d.ringOpacity);
+      ring.rotation.x = d.ringTilt; m.add(ring);
     }
+    if (d.earth) {
+      const clouds = new Mesh(new SphereGeometry(d.size * 1.012, SEG[0], SEG[1]), new MeshStandardMaterial({ color: 0xffffff, alphaMap: tex("clouds", false), transparent: true, depthWrite: false, roughness: 1 }));
+      m.add(clouds); m.userData.clouds = clouds;
+      m.add(atmosphere(d.size * 1.07, 0x5aa8ff, 1.6, 0.9));
+    }
+    if (d.size > 0.12) m.add(atmosphere(d.size * 1.04, d.name === "Neptuno" ? 0x6c8cff : d.name === "Urano" ? 0x9fe3ea : 0xf0d7b0, 2.2, 0.35));
     // órbita
     const pts = []; for (let k = 0; k <= 128; k++) { const a = k / 128 * Math.PI * 2; pts.push(new Vector3(Math.cos(a) * d.r, 0, Math.sin(a) * d.r)); }
     const orbit = new LineLoop(new BufferGeometry().setFromPoints(pts), new LineBasicMaterial({ color: 0x9fb4d8, transparent: true, opacity: 0.08 }));
@@ -330,19 +330,34 @@ function init() {
   /* ---------------------------------------------------------
      Cinturón de rocas volcánicas (asteroides instanciados)
      --------------------------------------------------------- */
-  function rockGeometry(seed) {
-    const g = new IcosahedronGeometry(1, 4); const p = g.attributes.position; const v = new Vector3();
+  // Rocas: esfera deformada con ruido 3D (bultos, crestas y cráteres)
+  function vnoise3(seed) {
+    const P = new Uint8Array(512); let s = seed * 9301 + 49297; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
+    const perm = Array.from({ length: 256 }, (_, i) => i); for (let i = 255; i > 0; i--) { const j = (r() * (i + 1)) | 0; [perm[i], perm[j]] = [perm[j], perm[i]]; }
+    for (let i = 0; i < 512; i++) P[i] = perm[i & 255];
+    const val = Float32Array.from({ length: 256 }, r);
+    const f = t => t * t * (3 - 2 * t), L = (a, b, t) => a + (b - a) * t;
+    const h = (x, y, z) => val[P[P[P[x & 255] + (y & 255)] + (z & 255)]];
+    return (x, y, z) => { const X = Math.floor(x), Y = Math.floor(y), Z = Math.floor(z), u = f(x - X), v = f(y - Y), w = f(z - Z);
+      return L(L(L(h(X, Y, Z), h(X + 1, Y, Z), u), L(h(X, Y + 1, Z), h(X + 1, Y + 1, Z), u), v),
+               L(L(h(X, Y, Z + 1), h(X + 1, Y, Z + 1), u), L(h(X, Y + 1, Z + 1), h(X + 1, Y + 1, Z + 1), u), v), w) * 2 - 1; };
+  }
+  function rockGeometry(seed, hi) {
+    const g = hi ? new SphereGeometry(1, mobile ? 40 : 64, mobile ? 28 : 44) : new SphereGeometry(1, mobile ? 14 : 20, mobile ? 10 : 14); const p = g.attributes.position; const v = new Vector3();
+    const nz = vnoise3(seed);
     let s = seed; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
-    const bumps = Array.from({ length: 7 }, () => [new Vector3(r() - .5, r() - .5, r() - .5).normalize(), r() * 0.35 + 0.1]);
+    const stretch = new Vector3(1 + r() * 0.5, 0.65 + r() * 0.25, 0.8 + r() * 0.3);
+    const crs = Array.from({ length: 9 }, () => ({ d: new Vector3(r() - .5, r() - .5, r() - .5).normalize(), rad: 0.15 + r() * 0.35, depth: 0.05 + r() * 0.12 }));
     for (let i = 0; i < p.count; i++) {
       v.fromBufferAttribute(p, i).normalize();
-      let k = 1; for (const [d, a] of bumps) k += a * Math.pow(Math.max(0, v.dot(d)), 3) * (r() < .5 ? -1 : 1) * 0.6;
-      k += (r() - 0.5) * 0.06;
-      v.multiplyScalar(k); v.y *= 0.78; p.setXYZ(i, v.x, v.y, v.z);
+      let k = 1 + 0.28 * nz(v.x * 1.3 + 3, v.y * 1.3, v.z * 1.3) + 0.12 * nz(v.x * 3.1, v.y * 3.1 + 7, v.z * 3.1)
+        + 0.05 * (1 - Math.abs(nz(v.x * 6, v.y * 6, v.z * 6 + 2))) + 0.02 * nz(v.x * 14, v.y * 14, v.z * 14);
+      for (const c of crs) { const a = Math.acos(Math.min(1, v.dot(c.d))) / c.rad; if (a < 1.3) k -= c.depth * (a < 1 ? (1 - a * a) : 0) - c.depth * 0.35 * Math.exp(-Math.pow((a - 1) * 6, 2)); }
+      v.multiplyScalar(k).multiply(stretch); p.setXYZ(i, v.x, v.y, v.z);
     }
     g.computeVertexNormals(); return g;
   }
-  const rockMat = new MeshStandardMaterial({ map: rockTex, color: 0xd2d4dc, roughness: 0.92, metalness: 0.06, emissive: 0x1c1f28 });
+  const rockMat = new MeshStandardMaterial({ map: tex("rock"), bumpMap: tex("rock_bump", false), bumpScale: 3, color: 0xd8d6d2, roughness: 0.96, metalness: 0.02 });
   const BELT_R = 7.4, beltCount = mobile ? 110 : 260;
   const belts = [rockGeometry(11), rockGeometry(29), rockGeometry(53)].map(g => new InstancedMesh(g, rockMat, Math.ceil(beltCount / 3)));
   const beltData = [];
@@ -378,7 +393,7 @@ function init() {
   }
   const stepRocks = [0, 1, 2, 3].map(k => {
     const g = new Group(); g.position.copy(polar(AST_R + (mobile ? -0.02 : 0.03) + (k % 2 ? 0.03 : -0.03), aN + 0.5 + k * 0.13, mobile ? 0.045 : 0.026));
-    const rock = new Mesh(rockGeometry(301 + k * 13), rockMat); rock.scale.setScalar(mobile ? 0.018 : 0.028); g.add(rock);
+    const rock = new Mesh(rockGeometry(301 + k * 13, true), rockMat); rock.scale.setScalar(mobile ? 0.018 : 0.028); g.add(rock);
     const label = new Sprite(new SpriteMaterial({ map: numberTexture(k + 1), transparent: true, depthWrite: false }));
     label.scale.set(0.022, 0.022, 1); label.position.set(0, 0.042, 0); g.add(label);
     g.userData = { rock, spin: rand(0.2, 0.5) };
@@ -389,15 +404,14 @@ function init() {
   // La Luna (basalto volcánico, como nuestra roca): aterrizaje final
   const earth = planets[2], jupiter = planets[4];
   const MOON_R = 0.035;
-  const moonTex = rockTex.clone(); moonTex.repeat.set(5, 3); moonTex.needsUpdate = true;
-  const moon = new Mesh(new SphereGeometry(MOON_R, 128, 96), new MeshStandardMaterial({ map: moonTex, color: 0x9a9aa2, roughness: 1 }));
+  const moon = new Mesh(new SphereGeometry(MOON_R, 128, 96), new MeshStandardMaterial({ map: tex("moon"), bumpMap: tex("moon_bump", false), bumpScale: 2, roughness: 1 }));
   system.add(moon);
 
   // Rocas "protagonistas" alrededor de la diapositiva (grandes y cerca de la cámara)
   const heroRocks = [];
   const beltCam = P.clone().add(n.clone().multiplyScalar(BELT_R + 1.6)).add(new Vector3(0, 0.35, 0));
   [[-1.25, 0.45, 0.32], [1.3, -0.4, 0.26], [-1.05, -0.55, 0.18], [1.1, 0.6, 0.15], [0.2, -0.85, 0.12], [-0.4, 0.82, 0.1]].forEach(([sx, sy, s], k) => {
-    const m = new Mesh(rockGeometry(101 + k * 7), rockMat); m.scale.setScalar(s * (mobile ? 0.8 : 1));
+    const m = new Mesh(rockGeometry(101 + k * 7, true), rockMat); m.scale.setScalar(s * (mobile ? 0.8 : 1));
     m.userData = { sx, sy, spin: new Vector3(rand(-.3, .3), rand(-.3, .3), rand(-.2, .2)) };
     scene.add(m); heroRocks.push(m);
   });
@@ -565,7 +579,8 @@ function init() {
     planets.forEach((p, i) => {
       // vaivén orbital suave: se mueven, pero la ruta siempre los encuentra en su sitio
       p.pivot.rotation.y = p.base + 0.08 * Math.sin(time * p.def.speed * 0.6 + i);
-      p.mesh.rotation.y += dt * 0.3;
+      p.mesh.rotation.y += dt * 0.06;
+      if (p.mesh.userData.clouds) p.mesh.userData.clouds.rotation.y += dt * 0.012;
       const on = i === activePlanet && i < 4 && tCur > 0.38 && tCur < 0.47 ? 1 : 0;
       p.mark.material.opacity += (on - p.mark.material.opacity) * Math.min(1, dt * 5);
       p.orbit.material.opacity = 0.04 + 0.08 * smooth(0.36, 0.42, tCur) * (1 - smooth(0.47, 0.52, tCur)) + on * 0.2;

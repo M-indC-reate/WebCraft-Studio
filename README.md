@@ -72,6 +72,11 @@ python3 -m http.server 8000
 - `robots.txt` y `sitemap.xml`
 - `<base href>` en `404.html`
 
+## Texturas de los planetas (`assets/planets/`)
+
+- **Tierra** (Blue Marble, relieve y agua) y **Luna** (mosaico LRO y relieve): imágenes de la NASA, de dominio público, tomadas de los ejemplos de los paquetes de código abierto `three-globe` y `globe.gl`.
+- **Mercurio, Venus, Marte, Júpiter, Saturno, Urano, Neptuno, nubes y rocas**: generadas por código con `tools/planetas/` (shaders de ruido 3D).
+
 ## Licencias
 
 - GSAP: licencia estándar de GSAP, gratuita también para uso comercial.
