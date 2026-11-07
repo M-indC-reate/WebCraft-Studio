@@ -173,7 +173,7 @@
      Estrellas fugaces: perspectivas y estelas distintas
      ======================================================= */
   var TYPES = ["cross", "cross", "cross", "far", "toward", "away"];
-  var TRAILS = ["clean", "clean", "clean", "double"]; // solo estela brillante, sin chispas
+  var TRAILS = ["clean"]; // una sola estela brillante
 
   function shoot(opts) {
     opts = opts || {};
@@ -249,8 +249,8 @@
     // cabeza con halo
     ctx.fillStyle = "rgba(255,255,255," + k + ")";
     ctx.beginPath(); ctx.arc(hx, hy, Math.max(0.8, w * 0.75), 0, 6.283); ctx.fill();
-    ctx.fillStyle = "rgba(" + s.tint + "," + 0.18 * k + ")";
-    ctx.beginPath(); ctx.arc(hx, hy, w * 4 + 2, 0, 6.283); ctx.fill();
+    ctx.fillStyle = "rgba(" + s.tint + "," + 0.08 * k + ")";
+    ctx.beginPath(); ctx.arc(hx, hy, w * 2 + 1, 0, 6.283); ctx.fill();
     return s.life < s.max;
   }
 
@@ -389,7 +389,7 @@
       setTimeout(function () { revealAll(w); }, 12000);
     });
   }
-  function revealAll(w) { Array.prototype.forEach.call(w.querySelectorAll(".ch"), function (c) { c.classList.add("lit"); }); }
+  function revealAll(w) { Array.prototype.forEach.call(w.querySelectorAll(".ch"), function (c) { c.classList.add("lit"); }); w.classList.add("hl--done"); }
   // las copias vacías que deja SplitText al partir líneas no necesitan estrella
   function litEmpty() { Array.prototype.forEach.call(document.querySelectorAll(".hl .ch"), function (c) { if (!c.textContent.trim()) c.classList.add("lit"); }); }
   function sizeFx() { if (!fx) return; fx.width = Math.round(W * dpr); fx.height = Math.round(H * dpr); fctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
@@ -434,23 +434,27 @@
         if (Math.abs(target[0] - w.x) < 3) {
           c.classList.add("lit");
           w.idx++;
-          if (w.idx >= w.chars.length) { w.phase = "out"; w.t = 0; w.ox = w.x; w.oy = w.y; }
+          if (w.idx >= w.chars.length) { w.phase = "out"; w.t = 0; w.ox = w.x; w.oy = w.y; var ww = w.word; setTimeout(function () { ww.classList.add("hl--done"); }, 900); }
         }
       } else {
         // sale disparada y se apaga
         w.t += 1 / 30; w.x += 9 + w.t * 10; w.y -= 3 + w.t * 3;
         if (w.t >= 1) { writers.splice(i, 1); continue; }
       }
-      w.hist.push([w.x, w.y]); if (w.hist.length > 22) w.hist.shift();
-      // estela
+      w.hist.push([w.x, w.y]); if (w.hist.length > 14) w.hist.shift();
+      // igual que el resto de estrellas fugaces: una estela recta y fina que se desvanece
       var fade = w.phase === "out" ? 1 - w.t : 1;
-      for (var h = 1; h < w.hist.length; h++) {
-        var p0 = w.hist[h - 1], p1 = w.hist[h], q = h / w.hist.length;
-        fctx.strokeStyle = "rgba(" + w.col + "," + (q * 0.7 * fade) + ")"; fctx.lineWidth = q * 3; fctx.lineCap = "round";
-        fctx.beginPath(); fctx.moveTo(p0[0], p0[1]); fctx.lineTo(p1[0], p1[1]); fctx.stroke();
+      var h0 = w.hist[0], dx = w.x - h0[0], dy = w.y - h0[1], dl = Math.hypot(dx, dy);
+      if (dl > 0.5) {
+        var len = Math.min(150, Math.max(40, dl * 1.4)), tx = w.x - dx / dl * len, ty = w.y - dy / dl * len;
+        var gr = fctx.createLinearGradient(w.x, w.y, tx, ty);
+        gr.addColorStop(0, "rgba(255,255,255," + 0.95 * fade + ")");
+        gr.addColorStop(0.18, "rgba(" + WHITE + "," + 0.55 * fade + ")");
+        gr.addColorStop(1, "rgba(" + WHITE + ",0)");
+        fctx.strokeStyle = gr; fctx.lineWidth = 1.6; fctx.lineCap = "round";
+        fctx.beginPath(); fctx.moveTo(w.x, w.y); fctx.lineTo(tx, ty); fctx.stroke();
       }
-      fctx.fillStyle = "rgba(255,255,255," + fade + ")"; fctx.beginPath(); fctx.arc(w.x, w.y, 2.4, 0, 6.283); fctx.fill();
-      fctx.fillStyle = "rgba(" + w.col + "," + 0.25 * fade + ")"; fctx.beginPath(); fctx.arc(w.x, w.y, 11, 0, 6.283); fctx.fill();
+      fctx.fillStyle = "rgba(255,255,255," + fade + ")"; fctx.beginPath(); fctx.arc(w.x, w.y, 1.3, 0, 6.283); fctx.fill();
     }
     drawSparks(fxSparks, fctx);
     if (writers.length || fxSparks.length) requestAnimationFrame(fxLoop);

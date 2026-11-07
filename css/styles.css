@@ -352,6 +352,7 @@ html.has-3d .space__galaxy { display: none; }
 html.has-3d .ground { display: none; }
 html.has-3d .hero { padding-bottom: clamp(48px, 10vh, 120px); min-height: calc(100svh - var(--header-h) - 40px); }
 html.has-3d main .section, html.has-3d .hero { text-shadow: 0 1px 14px rgba(5, 7, 15, .85); }
+html.has-3d .hero__title .hl, html.has-3d .hero__title .hl .ch { text-shadow: none; }
 @media (min-width: 961px) {
   /* Servicios a la izquierda: el Sol y sus planetas ocupan la derecha */
   html.has-3d #servicios .section__head, html.has-3d #servicios .services { max-width: 660px; }
@@ -376,6 +377,17 @@ html.has-3d .service, html.has-3d .faq__item, html.has-3d .step { background: li
 /* ---------- Palabras destacadas (una estrella fugaz las escribe) ---------- */
 .hl { color: var(--cyan); }
 .hl--violet { color: var(--violet); }
+/* "propia.": acabado cromado y galáctico (cian, lila, blanco hielo) con un brillo que se desliza */
+.hero__title .hl {
+  background: linear-gradient(105deg, #7FE3F7 0%, #F2FBFF 16%, #22D3EE 32%, #8E7CF8 52%, #E9E2FF 66%, #5FA8FF 82%, #CFF6FF 100%);
+  background-size: 220% 100%; -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent; animation: chrome 9s ease-in-out infinite alternate;
+}
+.hero__title .hl .ch { -webkit-text-fill-color: transparent; }
+html.fx-writing .hero__title .hl .ch.lit { animation: litupChrome 1s ease-out; }
+@keyframes litupChrome { 0% { opacity: 0; filter: brightness(2.2); } 35% { opacity: 1; filter: brightness(1.8); } 100% { filter: none; } }
+@keyframes chrome { from { background-position: 0% 50%; } to { background-position: 100% 50%; } }
+@media (prefers-reduced-motion: reduce) { .hero__title .hl { animation: none; } }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .fx-canvas { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 60; pointer-events: none; }
 html.fx-writing .hl .ch { opacity: 0; }

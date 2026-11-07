@@ -61,7 +61,7 @@ function init() {
   /* ---------------------------------------------------------
      Galaxia espiral (partículas con shader)
      --------------------------------------------------------- */
-  const G = { count: mobile ? 22000 : 65000, radius: 100, arms: 3, spin: 0.052, rnd: 0.32, power: 2.6 };
+  const G = { count: mobile ? 16000 : 48000, radius: 100, arms: 3, spin: 0.052, rnd: 0.32, power: 2.6 };
   const galaxy = new Group(); scene.add(galaxy);
   let galaxyMat;
   galaxy.rotation.y = 0.4;
@@ -74,7 +74,7 @@ function init() {
   const tang = new Vector3().crossVectors(up, n).normalize();
 
   {
-    const N = G.count + (mobile ? 5000 : 14000);
+    const N = G.count + (mobile ? 2000 : 5000);
     const pos = new Float32Array(N * 3), col = new Float32Array(N * 3), size = new Float32Array(N);
     const inner = new Color("#FFF1E6"), outer = new Color("#6E8CFF"), cyan = new Color("#22D3EE"), lilac = new Color("#A78BFA");
     const tmp = new Color();
@@ -102,7 +102,8 @@ function init() {
       tmp.copy(inner).lerp(outer, Math.min(1, Math.hypot(x, z) / G.radius * 1.15));
       const t = Math.random(); if (t < 0.06) tmp.lerp(cyan, 0.7); else if (t < 0.11) tmp.lerp(lilac, 0.7);
       col[i * 3] = tmp.r; col[i * 3 + 1] = tmp.g; col[i * 3 + 2] = tmp.b;
-      size[i] = Math.random() < 0.03 ? rand(2.2, 3.4) : rand(0.6, 1.6);
+      size[i] = Math.random() < 0.02 ? rand(1.8, 2.6) : rand(0.5, 1.3);
+      if (i >= G.count) { size[i] *= 0.6; col[i * 3] *= 0.5; col[i * 3 + 1] *= 0.5; col[i * 3 + 2] *= 0.5; } // núcleo más tenue
       i++;
     }
     const geo = new BufferGeometry();
@@ -113,7 +114,7 @@ function init() {
 
     // núcleo brillante
     const core = new Sprite(new SpriteMaterial({ map: glowTexture([[0, "rgba(255,240,230,0.9)"], [0.2, "rgba(255,220,200,0.35)"], [0.55, "rgba(140,120,255,0.08)"], [1, "rgba(0,0,0,0)"]]), blending: AdditiveBlending, depthWrite: false, transparent: true }));
-    core.scale.set(70, 70, 1); galaxy.add(core); galaxy.userData.core = core;
+    core.scale.set(60, 60, 1); core.material.opacity = 0.55; galaxy.add(core); galaxy.userData.core = core;
   }
 
   function starMaterial(scale) {
@@ -127,7 +128,7 @@ function init() {
           gl_Position = projectionMatrix * mv;
           float d = -mv.z;
           float s = aSize * uPx * 260.0 / max(d, 0.001);
-          gl_PointSize = clamp(s, 0.9, 4.5 * uPx);
+          gl_PointSize = clamp(s, 0.8, 3.2 * uPx);
           float tw = 0.75 + 0.25 * sin(uTime * (0.6 + aSize) + position.x * 13.0);
           vA = smoothstep(0.6, 14.0, d) * tw;
           vColor = color;
@@ -564,8 +565,8 @@ function init() {
     camera.lookAt(lookW);
 
     // Núcleo de la galaxia: se apaga al entrar
-    galaxy.userData.core.material.opacity = 1 - smooth(0.08, 0.2, tCur);
-    galaxyMat.uniforms.uFade.value = 1 - 0.5 * smooth(0.18, 0.3, tCur);
+    galaxy.userData.core.material.opacity = 0.55 * (1 - smooth(0.03, 0.14, tCur));
+    galaxyMat.uniforms.uFade.value = 0.8 - 0.45 * smooth(0.03, 0.2, tCur);
 
     // Sol
     const pulse = 1 + Math.sin(time * 1.3) * 0.03;
