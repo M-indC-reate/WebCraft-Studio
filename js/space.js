@@ -23,6 +23,8 @@
       (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2));
   })();
   var still = reduced || slow;
+  // En el viaje 3D, este lienzo solo pinta las estrellas fugaces (el resto lo hace WebGL)
+  var mode3d = document.documentElement.classList.contains("has-3d");
 
   var W = 0, H = 0, dpr = 1, mobile = false, lastW = 0, lastH = 0;
   var scrollY = window.scrollY, prevScroll = scrollY, scrollVel = 0;
@@ -39,6 +41,7 @@
      Estrellas en coordenadas polares: el scroll hace zoom
      ======================================================= */
   function makeStars() {
+    if (mode3d) { stars = []; return; }
     var n = Math.round(W * H / (mobile ? 3400 : 2400));
     stars = [];
     for (var i = 0; i < n; i++) stars.push(newStar(rand(0.02, 1.25)));
@@ -82,6 +85,7 @@
   }
 
   function buildBodies() {
+    if (mode3d) return;
     if (!rockTex.complete || !rockTex.naturalWidth) return;
     var S = 520;
 
@@ -153,6 +157,7 @@
      Rocas flotando
      ======================================================= */
   function makeRocks() {
+    if (mode3d) { rocks = []; return; }
     var defs = mobile
       ? [{ i: 2, s: 60, side: 1, y: 0.2, f: 0.22 }, { i: 3, s: 44, side: 0, y: 0.65, f: 0.12 }, { i: 1, s: 76, side: 1, y: 1.2, f: 0.3 }]
       : [{ i: 0, s: 140, side: 1, y: 0.22, f: 0.32 }, { i: 2, s: 66, side: 0, y: 0.45, f: 0.14 },
@@ -263,6 +268,7 @@
      Galaxia: se recorre y se acerca al bajar
      ======================================================= */
   function moveGalaxy() {
+    if (mode3d) return;
     if (!galaxy.naturalHeight || reduced) return;
     var gh = galaxy.getBoundingClientRect().height / (galaxy._scale || 1);
     var max = Math.max(1, document.documentElement.scrollHeight - innerHeight);

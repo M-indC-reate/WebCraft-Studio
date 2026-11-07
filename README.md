@@ -12,7 +12,9 @@ Sitio estático (HTML + CSS + JS). Las librerías están copiadas en `vendor/` y
 ├── css/styles.css           # Estilos (paleta y tipografías en :root)
 ├── js/config.js             # ⚙️ TODO lo configurable: pre-apertura, fecha, redes, formulario, legales
 ├── js/main.js               # Menú, formulario, secuencia con scroll, animaciones
-├── js/space.js              # Fondo espacial: galaxia, estrellas, estrellas fugaces, rocas
+├── js/space.js              # Capa 2D: estrellas fugaces, estrellas que escriben palabras (y fondo 2D si no hay 3D)
+├── src/journey.js           # Viaje 3D (Three.js): galaxia → cinturón de rocas → Sol y planetas
+├── js/journey.js            # Versión empaquetada de src/journey.js (no editar a mano)
 ├── assets/space/            # galaxia.webp y rocas flotantes (generadas por código)
 ├── assets/textures/roca.webp # Textura de roca volcánica (generada por código, se repite sin cortes)
 ├── vendor/                  # GSAP, ScrollTrigger, SplitText y Lenis
@@ -44,6 +46,17 @@ Sitio estático (HTML + CSS + JS). Las librerías están copiadas en `vendor/` y
 3. En `js/config.js`, pon `ANIMACION.MARCADOR: false`.
 
 En móvil se usan menos fotogramas y en vertical. En móviles lentos o con "reducir movimiento" se muestra el último fotograma como imagen fija.
+
+## Viaje 3D
+
+- Se activa solo con WebGL, sin "reducir movimiento" y en dispositivos con capacidad. Si no, se usa la versión 2D.
+- Para ver la versión 2D: añade `?sin3d` a la URL.
+- Tras editar `src/journey.js`, vuelve a empaquetar:
+
+```bash
+npm i three esbuild
+npx esbuild src/journey.js --bundle --minify --format=esm --target=es2019 --legal-comments=eof --outfile=js/journey.js
+```
 
 ## Ver en local
 

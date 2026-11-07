@@ -86,7 +86,6 @@
   toggle.addEventListener("click", function () { setMenu(toggle.getAttribute("aria-expanded") !== "true"); });
   nav.addEventListener("click", function (e) { if (e.target.closest("a")) setMenu(false); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && nav.classList.contains("is-open")) { setMenu(false); toggle.focus(); } });
-  window.addEventListener("resize", function () { if (window.innerWidth > 960 && nav.classList.contains("is-open")) setMenu(false); });
 
   if ("IntersectionObserver" in window) {
     new IntersectionObserver(function (en) { contactVisible = en[0].isIntersecting; onScroll(); }, { threshold: 0.05 }).observe($("#contacto"));
@@ -279,6 +278,7 @@
         var id = a.getAttribute("href"); if (id.length < 2) return;
         var target = $(id); if (!target) return;
         e.preventDefault();
+        if (nav.classList.contains("is-open")) setMenu(false); // reanuda el scroll suave antes de saltar
         lenis.scrollTo(target, { offset: -header.offsetHeight - 12, duration: 1.2 });
         history.replaceState(null, "", id);
       });

@@ -22,13 +22,26 @@
   <link rel="preload" href="assets/fonts/syne-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/manrope-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/styles.css">
-  <script>document.documentElement.classList.add("js");</script>
+  <script>
+    // ¿Viaje 3D? Solo con WebGL, sin "reducir movimiento" y en dispositivos con capacidad
+    (function (d) {
+      d.classList.add("js");
+      try {
+        var c = navigator.connection || {}, m = navigator.deviceMemory, h = navigator.hardwareConcurrency;
+        var weak = c.saveData || /2g/.test(c.effectiveType || "") || (m && m <= 2) || (h && h <= 2);
+        var rm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var gl = document.createElement("canvas").getContext("webgl2") || document.createElement("canvas").getContext("webgl");
+        if (gl && !weak && !rm && !/[?&]sin3d/.test(location.search)) d.classList.add("has-3d");
+      } catch (e) {}
+    })(document.documentElement);
+  </script>
 </head>
 <body>
   <a class="skip-link" href="#main">Saltar al contenido</a>
 
   <!-- Fondo: galaxia fija con estrellas, estrellas fugaces y rocas volcánicas flotando -->
   <div class="space" aria-hidden="true">
+    <canvas class="space__3d" id="journey-canvas"></canvas>
     <img class="space__galaxy" id="space-galaxy" src="assets/space/galaxia.webp" alt="" decoding="async">
     <canvas class="space__canvas" id="space-canvas"></canvas>
   </div>
@@ -58,21 +71,31 @@
         <img src="assets/favicon.svg" alt="" width="30" height="30">
         <span>WebCraft <em>Studio</em></span>
       </a>
-      <nav class="nav" id="nav" aria-label="Principal">
-        <ul class="nav__list">
-          <li><a href="#servicios">Servicios</a></li>
-          <li><a href="#proceso">Proceso</a></li>
-          <li><a href="#proyectos">Proyectos</a></li>
-          <li><a href="#preguntas">Preguntas</a></li>
-          <li><a href="#contacto">Contacto</a></li>
-        </ul>
-        <a href="#contacto" class="btn btn--primary btn--sm nav__cta" data-cta>Avísame cuando abráis</a>
-      </nav>
-      <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav">
-        <span></span><span></span>
-      </button>
+      <div class="header__actions">
+        <a href="#contacto" class="btn btn--primary btn--sm header__cta" data-cta>Avísame cuando abráis</a>
+        <button class="nav-toggle" id="nav-toggle" aria-label="Abrir el mapa del viaje" aria-expanded="false" aria-controls="nav">
+          <span></span><span></span>
+        </button>
+      </div>
     </div>
   </header>
+
+  <!-- ===== Mapa del viaje (menú) ===== -->
+  <nav class="nav" id="nav" aria-label="Mapa del viaje">
+    <div class="container nav__inner">
+      <p class="eyebrow">Mapa del viaje</p>
+      <ol class="nav__list">
+        <li><a href="#inicio"><span class="nav__n">00</span><span class="nav__name">Inicio</span><span class="nav__place">La galaxia</span></a></li>
+        <li><a href="#animacion"><span class="nav__n">01</span><span class="nav__name">La idea</span><span class="nav__place">Cinturón de rocas</span></a></li>
+        <li><a href="#servicios"><span class="nav__n">02</span><span class="nav__name">Servicios</span><span class="nav__place">El Sol</span></a></li>
+        <li><a href="#proceso"><span class="nav__n">03</span><span class="nav__name">Cómo trabajamos</span><span class="nav__place">Asteroides</span></a></li>
+        <li><a href="#proyectos"><span class="nav__n">04</span><span class="nav__name">Proyectos</span><span class="nav__place">Júpiter</span></a></li>
+        <li><a href="#preguntas"><span class="nav__n">05</span><span class="nav__name">Preguntas</span><span class="nav__place">La Tierra</span></a></li>
+        <li><a href="#contacto"><span class="nav__n">06</span><span class="nav__name">Contacto</span><span class="nav__place">Aterrizaje</span></a></li>
+      </ol>
+      <a href="#contacto" class="btn btn--primary nav__cta" data-cta>Avísame cuando abráis</a>
+    </div>
+  </nav>
 
   <main id="main">
     <!-- ===== Hero ===== -->
@@ -347,5 +370,6 @@
   <script src="vendor/lenis.min.js" defer></script>
   <script src="js/space.js" defer></script>
   <script src="js/main.js" defer></script>
+  <script type="module" src="js/journey.js"></script>
 </body>
 </html>
