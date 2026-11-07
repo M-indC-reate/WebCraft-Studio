@@ -68,7 +68,31 @@
   <header class="header" id="header">
     <div class="container header__inner">
       <a href="#inicio" class="logo" aria-label="WebCraft Studio, inicio">
-        <img src="assets/favicon.svg" alt="" width="30" height="30">
+        <!-- Logo: la W es una ventana al cielo nocturno; dentro titilan estrellas y cruzan estrellas fugaces -->
+        <svg class="logo__mark" viewBox="0 0 64 64" width="34" height="34" aria-hidden="true">
+          <defs>
+            <linearGradient id="lg-sky" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#14204A"/><stop offset=".6" stop-color="#0A1028"/><stop offset="1" stop-color="#05070F"/></linearGradient>
+            <linearGradient id="lg-trail" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#fff"/><stop offset=".25" stop-color="#22D3EE"/><stop offset="1" stop-color="#A78BFA" stop-opacity="0"/></linearGradient>
+            <mask id="lg-w" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64">
+              <path d="M11 18l8.5 28 7-17.5 5.5 17.5 5.5-17.5 7 17.5 8.5-28" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+            </mask>
+          </defs>
+          <rect width="64" height="64" rx="16" fill="#100F0E"/>
+          <rect x=".75" y=".75" width="62.5" height="62.5" rx="15.25" fill="none" stroke="#2C2A28" stroke-width="1.5"/>
+          <path d="M11 18l8.5 28 7-17.5 5.5 17.5 5.5-17.5 7 17.5 8.5-28" fill="none" stroke="#9AB8E6" stroke-opacity=".45" stroke-width="11.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <g mask="url(#lg-w)">
+            <rect width="64" height="64" fill="url(#lg-sky)"/>
+            <g fill="#EEF3FF">
+              <circle class="lg-star" cx="13" cy="22" r=".9"/><circle class="lg-star lg-star--b" cx="20" cy="40" r=".7"/>
+              <circle class="lg-star lg-star--c" cx="27" cy="31" r="1"/><circle class="lg-star" cx="32" cy="43" r=".6"/>
+              <circle class="lg-star lg-star--b" cx="38" cy="32" r=".8"/><circle class="lg-star lg-star--c" cx="45" cy="42" r=".9"/>
+              <circle class="lg-star" cx="51" cy="22" r=".7"/><circle class="lg-star lg-star--b" cx="16" cy="30" r=".5"/>
+              <circle cx="48" cy="30" r=".6" fill="#22D3EE"/><circle cx="23" cy="35" r=".6" fill="#A78BFA"/>
+            </g>
+            <g class="lg-shoot"><line x1="0" y1="0" x2="-18" y2="-9" stroke="url(#lg-trail)" stroke-width="1.6" stroke-linecap="round"/><circle r="1.2" fill="#fff"/></g>
+            <g class="lg-shoot lg-shoot--2"><line x1="0" y1="0" x2="-14" y2="-11" stroke="url(#lg-trail)" stroke-width="1.3" stroke-linecap="round"/><circle r="1" fill="#fff"/></g>
+          </g>
+        </svg>
         <span>WebCraft <em>Studio</em></span>
       </a>
       <div class="header__actions">

@@ -173,7 +173,7 @@
      Estrellas fugaces: perspectivas y estelas distintas
      ======================================================= */
   var TYPES = ["cross", "cross", "cross", "far", "toward", "away"];
-  var TRAILS = ["clean", "clean", "sparkle", "double"];
+  var TRAILS = ["clean", "clean", "clean", "double"]; // solo estela brillante, sin chispas
 
   function shoot(opts) {
     opts = opts || {};
@@ -433,7 +433,6 @@
         w.x += (target[0] - w.x) * 0.45; w.y += (target[1] - w.y) * 0.45;
         if (Math.abs(target[0] - w.x) < 3) {
           c.classList.add("lit");
-          for (var k = 0; k < 5; k++) fxSparks.push({ x: w.x, y: w.y, vx: rand(-1.2, 1.2), vy: rand(-1.4, 0.6), life: 0, max: rand(20, 40), col: w.col, r: rand(0.8, 1.8) });
           w.idx++;
           if (w.idx >= w.chars.length) { w.phase = "out"; w.t = 0; w.ox = w.x; w.oy = w.y; }
         }
@@ -487,6 +486,6 @@
   setupWriters();
   if (still) { draw(0); return; }
   requestAnimationFrame(loop);
-  setTimeout(function () { shoot({ type: "cross", trail: "sparkle" }); }, 1200);
+  setTimeout(function () { shoot({ type: "cross", trail: "clean" }); }, 1200);
   scheduleShooting();
 })();

@@ -163,15 +163,15 @@ function init() {
   const loader = new TextureLoader();
   const rockTex = loader.load("assets/textures/roca.webp"); rockTex.colorSpace = SRGBColorSpace; rockTex.wrapS = rockTex.wrapT = RepeatWrapping;
 
-  // Sol: blanco caliente con corona celeste y halo lila
-  const sun = new Mesh(new SphereGeometry(0.42, 48, 32), new MeshBasicMaterial({ color: 0xfff6ea }));
+  // Sol: tenue, cálido (amarillo anaranjado suave)
+  const sun = new Mesh(new SphereGeometry(0.42, 48, 32), new MeshBasicMaterial({ color: 0xe9a95c }));
   system.add(sun);
-  const corona = new Sprite(new SpriteMaterial({ map: glowTexture([[0, "rgba(255,255,255,1)"], [0.12, "rgba(230,250,255,0.9)"], [0.3, "rgba(34,211,238,0.35)"], [0.6, "rgba(167,139,250,0.1)"], [1, "rgba(0,0,0,0)"]]), blending: AdditiveBlending, depthWrite: false, transparent: true }));
+  const corona = new Sprite(new SpriteMaterial({ map: glowTexture([[0, "rgba(255,214,150,0.75)"], [0.14, "rgba(240,170,90,0.45)"], [0.32, "rgba(214,130,60,0.14)"], [0.6, "rgba(160,90,40,0.04)"], [1, "rgba(0,0,0,0)"]]), blending: AdditiveBlending, depthWrite: false, transparent: true }));
   corona.scale.set(3.4, 3.4, 1); system.add(corona);
-  const halo = new Sprite(new SpriteMaterial({ map: glowTexture([[0, "rgba(167,139,250,0.25)"], [0.4, "rgba(34,211,238,0.06)"], [1, "rgba(0,0,0,0)"]]), blending: AdditiveBlending, depthWrite: false, transparent: true }));
+  const halo = new Sprite(new SpriteMaterial({ map: glowTexture([[0, "rgba(220,140,70,0.12)"], [0.45, "rgba(180,100,50,0.03)"], [1, "rgba(0,0,0,0)"]]), blending: AdditiveBlending, depthWrite: false, transparent: true }));
   halo.scale.set(11, 11, 1); system.add(halo);
 
-  const light = new PointLight(0xfff1e4, 3.2, 0, 0); system.add(light);
+  const light = new PointLight(0xffd9a8, 2.6, 0, 0); system.add(light);
   scene.add(new AmbientLight(0x2a3560, 0.55));
   scene.add(new HemisphereLight(0x6fa8ff, 0x0b0a12, 0.25));
   // luz suave desde la cámara para que las rocas no se vean negras a contraluz
@@ -179,28 +179,53 @@ function init() {
   camTarget.position.set(0, 0, -1); camera.add(camTarget); camLight.position.set(0.4, 0.5, 0.2); camLight.target = camTarget;
   camera.add(camLight); scene.add(camera);
 
-  // 4 planetas = 4 servicios
+  // Planetas del sistema solar con sus colores reales.
+  // Los 4 interiores (Mercurio, Venus, Tierra, Marte) corresponden a los 4 servicios.
+  function earthTexture() {
+    const c = document.createElement("canvas"); c.width = 512; c.height = 256; const x = c.getContext("2d");
+    let s = 77; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
+    const g = x.createLinearGradient(0, 0, 0, 256); g.addColorStop(0, "#1d3f78"); g.addColorStop(0.5, "#2a62a8"); g.addColorStop(1, "#1d3f78");
+    x.fillStyle = g; x.fillRect(0, 0, 512, 256);
+    for (let k = 0; k < 7; k++) { // continentes
+      const cx = r() * 512, cy = 50 + r() * 156, n = 14 + (r() * 16 | 0);
+      for (let i = 0; i < n; i++) { x.fillStyle = r() < 0.6 ? "#3f7a3a" : r() < 0.5 ? "#8a7a4a" : "#2f5e2e"; x.beginPath(); x.ellipse(cx + (r() - .5) * 90, cy + (r() - .5) * 50, 8 + r() * 26, 6 + r() * 16, r() * 3, 0, 7); x.fill(); }
+    }
+    x.fillStyle = "#e8eef5"; x.fillRect(0, 0, 512, 14); x.fillRect(0, 242, 512, 14);           // polos
+    x.globalAlpha = 0.35; for (let i = 0; i < 70; i++) { x.fillStyle = "#ffffff"; x.beginPath(); x.ellipse(r() * 512, r() * 256, 20 + r() * 50, 2 + r() * 5, 0, 0, 7); x.fill(); } // nubes
+    x.globalAlpha = 1;
+    const t = new CanvasTexture(c); t.colorSpace = SRGBColorSpace; return t;
+  }
+  function jupiterTexture() {
+    const t = bandTexture(["#d9b98f", "#b98258", "#efe0c4", "#9a6a46", "#cfa06e", "#e6cfa8"], 31);
+    const x = t.image.getContext("2d"); x.fillStyle = "#b5583a"; x.globalAlpha = 0.85;
+    x.beginPath(); x.ellipse(330, 165, 34, 16, 0, 0, 7); x.fill(); x.globalAlpha = 1; t.needsUpdate = true; return t;
+  }
+  const std = (map, extra) => new MeshStandardMaterial(Object.assign({ map, roughness: 0.9 }, extra || {}));
   const planetDefs = [
-    { r: 1.35, size: 0.14, speed: 0.22, mat: () => new MeshStandardMaterial({ map: rockTex, color: 0x9a9aa0, roughness: 1 }) },                       // Diseño (volcánico)
-    { r: 1.95, size: 0.19, speed: 0.16, mat: () => new MeshStandardMaterial({ map: bandTexture(["#0E3A4A", "#14627A", "#1C8FA8", "#7FD9EA", "#0B2A38"], 7), roughness: 0.8 }) }, // Desarrollo (océano)
-    { r: 2.6, size: 0.27, speed: 0.11, mat: () => new MeshStandardMaterial({ map: bandTexture(["#241E4A", "#3A3478", "#5B4BA8", "#8C7AD6", "#1A1838"], 19), roughness: 0.9 }), ring: true }, // Puesta en marcha (gaseoso)
-    { r: 3.25, size: 0.12, speed: 0.08, mat: () => new MeshStandardMaterial({ map: rockTex, color: 0xb9c4d6, roughness: 1 }) }                         // Mantenimiento (luna helada)
+    { name: "Mercurio", r: 0.9, size: 0.05, speed: 0.48, mat: () => std(rockTex, { color: 0xa39a90, roughness: 1 }) },
+    { name: "Venus", r: 1.2, size: 0.085, speed: 0.35, mat: () => std(bandTexture(["#e9d3a2", "#dcc08a", "#f1e2bd", "#d4b57e"], 5)) },
+    { name: "Tierra", r: 1.55, size: 0.09, speed: 0.3, mat: () => std(earthTexture(), { roughness: 0.75 }) },
+    { name: "Marte", r: 1.9, size: 0.065, speed: 0.24, mat: () => std(rockTex, { color: 0xd06a3c, roughness: 1 }) },
+    { name: "Júpiter", r: 2.7, size: 0.24, speed: 0.13, mat: () => std(jupiterTexture()) },
+    { name: "Saturno", r: 3.5, size: 0.2, speed: 0.1, mat: () => std(bandTexture(["#e8d4a0", "#d3b97e", "#f3e6c0", "#c9ad74"], 13)), ring: 0xd9c49a },
+    { name: "Urano", r: 4.2, size: 0.13, speed: 0.07, mat: () => std(bandTexture(["#a6dde2", "#9ad3d9", "#b4e5e8"], 17)) },
+    { name: "Neptuno", r: 4.8, size: 0.125, speed: 0.06, mat: () => std(bandTexture(["#3a64c8", "#2f52aa", "#4a74d6", "#294a9a"], 23)) }
   ];
   const planets = planetDefs.map((d, i) => {
     const pivot = new Group(); system.add(pivot);
     const m = new Mesh(new SphereGeometry(d.size, 40, 28), d.mat()); m.position.set(d.r, 0, 0); pivot.add(m);
     if (d.ring) {
-      const ring = new Mesh(new RingGeometry(d.size * 1.45, d.size * 2.3, 64), new MeshBasicMaterial({ color: 0xa78bfa, transparent: true, opacity: 0.35, side: DoubleSide, depthWrite: false }));
+      const ring = new Mesh(new RingGeometry(d.size * 1.35, d.size * 2.35, 64), new MeshBasicMaterial({ color: d.ring, transparent: true, opacity: 0.5, side: DoubleSide, depthWrite: false }));
       ring.rotation.x = Math.PI / 2.3; m.add(ring);
     }
     // órbita
     const pts = []; for (let k = 0; k <= 128; k++) { const a = k / 128 * Math.PI * 2; pts.push(new Vector3(Math.cos(a) * d.r, 0, Math.sin(a) * d.r)); }
-    const orbit = new LineLoop(new BufferGeometry().setFromPoints(pts), new LineBasicMaterial({ color: 0x22d3ee, transparent: true, opacity: 0.1 }));
+    const orbit = new LineLoop(new BufferGeometry().setFromPoints(pts), new LineBasicMaterial({ color: 0x9fb4d8, transparent: true, opacity: 0.08 }));
     system.add(orbit);
     // anillo de "activo" (cuando su servicio está en pantalla)
     const mark = new Sprite(new SpriteMaterial({ map: glowTexture([[0, "rgba(0,0,0,0)"], [0.62, "rgba(0,0,0,0)"], [0.7, "rgba(34,211,238,0.9)"], [0.76, "rgba(34,211,238,0.15)"], [1, "rgba(0,0,0,0)"]]), blending: AdditiveBlending, depthWrite: false, transparent: true, opacity: 0 }));
-    mark.scale.set(d.size * 4.2, d.size * 4.2, 1); m.add(mark);
-    pivot.rotation.y = i * 1.7 + 0.6;
+    mark.scale.set(Math.max(0.42, d.size * 4.2), Math.max(0.42, d.size * 4.2), 1); m.add(mark);
+    pivot.rotation.y = i * 2.4 + 0.6;
     return { pivot, mesh: m, def: d, mark, orbit };
   });
 
@@ -254,9 +279,9 @@ function init() {
     K(0.4, P.clone().add(n.clone().multiplyScalar(11)).add(tang.clone().multiplyScalar(3)).add(new Vector3(0, 4.5, 0)), P.clone().add(n.clone().multiplyScalar(3))),
     K(0.5, beltCam.clone(), P.clone().add(n.clone().multiplyScalar(BELT_R - 0.6)).add(new Vector3(0, 0.25, 0))),
     K(0.58, beltCam.clone().add(n.clone().multiplyScalar(-0.9)).add(tang.clone().multiplyScalar(0.5)), P.clone().add(n.clone().multiplyScalar(BELT_R - 1.8))),
-    K(0.8, P.clone().add(n.clone().multiplyScalar(mobile ? 6.4 : 5.6)).add(new Vector3(0, mobile ? 3.2 : 1.5, 0)),
+    K(0.8, P.clone().add(n.clone().multiplyScalar(mobile ? 7.6 : 6.6)).add(new Vector3(0, mobile ? 3.8 : 1.8, 0)),
       mobile ? P.clone().add(right.clone().multiplyScalar(-1.25)).add(new Vector3(0, -2.9, 0)) : P.clone().add(right.clone().multiplyScalar(-2.9))),
-    K(1, P.clone().add(n.clone().applyAxisAngle(up, 0.9).multiplyScalar(mobile ? 6.8 : 5.8)).add(new Vector3(0, mobile ? 3.4 : 2.2, 0)),
+    K(1, P.clone().add(n.clone().applyAxisAngle(up, 0.9).multiplyScalar(mobile ? 8 : 6.8)).add(new Vector3(0, mobile ? 4 : 2.6, 0)),
       mobile ? P.clone().add(right.clone().applyAxisAngle(up, 0.9).multiplyScalar(-1.25)).add(new Vector3(0, -2.9, 0)) : P.clone().add(right.clone().applyAxisAngle(up, 0.9).multiplyScalar(-3)))
   ];
   const posCurve = new CatmullRomCurve3(keys.map(k => k.pos), false, "centripetal");
@@ -349,15 +374,15 @@ function init() {
     const pulse = 1 + Math.sin(time * 1.3) * 0.03;
     corona.scale.setScalar(3.4 * pulse); halo.scale.setScalar(9 * (2 - pulse));
     sun.visible = corona.visible = halo.visible = tCur > 0.18;
-    light.intensity = 3.2 * smooth(0.2, 0.45, tCur);
+    light.intensity = 2.6 * smooth(0.2, 0.45, tCur);
 
     // Planetas
     planets.forEach((p, i) => {
       p.pivot.rotation.y += dt * p.def.speed * 0.25;
       p.mesh.rotation.y += dt * 0.3;
-      const on = i === activePlanet && tCur > 0.7 ? 1 : 0;
+      const on = i === activePlanet && i < 4 && tCur > 0.7 ? 1 : 0;
       p.mark.material.opacity += (on - p.mark.material.opacity) * Math.min(1, dt * 5);
-      p.orbit.material.opacity = 0.06 + 0.12 * smooth(0.6, 0.8, tCur) + on * 0.15;
+      p.orbit.material.opacity = 0.04 + 0.08 * smooth(0.6, 0.8, tCur) + on * 0.2;
     });
 
     // Cinturón
