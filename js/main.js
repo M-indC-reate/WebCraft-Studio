@@ -122,6 +122,24 @@
     }
     note.hidden = false;
     form.addEventListener("submit", function (e) { e.preventDefault(); });
+
+    // Botones "Avísame cuando abráis": llevan al formulario, lo resaltan y explican que aún no está abierto
+    var toast = document.createElement("div");
+    toast.className = "toast"; toast.setAttribute("role", "status"); toast.setAttribute("aria-live", "polite");
+    toast.textContent = insta
+      ? "Aún no hemos abierto la lista de aviso. Mientras tanto, puedes seguirnos en Instagram."
+      : "Aún no hemos abierto la lista de aviso. Muy pronto podrás apuntarte aquí.";
+    document.body.appendChild(toast);
+    var toastTimer = null;
+    $$('a[href="#contacto"]').forEach(function (a) {
+      a.addEventListener("click", function () {
+        setTimeout(function () {
+          form.classList.remove("is-attention"); void form.offsetWidth; form.classList.add("is-attention");
+          toast.classList.add("is-visible"); clearTimeout(toastTimer);
+          toastTimer = setTimeout(function () { toast.classList.remove("is-visible"); }, 5000);
+        }, reduced ? 50 : 900);
+      });
+    });
   } else {
     function setError(field, msg) {
       var wrap = field.closest(".field, .check"); if (!wrap) return;
