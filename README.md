@@ -17,6 +17,8 @@ Sitio estático (HTML + CSS + JS). Las librerías (GSAP, ScrollTrigger, SplitTex
 ├── js/planets.js          # Planetas en WebGL (uno a la vez, solo se carga el cercano; se giran arrastrando)
 ├── js/sky.js              # Estrellas con parallax, estrellas fugaces y la estrella que escribe las palabras destacadas
 ├── js/metal.js            # Diapositiva de metal líquido (WebGL)
+├── js/espacial.js         # UI espacial: paneles de cristal que flotan y se inclinan en 3D (css/espacial.css)
+├── js/sorpresas.js        # Planetas interactivos (Saturno, Neptuno y el Sol) y la pista del contacto
 ├── assets/planetas/       # Texturas de los planetas (y versiones -m para móvil)
 ├── assets/metal/          # Imagen fija del metal (móviles lentos / reducir movimiento)
 ├── assets/proyectos/      # Captura de Vesta Eventos
@@ -44,6 +46,7 @@ Sitio estático (HTML + CSS + JS). Las librerías (GSAP, ScrollTrigger, SplitTex
 - Todos generados por código con el mismo método (`tools/planetas/`); el Sol se dibuja en vivo.
 - Sin WebGL, con "reducir movimiento" o en móviles lentos: planetas quietos o sin animar, y la diapositiva muestra su imagen fija.
 - Para ver la imagen fija de la diapositiva: `?metalfijo`.
+- Solo tres planetas son interactivos (botones con `aria-label`, funcionan con teclado): Saturno (mensaje sobre Vesta), Neptuno (una vez por visita al final de las preguntas) y el Sol (contactos de `EMAIL`, `INSTAGRAM` y `WHATSAPP`; si están vacíos, sin botones). La pista del contacto solo lleva hasta el Sol; el mensaje se descubre tocándolo. El resto es decoración.
 
 ## Ver en local
 

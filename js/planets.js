@@ -268,7 +268,7 @@
     canvas.classList.remove("is-on");
     setTimeout(function () {
       slotNow = slot; current = name; rotVel = 0;
-      slot.appendChild(canvas); size(); place(performance.now());
+      (slot.querySelector(".planet-btn") || slot).appendChild(canvas); size(); place(performance.now());
       loadTex(PLANETS[name].tex, function () {
         if (current !== name) return;
         draw(); canvas.classList.add("is-on");
@@ -278,20 +278,24 @@
   }
 
   /* ---------- Girar con el ratón o el dedo (arrastre horizontal) ---------- */
+  var tap = null;
   canvas.addEventListener("pointerdown", function (e) {
+    tap = { x: e.clientX, y: e.clientY, t: performance.now() }; window.__planetMoved = false;
     drag = { x: e.clientX, t: performance.now(), v: 0 };
     canvas.setPointerCapture && canvas.setPointerCapture(e.pointerId);
     canvas.classList.add("is-drag");
   });
   canvas.addEventListener("pointermove", function (e) {
     if (!drag) return;
+    if (tap && Math.hypot(e.clientX - tap.x, e.clientY - tap.y) > 8) window.__planetMoved = true; // arrastre, no toque
     var w = canvas.getBoundingClientRect().width || 200, dx = e.clientX - drag.x, now = performance.now();
     var dr = dx / w * 3.4; rot -= dr;
     drag.v = -dr / Math.max(0.008, (now - drag.t) / 1000); drag.x = e.clientX; drag.t = now;
     if (reduced || !running) draw();
   });
   function endDrag() { if (!drag) return; rotVel = Math.max(-6, Math.min(6, drag.v * 0.6)); drag = null; canvas.classList.remove("is-drag"); }
-  canvas.addEventListener("pointerup", endDrag);
+  // El toque lo gestiona el botón que contiene el lienzo (js/sorpresas.js)
+  canvas.addEventListener("pointerup", function () { tap = null; endDrag(); });
   canvas.addEventListener("pointercancel", endDrag);
 
   /* ---------- El planeta más visible se lleva el lienzo; el siguiente se precarga ---------- */
