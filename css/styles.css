@@ -65,8 +65,14 @@ button, input, textarea { font: inherit; color: inherit; }
 .container--narrow { max-width: 900px; }
 main, footer, .prelaunch, .header { position: relative; z-index: 1; }
 
-/* Fondo de estrellas fijo */
+/* Fondo: dos capas de estrellas (parallax muy lento) y estrellas fugaces */
 .stars { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+.stars-layer { position: fixed; inset: 0; z-index: 0; pointer-events: none; background-repeat: repeat; background-size: 1024px 1024px; will-change: background-position; }
+.shooting { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+.fx-canvas { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 60; pointer-events: none; }
+html.fx-writing .hl .ch { opacity: 0; }
+html.fx-writing .hl .ch.lit { opacity: 1; animation: litup .9s ease-out; }
+@keyframes litup { 0% { opacity: 0; color: #fff; text-shadow: 0 0 18px #fff; } 40% { opacity: 1; color: #fff; text-shadow: 0 0 12px rgba(255,255,255,.7); } 100% { text-shadow: none; } }
 
 /* Pre-apertura: mostrar/ocultar */
 html.is-open [data-only="pre"], html:not(.is-open) [data-only="open"] { display: none !important; }
@@ -165,19 +171,37 @@ html.is-open [data-only="pre"], html:not(.is-open) [data-only="open"] { display:
 .planet { display: block; width: 100%; height: 100%; opacity: 0; transition: opacity .6s var(--ease); will-change: transform; }
 .planet.is-on { opacity: 1; }
 .planet-slot--still { background-size: contain; background-repeat: no-repeat; background-position: center; }
-/* Móvil y tableta: entre secciones, a la derecha, pequeño y cortado por el borde */
-.planet-slot { width: 150px; height: 150px; margin: 0 -40px 20px auto; }
+/* Girar arrastrando (horizontal); el scroll vertical sigue funcionando */
+.planet { pointer-events: auto; touch-action: pan-y; cursor: grab; }
+.planet.is-drag { cursor: grabbing; }
+/* Móvil y tableta: entre secciones, alternando lados, tamaños distintos */
+.planet-slot { --ps: 150px; width: var(--ps); height: var(--ps); margin: 0 -40px 20px auto; }
 .planet-slot--left { margin: 0 auto 20px -40px; }
+.planet-slot[data-planet="earth"] { --ps: 180px; }
+.planet-slot[data-planet="moon"] { --ps: 110px; }
+.planet-slot[data-planet="mars"] { --ps: 130px; }
+.planet-slot[data-planet="jupiter"] { --ps: 190px; }
+.planet-slot[data-planet="saturn"] { --ps: 190px; }
+.planet-slot[data-planet="neptune"] { --ps: 140px; }
+.planet-slot[data-planet="sun"] { --ps: 190px; }
 .hero .planet-slot { margin-top: 8px; }
-@media (min-width: 768px) { .planet-slot { width: 200px; height: 200px; margin-right: -50px; } .planet-slot--left { margin-left: -50px; } }
-/* Ordenador: en el lateral, cortado por el borde, en el hueco superior de cada sección */
+@media (min-width: 768px) {
+  .planet-slot { width: calc(var(--ps) * 1.3); height: calc(var(--ps) * 1.3); margin-right: -50px; }
+  .planet-slot--left { margin-left: -50px; margin-right: auto; }
+}
+/* Ordenador: en los laterales (alternando), cortados por el borde, a distinta altura y tamaño */
 @media (min-width: 1024px) {
-  .planet-slot { position: absolute; top: 24px; right: calc(var(--planet) * -0.32); width: var(--planet); height: var(--planet); margin: 0; }
-  .planet-slot--left { right: auto; left: calc(var(--planet) * -0.32); }
+  .planet-slot { position: absolute; top: var(--pt, 24px); right: calc(var(--planet) * -0.32); width: var(--planet); height: var(--planet); margin: 0; }
+  .planet-slot--left { right: auto; left: calc(var(--planet) * -0.6); }
+  .planet-slot[data-planet="mars"] { --planet: 270px; --pt: 50px; }
+  .planet-slot[data-planet="jupiter"] { --planet: 380px; --pt: -40px; }
+  .planet-slot[data-planet="saturn"] { --planet: 360px; --pt: 10px; right: calc(var(--planet) * -0.26); }
+  .planet-slot[data-planet="neptune"] { --planet: 250px; --pt: 70px; }
   .planet-slot--hero { top: 6%; --planet: clamp(340px, 30vw, 460px); right: calc(var(--planet) * -0.28); }
   .planet-slot--slide { top: -200px; --planet: 220px; }
+  .planet-slot--slide.planet-slot--left { left: calc(var(--planet) * -0.45); }
   .contact { padding-top: calc(var(--planet) * 1.22); }
-  .contact .planet-slot--sun { top: -36px; }
+  .contact .planet-slot--sun { top: -80px; --planet: 320px; right: calc(var(--planet) * -0.3); }
 }
 
 /* ---------- Inicio ---------- */

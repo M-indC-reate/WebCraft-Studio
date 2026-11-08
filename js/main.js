@@ -57,28 +57,6 @@
   setLink("#vesta-link", C.VESTA_URL);
 
   /* =======================================================
-     2. Fondo de estrellas: sutil y quieto (se dibuja una vez)
-     ======================================================= */
-  var starsCanvas = $("#stars");
-  function drawStars() {
-    if (!starsCanvas) return;
-    var w = window.innerWidth, h = window.innerHeight, dpr = Math.min(window.devicePixelRatio || 1, 2);
-    starsCanvas.width = w * dpr; starsCanvas.height = h * dpr;
-    var x = starsCanvas.getContext("2d"); x.setTransform(dpr, 0, 0, dpr, 0, 0);
-    var s = 7; var rnd = function () { return (s = (s * 16807) % 2147483647) / 2147483647; };
-    var n = Math.round(w * h / 5200);
-    for (var i = 0; i < n; i++) {
-      var r = rnd() < 0.05 ? 1.1 : 0.35 + rnd() * 0.55;
-      x.globalAlpha = 0.18 + rnd() * 0.5;
-      x.fillStyle = "#E8ECF8";
-      x.beginPath(); x.arc(rnd() * w, rnd() * h, r, 0, 6.283); x.fill();
-    }
-  }
-  drawStars();
-  var lastW = window.innerWidth;
-  window.addEventListener("resize", function () { if (Math.abs(window.innerWidth - lastW) > 40) { lastW = window.innerWidth; drawStars(); } });
-
-  /* =======================================================
      3. Cabecera, menú, mapa del viaje y botón fijo
      ======================================================= */
   var header = $("#header"), nav = $("#nav"), toggle = $("#nav-toggle"), mobileCta = $("#mobile-cta");
@@ -248,7 +226,7 @@
         gsap.from(split.lines, {
           yPercent: 105, duration: 1, ease: "expo.out", stagger: 0.08,
           scrollTrigger: { trigger: el, start: "top 90%", once: true },
-          onComplete: function () { split.revert(); }
+          onComplete: function () { split.revert(); el.dispatchEvent(new CustomEvent("wc:revealed", { bubbles: true })); }
         });
       });
     }

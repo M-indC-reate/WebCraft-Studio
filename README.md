@@ -14,7 +14,8 @@ Sitio estático (HTML + CSS + JS). Las librerías (GSAP, ScrollTrigger, SplitTex
 ├── css/styles.css         # Estilos (colores y tipografías en :root)
 ├── js/config.js           # ⚙️ Todo lo configurable (ver abajo)
 ├── js/main.js             # Contenido según config, menú, mapa del viaje, botón fijo, formulario y animaciones
-├── js/planets.js          # Planetas en WebGL (uno a la vez, solo se carga el cercano)
+├── js/planets.js          # Planetas en WebGL (uno a la vez, solo se carga el cercano; se giran arrastrando)
+├── js/sky.js              # Estrellas con parallax, estrellas fugaces y la estrella que escribe las palabras destacadas
 ├── js/metal.js            # Diapositiva de metal líquido (WebGL)
 ├── assets/planetas/       # Texturas de los planetas (y versiones -m para móvil)
 ├── assets/metal/          # Imagen fija del metal (móviles lentos / reducir movimiento)

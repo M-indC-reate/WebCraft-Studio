@@ -36,7 +36,9 @@
   <a class="skip-link" href="#main">Saltar al contenido</a>
 
   <!-- Fondo: estrellas sutiles y casi quietas -->
-  <canvas class="stars" id="stars" aria-hidden="true"></canvas>
+  <div class="stars-layer" id="stars-far" aria-hidden="true"></div>
+  <div class="stars-layer" id="stars-near" aria-hidden="true"></div>
+  <canvas class="shooting" id="shooting" aria-hidden="true"></canvas>
 
   <!-- Iconos propios, trazo 1.5 -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -140,7 +142,7 @@
 
     <!-- ===== Diapositiva · La Luna (metal líquido con WebGL) ===== -->
     <section class="slide" id="animacion" aria-label="De la idea a tu web">
-      <div class="planet-slot planet-slot--slide" data-planet="moon" aria-hidden="true"></div>
+      <div class="planet-slot planet-slot--slide planet-slot--left" data-planet="moon" aria-hidden="true"></div>
       <div class="slide__pin">
         <div class="container slide__container">
           <figure class="slide__card">
@@ -195,7 +197,7 @@
 
     <!-- ===== Cómo trabajamos · Júpiter ===== -->
     <section class="section" id="proceso">
-      <div class="planet-slot" data-planet="jupiter" aria-hidden="true"></div>
+      <div class="planet-slot planet-slot--left" data-planet="jupiter" aria-hidden="true"></div>
       <div class="container">
         <header class="section__head">
           <p class="eyebrow" data-reveal>Cómo trabajamos</p>
@@ -277,7 +279,7 @@
 
     <!-- ===== Preguntas · Neptuno ===== -->
     <section class="section" id="preguntas">
-      <div class="planet-slot" data-planet="neptune" aria-hidden="true"></div>
+      <div class="planet-slot planet-slot--left" data-planet="neptune" aria-hidden="true"></div>
       <div class="container container--narrow">
         <header class="section__head">
           <p class="eyebrow" data-reveal>Preguntas frecuentes</p>
@@ -400,6 +402,7 @@
   <script src="vendor/ScrollTrigger.min.js" defer></script>
   <script src="vendor/SplitText.min.js" defer></script>
   <script src="vendor/lenis.min.js" defer></script>
+  <script src="js/sky.js" defer></script>
   <script src="js/planets.js" defer></script>
   <script src="js/metal.js" defer></script>
   <script src="js/main.js" defer></script>

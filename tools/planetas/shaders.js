@@ -99,15 +99,20 @@ void main(){ vec3 p=sph(); float lat=p.y;
   gl_FragColor=vec4(col,1.0); }`,
 neptune: `
 void main(){ vec3 p=sph(); float lat=p.y;
-  vec3 w=vec3(fbm(p*2.5+uSeed),fbm(p*2.5+4.1),0.0);
-  float y=lat+0.03*fbm(vec3(p.x*3.0,p.y*14.0,p.z*3.0)+w);
-  float b=sin(y*22.0)*0.5+0.5;
-  vec3 col=mix(vec3(0.27,0.42,0.74),vec3(0.21,0.34,0.62),b);
-  col*=0.93+0.12*fbm(vec3(p.x*5.0,p.y*24.0,p.z*5.0)+w);
-  float streak=smoothstep(0.55,0.8,fbm(vec3(p.x*6.0,p.y*50.0,p.z*6.0)+7.0))*smoothstep(0.5,0.0,abs(lat+0.35));
-  col=mix(col,vec3(0.88,0.92,1.0),streak*0.65);
-  vec3 c=normalize(vec3(cos(-0.35)*cos(1.0),sin(-0.35),cos(-0.35)*sin(1.0)));
-  float d=length((p-c)*vec3(1.0,1.8,1.0)); col=mix(col,vec3(0.1,0.16,0.42),smoothstep(0.13,0.06,d+0.02*w.x));
+  vec3 q=p*1.7+uSeed; vec3 w=vec3(fbm(q),fbm(q+4.1),fbm(q+8.3));
+  float y=lat+0.07*fbm(vec3(p.x*2.2,p.y*7.0,p.z*2.2)+w*2.2);
+  float b=sin(y*11.0)*0.5+0.5, b2=sin(y*27.0+1.3)*0.5+0.5;
+  vec3 deep=vec3(0.12,0.22,0.55), mid=vec3(0.2,0.36,0.76), light=vec3(0.34,0.52,0.88);
+  vec3 col=mix(deep,mid,smoothstep(0.15,0.85,b));
+  col=mix(col,light,smoothstep(0.65,1.0,b2)*0.3);
+  col*=0.88+0.22*fbm(p*5.0+w*1.8);
+  float streak=smoothstep(0.42,0.75,fbm(vec3(p.x*5.0,p.y*42.0,p.z*5.0)+w*3.0))*smoothstep(0.55,0.05,abs(lat+0.28));
+  col=mix(col,vec3(0.86,0.91,1.0),streak*0.55);
+  vec3 c=normalize(vec3(cos(-0.36)*cos(1.0),sin(-0.36),cos(-0.36)*sin(1.0)));
+  float d=length((p-c)*vec3(1.0,1.7,1.0))+0.03*w.y;
+  col=mix(col,vec3(0.06,0.11,0.32),smoothstep(0.13,0.07,d));
+  col=mix(col,vec3(0.8,0.86,1.0),smoothstep(0.04,0.0,abs(d-0.15))*0.12);
+  col=mix(col,deep*0.85,smoothstep(0.55,1.0,abs(lat))*0.45);
   gl_FragColor=vec4(col,1.0); }`,
 mars: `
 void main(){ vec3 p=sph(); float lat=p.y;

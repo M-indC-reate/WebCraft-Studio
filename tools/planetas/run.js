@@ -7,8 +7,8 @@ const OUT = path.join(__dirname, '../../assets/planetas/');
 fs.mkdirSync(OUT, { recursive: true });
 const ONLY = process.argv.slice(2);
 const jobs0 = [
-  ['earth', 1024, 512, 3.0], ['moon', 1024, 512, 6.0], ['mars', 1024, 512, 5.0],
-  ['jupiter', 1024, 512, 1.0], ['saturn', 1024, 512, 2.0], ['neptune', 1024, 512, 4.0]
+  ['earth', 2048, 1024, 3.0], ['moon', 2048, 1024, 6.0], ['mars', 2048, 1024, 5.0],
+  ['jupiter', 2048, 1024, 1.0], ['saturn', 2048, 1024, 2.0], ['neptune', 2048, 1024, 4.0]
 ];
 const jobs = ONLY.length ? jobs0.filter(j => ONLY.includes(j[0])) : jobs0;
 (async () => {
