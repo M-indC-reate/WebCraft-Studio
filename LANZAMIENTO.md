@@ -58,3 +58,7 @@ Casi todo se cambia en **`js/config.js`**: no hace falta tocar el resto del cód
 - [ ] Enlaces del pie (aviso legal, privacidad, redes) y WhatsApp con su mensaje.
 - [ ] Vista previa al compartir (Open Graph) en WhatsApp o en un depurador de enlaces.
 - [ ] `https://<tu-direccion>/robots.txt`, `/sitemap.xml` y una página inexistente (debe salir la 404).
+
+## Icono en la pantalla de inicio
+- [ ] Una vez publicada, abrir la web en Safari (la dirección real, no la vista previa de Claude) → Compartir → "Añadir a pantalla de inicio".
+      Debe salir el logo de la W y abrirse a pantalla completa, como una app. Iconos en `assets/icons/` y `manifest.webmanifest`.
