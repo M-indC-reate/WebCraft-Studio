@@ -19,9 +19,9 @@ Sitio estático (HTML + CSS + JS). Las librerías (GSAP, ScrollTrigger, SplitTex
 ├── js/metal.js            # Diapositiva de metal líquido (WebGL)
 ├── assets/planetas/       # Texturas de los planetas (y versiones -m para móvil)
 ├── assets/metal/          # Imagen fija del metal (móviles lentos / reducir movimiento)
-├── assets/proyectos/      # Maquetas de los conceptos
+├── assets/proyectos/      # Captura de Vesta Eventos
 ├── tools/planetas/        # Generador de las texturas de los planetas
-├── tools/maquetas/        # Maquetas de concepto (HTML) y su captura
+├── tools/maquetas/        # Maquetas de concepto (HTML) y su captura; ahora no se muestran en la web
 ├── tools/aplicar-url.mjs  # Aplica SITE_URL a canonical, Open Graph, sitemap, robots y 404
 ├── robots.txt · sitemap.xml · LANZAMIENTO.md
 ```
@@ -54,7 +54,7 @@ python3 -m http.server 8000
 
 ## Licencias
 
-- Imágenes: todas propias. Planetas, Sol, portátil, cielo e imagen para redes están generados por código (`tools/planetas/`, `js/planets.js`, `js/metal.js`, `js/sky.js`); las maquetas de concepto, con `tools/maquetas/`; la captura de Vesta Eventos es de nuestra propia web. No se usa ninguna imagen de la NASA ni de bancos de imágenes.
+- Imágenes: todas propias. Planetas, Sol, portátil, cielo e imagen para redes están generados por código (`tools/planetas/`, `js/planets.js`, `js/metal.js`, `js/sky.js`); la captura de Vesta Eventos es de nuestra propia web. No se usa ninguna imagen de la NASA ni de bancos de imágenes.
 - GSAP: licencia estándar de GSAP, gratuita también para uso comercial.
 - Lenis: MIT.
 - Syne, Manrope, Instrument Serif y Hanken Grotesk: SIL Open Font License.
