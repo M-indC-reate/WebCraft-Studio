@@ -1,0 +1,52 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>Concepto · Estudio de fisioterapia</title>
+<!-- Maqueta de CONCEPTO para el portfolio de WebCraft Studio (no es un cliente real). Se captura con tools/maquetas/capturar.js -->
+<style>
+@font-face{font-family:"Hanken";src:url(fonts/hanken-grotesk-latin-400-normal.woff2);font-weight:400}
+@font-face{font-family:"Hanken";src:url(fonts/hanken-grotesk-latin-500-normal.woff2);font-weight:500}
+@font-face{font-family:"Hanken";src:url(fonts/hanken-grotesk-latin-600-normal.woff2);font-weight:600}
+:root{--bg:#F2F6F5;--ink:#0F2C2B;--muted:#557170;--teal:#1F7F79;--soft:#DCEDEA;--line:#D7E3E1;--card:#fff}
+*{box-sizing:border-box}body{margin:0;width:1440px;height:900px;background:var(--bg);color:var(--ink);font-family:Hanken,sans-serif;overflow:hidden}
+nav{display:flex;align-items:center;justify-content:space-between;padding:26px 80px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:600;font-size:20px}
+.brand span{width:36px;height:36px;border-radius:12px;background:var(--teal);display:grid;place-items:center}
+.links{display:flex;gap:34px;color:var(--muted);font-weight:500}
+.cta{background:var(--teal);color:#fff;padding:13px 22px;border-radius:12px;font-weight:600}
+main{display:grid;grid-template-columns:1fr 1fr;gap:56px;padding:56px 80px 0;align-items:start}
+.pill{display:inline-flex;gap:8px;align-items:center;background:var(--soft);color:var(--teal);font-weight:600;font-size:14px;padding:8px 14px;border-radius:999px}
+h1{font-size:74px;line-height:1;letter-spacing:-.035em;margin:20px 0;font-weight:600}
+p.lead{font-size:19px;line-height:1.6;color:var(--muted);margin:0;max-width:28em}
+.treat{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:40px}
+.t{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px}
+.t svg{width:30px;height:30px;color:var(--teal)}
+.t b{display:block;margin:12px 0 4px}.t small{color:var(--muted);font-size:14px;line-height:1.45;display:block}
+.book{background:var(--card);border:1px solid var(--line);border-radius:26px;padding:32px;box-shadow:0 30px 60px -40px rgba(15,44,43,.35)}
+.book h2{margin:0;font-size:26px}.book p{color:var(--muted);margin:6px 0 22px}
+.step{display:flex;gap:12px;align-items:center;font-weight:600;margin-bottom:14px}
+.step i{font-style:normal;width:28px;height:28px;border-radius:50%;background:var(--teal);color:#fff;display:grid;place-items:center;font-size:14px}
+.step.off i{background:var(--soft);color:var(--teal)}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:26px}
+.chip{border:1px solid var(--line);padding:10px 14px;border-radius:12px;font-size:15px}.chip.on{border-color:var(--teal);background:var(--soft);color:var(--teal);font-weight:600}
+.days{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px}
+.d{border:1px solid var(--line);border-radius:12px;padding:10px 0;text-align:center;font-size:13px;color:var(--muted)}.d b{display:block;font-size:20px;color:var(--ink)}.d.on{border-color:var(--teal);background:var(--soft)}
+.times{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.tm{border:1px solid var(--line);border-radius:10px;padding:10px 0;text-align:center;font-weight:500}.tm.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+.go{margin-top:22px;background:var(--ink);color:#fff;border-radius:12px;padding:15px;text-align:center;font-weight:600}
+</style></head><body>
+<nav><div class="brand"><span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M12 3v18M6 8c2 2 4 2 6 0s4-2 6 0M6 15c2 2 4 2 6 0s4-2 6 0"/></svg></span>Estudio de fisioterapia</div>
+<div class="links"><span>Tratamientos</span><span>Cómo trabajamos</span><span>Dónde estamos</span></div><span class="cta">Pedir cita</span></nav>
+<main><div><span class="pill">● Cita en dos pasos</span>
+<h1>Vuelve a moverte sin dolor.</h1>
+<p class="lead">Te explicamos cada tratamiento con claridad, sin tecnicismos, y reservas tu cita en menos de un minuto.</p>
+<div class="treat">
+<div class="t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 4v16M8 8h8M8 12h8M8 16h8"/></svg><b>Dolor de espalda</b><small>Valoración, terapia manual y ejercicios para casa.</small></div>
+<div class="t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="5" r="2"/><path d="M12 7v6l-4 7M12 13l4 7M7 10h10"/></svg><b>Deportiva</b><small>Lesiones, recuperación y vuelta al entreno.</small></div>
+<div class="t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 12a7 7 0 0 0 14 0M12 5v7"/></svg><b>Readaptación</b><small>Después de una operación o de una lesión larga.</small></div>
+</div></div>
+<div class="book"><h2>Pide tu cita</h2><p>Elige el tratamiento y el hueco que mejor te venga.</p>
+<div class="step"><i>1</i>¿Qué te pasa?</div>
+<div class="chips"><span class="chip on">Dolor de espalda</span><span class="chip">Cervicales</span><span class="chip">Lesión deportiva</span><span class="chip">Readaptación</span><span class="chip">No lo sé</span></div>
+<div class="step"><i>2</i>Elige día y hora</div>
+<div class="days"><div class="d">Lun<b>12</b></div><div class="d on">Mar<b>13</b></div><div class="d">Mié<b>14</b></div><div class="d">Jue<b>15</b></div><div class="d">Vie<b>16</b></div></div>
+<div class="times"><span class="tm">9:00</span><span class="tm">10:30</span><span class="tm on">12:00</span><span class="tm">16:30</span></div>
+<div class="go">Confirmar cita</div></div></main>
+</body></html>

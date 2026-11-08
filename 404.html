@@ -2,31 +2,38 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Página no encontrada · WebCraft Studio</title>
   <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#0F0E0D">
-  <!-- Rutas absolutas desde la base del sitio: esta página se sirve desde cualquier URL -->
-  <base href="/WebCraft-Studio/"><!-- TODO: cambiar a "/" si la web pasa a un dominio propio o .pages.dev -->
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/styles.css">
+  <meta name="theme-color" content="#05070F">
+  <link rel="canonical" href="https://webcraft-studio.pages.dev/">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/styles.css">
+  <script src="/js/config.js"></script>
+  <script>document.documentElement.setAttribute("data-accent", (window.WEBCRAFT_CONFIG || {}).ACENTO === "dorado" ? "dorado" : "celeste");</script>
   <style>
-    .nf { min-height: 100vh; min-height: 100svh; display: grid; align-content: center; padding: 48px 0; }
-    .nf__code { font-family: var(--font-display); font-weight: 800; font-size: clamp(7rem, 34vw, 22rem); line-height: .8; letter-spacing: -.06em; color: transparent; -webkit-text-stroke: 1.5px var(--line-2); user-select: none; }
-    .nf h1 { font-size: clamp(2rem, 6vw, 3.6rem); font-weight: 800; letter-spacing: -.03em; margin: 28px 0 16px; max-width: 14ch; }
+    .nf { position: relative; z-index: 1; min-height: 100vh; min-height: 100svh; display: grid; align-content: center; padding-block: 48px; }
+    .nf__code { font-family: var(--font-display); font-weight: 800; font-size: clamp(6rem, 28vw, 16rem); line-height: .85; letter-spacing: -.05em; color: var(--accent); }
+    .nf h1 { font-size: clamp(1.9rem, 5vw, 3.2rem); font-weight: 800; letter-spacing: -.03em; margin: 24px 0 14px; max-width: 16ch; }
     .nf p { color: var(--muted); max-width: 30em; margin-bottom: 32px; font-size: 1.08rem; }
   </style>
 </head>
 <body>
+  <canvas class="stars" id="stars" aria-hidden="true"></canvas>
   <main class="nf">
     <div class="container">
-      <a href="./" class="logo" aria-label="WebCraft Studio, inicio"><img src="assets/favicon.svg" alt="" width="30" height="30"><span>WebCraft <em>Studio</em></span></a>
+      <a href="/" class="logo" aria-label="WebCraft Studio, inicio"><img src="/assets/favicon.svg" alt="" width="32" height="32"><span>WebCraft <em>Studio</em></span></a>
       <p class="nf__code" aria-hidden="true">404</p>
-      <h1>Esta página no tiene forma todavía.</h1>
+      <h1>Esta página se ha perdido en el espacio.</h1>
       <p>Puede que el enlace esté mal escrito o que la página ya no exista. Vuelve al inicio y sigue desde ahí.</p>
-      <a href="./" class="btn btn--primary">Volver al inicio
+      <a href="/" class="btn btn--primary">Volver al inicio
         <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     </div>
   </main>
+  <script>
+    (function () { var c = document.getElementById("stars"), w = innerWidth, h = innerHeight; c.width = w; c.height = h;
+      var x = c.getContext("2d"), s = 7, r = function () { return (s = (s * 16807) % 2147483647) / 2147483647; };
+      for (var i = 0; i < w * h / 5200; i++) { x.globalAlpha = .18 + r() * .5; x.fillStyle = "#E8ECF8"; x.beginPath(); x.arc(r() * w, r() * h, r() < .05 ? 1.1 : .35 + r() * .55, 0, 6.283); x.fill(); } })();
+  </script>
 </body>
 </html>

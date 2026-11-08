@@ -1,62 +1,48 @@
 # WebCraft Studio
 
-Web del estudio de diseño y desarrollo web **WebCraft Studio** (Barcelona). Estilo **«Galaxia volcánica»**: fondo de galaxia nocturna que se recorre al bajar, con estrellas, estrellas fugaces y rocas volcánicas flotando. El suelo del hero y el pie son de roca volcánica, y las palabras destacadas van en celeste o lila.
+Web del estudio de diseño y desarrollo web **WebCraft Studio** (Barcelona). Un solo mundo, el espacio: fondo de estrellas sutil, un planeta por sección en el lateral, una diapositiva de metal líquido hecha con WebGL y un único color de acento.
 
-Sitio estático (HTML + CSS + JS). Las librerías están copiadas en `vendor/` y no hay que compilar nada.
+Sitio estático (HTML + CSS + JS). Las librerías (GSAP, ScrollTrigger, SplitText y Lenis) están en `vendor/` y no hay que compilar nada.
+
+> La web está preparada pero **no publicada**. Lo que falta para lanzarla está en [LANZAMIENTO.md](LANZAMIENTO.md).
 
 ## Estructura
 
 ```
-├── index.html               # Aviso, hero, diapositiva animada, servicios, proceso, proyectos, preguntas, contacto, pie
-├── 404.html                 # Página de error con el mismo diseño
-├── css/styles.css           # Estilos (paleta y tipografías en :root)
-├── js/config.js             # ⚙️ TODO lo configurable: pre-apertura, fecha, redes, formulario, legales
-├── js/main.js               # Menú, formulario, secuencia con scroll, animaciones
-├── js/space.js              # Capa 2D: estrellas fugaces, estrellas que escriben palabras (y fondo 2D si no hay 3D)
-├── src/journey.js           # Viaje 3D (Three.js): galaxia → cinturón de rocas → Sol y planetas
-├── js/journey.js            # Versión empaquetada de src/journey.js (no editar a mano)
-├── assets/space/            # galaxia.webp y rocas flotantes (generadas por código)
-├── assets/textures/roca.webp # Textura de roca volcánica (generada por código, se repite sin cortes)
-├── vendor/                  # GSAP, ScrollTrigger, SplitText y Lenis
-├── assets/fonts/            # Syne y Manrope (alojadas en la propia web)
-├── assets/hero/escritorio/  # 96 fotogramas WebP 1600×900
-├── assets/hero/movil/       # 48 fotogramas WebP 720×960 (recorte vertical)
-├── assets/proyectos/        # Capturas de proyectos
-├── assets/og-image.png      # Vista previa al compartir
-├── tools/extraer-fotogramas.sh
-├── robots.txt · sitemap.xml
+├── index.html             # Aviso, inicio, diapositiva, servicios, cómo trabajamos, proyectos, preguntas, contacto y pie
+├── 404.html               # Página de error con el mismo diseño
+├── css/styles.css         # Estilos (colores y tipografías en :root)
+├── js/config.js           # ⚙️ Todo lo configurable (ver abajo)
+├── js/main.js             # Contenido según config, menú, mapa del viaje, botón fijo, formulario y animaciones
+├── js/planets.js          # Planetas en WebGL (uno a la vez, solo se carga el cercano)
+├── js/metal.js            # Diapositiva de metal líquido (WebGL)
+├── assets/planetas/       # Texturas de los planetas (y versiones -m para móvil)
+├── assets/metal/          # Imagen fija del metal (móviles lentos / reducir movimiento)
+├── assets/proyectos/      # Maquetas de los conceptos
+├── tools/planetas/        # Generador de las texturas de los planetas
+├── tools/maquetas/        # Maquetas de concepto (HTML) y su captura
+├── tools/aplicar-url.mjs  # Aplica SITE_URL a canonical, Open Graph, sitemap, robots y 404
+├── robots.txt · sitemap.xml · LANZAMIENTO.md
 ```
 
 ## Configuración (`js/config.js`)
 
 | Variable | Qué hace |
 |---|---|
-| `PREAPERTURA` | `true`: aviso arriba, botones "Avísame cuando abráis" y formulario de lista de espera. `false`: botones "Pedir presupuesto" y formulario de proyecto. |
-| `FECHA_APERTURA` | Texto de la fecha ("muy pronto" por defecto). |
-| `EMAIL`, `INSTAGRAM`, `WHATSAPP` | Si están vacías, su enlace no aparece. WhatsApp se abre con el mensaje ya escrito. |
-| `FORM_ENDPOINT` | Endpoint de Formspree. |
+| `SITE_URL` | Dirección de la web. Tras cambiarla: `node tools/aplicar-url.mjs`. |
+| `PREAPERTURA`, `FECHA_APERTURA` | Aviso superior y botones "Avísame cuando abráis". |
+| `ACENTO` | `"celeste"` o `"dorado"`. Para comparar sin tocar nada: `?acento=dorado` en la URL. |
+| `EMAIL`, `INSTAGRAM`, `WHATSAPP` | Si están vacías, su enlace no aparece. |
+| `FORMULARIO_ACTIVO`, `FORM_ENDPOINT` | Desactivado hasta tener servicio y política de privacidad. |
 | `AVISO_LEGAL_URL`, `PRIVACIDAD_URL` | Si están vacías, sus enlaces no aparecen. |
-| `VESTA_URL` | Enlace "Ver web" del proyecto Vesta. |
-| `ANIMACION.MARCADOR` | Muestra la etiqueta "Marcador de posición". Ponlo en `false` con el vídeo real. |
+| `VESTA_URL` | Enlace "Ver web" del proyecto Vesta Eventos. |
 
-## Animación de la diapositiva
+## Planetas y metal
 
-1. Pon el vídeo (8 s, 16:9) en `assets/hero/`.
-2. Ejecuta `bash tools/extraer-fotogramas.sh assets/hero/tu-video.mp4` (necesita ffmpeg).
-3. En `js/config.js`, pon `ANIMACION.MARCADOR: false`.
-
-En móvil se usan menos fotogramas y en vertical. En móviles lentos o con "reducir movimiento" se muestra el último fotograma como imagen fija.
-
-## Viaje 3D
-
-- Se activa solo con WebGL, sin "reducir movimiento" y en dispositivos con capacidad. Si no, se usa la versión 2D.
-- Para ver la versión 2D: añade `?sin3d` a la URL.
-- Tras editar `src/journey.js`, vuelve a empaquetar:
-
-```bash
-npm i three esbuild
-npx esbuild src/journey.js --bundle --minify --format=esm --target=es2019 --legal-comments=eof --outfile=js/journey.js
-```
+- Inicio → Tierra · Diapositiva → Luna · Servicios → Marte · Cómo trabajamos → Júpiter · Proyectos → Saturno · Preguntas → Neptuno · Contacto → Sol.
+- Todos generados por código con el mismo método (`tools/planetas/`); el Sol se dibuja en vivo.
+- Sin WebGL, con "reducir movimiento" o en móviles lentos: planetas quietos o sin animar, y la diapositiva muestra su imagen fija.
+- Para ver la imagen fija de la diapositiva: `?metalfijo`.
 
 ## Ver en local
 
@@ -65,20 +51,8 @@ python3 -m http.server 8000
 # abre http://localhost:8000
 ```
 
-## Despliegue
-
-`.github/workflows/pages.yml` publica en GitHub Pages en cada push a `master`. Si cambia el dominio, actualiza:
-- `canonical`, `og:url` y `og:image` en `index.html`
-- `robots.txt` y `sitemap.xml`
-- `<base href>` en `404.html`
-
-## Texturas de los planetas (`assets/planets/`)
-
-- **Tierra** (Blue Marble, relieve y agua) y **Luna** (mosaico LRO y relieve): imágenes de la NASA, de dominio público, tomadas de los ejemplos de los paquetes de código abierto `three-globe` y `globe.gl`.
-- **Mercurio, Venus, Marte, Júpiter, Saturno, Urano, Neptuno, nubes y rocas**: generadas por código con `tools/planetas/` (shaders de ruido 3D).
-
 ## Licencias
 
 - GSAP: licencia estándar de GSAP, gratuita también para uso comercial.
 - Lenis: MIT.
-- Syne y Manrope: SIL Open Font License.
+- Syne, Manrope, Instrument Serif y Hanken Grotesk: SIL Open Font License.

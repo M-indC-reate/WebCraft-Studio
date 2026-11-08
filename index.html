@@ -3,50 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>WebCraft Studio · Diseño y desarrollo web a medida en Barcelona</title>
-  <meta name="description" content="Estudio de diseño y desarrollo web en Barcelona. Webs a medida, sin plantillas, rápidas y pensadas para que tus clientes te contacten. Abrimos muy pronto.">
+  <title>WebCraft Studio · Diseño web a medida en Barcelona</title>
+  <meta name="description" content="Estudio de diseño y desarrollo web en Barcelona. Webs a medida, claras y rápidas en el móvil, pensadas para que tus clientes te encuentren y te escriban. Abrimos muy pronto.">
   <meta name="theme-color" content="#05070F">
-  <link rel="canonical" href="https://mind-glitch-ceate.github.io/WebCraft-Studio/"><!-- TODO: cambiar si cambia el dominio -->
+  <!-- Las direcciones de esta cabecera se actualizan con tools/aplicar-url.mjs (SITE_URL en js/config.js) -->
+  <link rel="canonical" href="https://webcraft-studio.pages.dev/">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="es_ES">
   <meta property="og:site_name" content="WebCraft Studio">
-  <meta property="og:title" content="WebCraft Studio · Webs a medida en Barcelona">
-  <meta property="og:description" content="Diseño y desarrollo web a medida, sin plantillas. Abrimos muy pronto: apúntate y te avisamos.">
-  <meta property="og:url" content="https://mind-glitch-ceate.github.io/WebCraft-Studio/">
-  <meta property="og:image" content="https://mind-glitch-ceate.github.io/WebCraft-Studio/assets/og-image.png">
+  <meta property="og:title" content="WebCraft Studio · Diseño web a medida en Barcelona">
+  <meta property="og:description" content="Webs a medida, con forma propia. Abrimos muy pronto.">
+  <meta property="og:url" content="https://webcraft-studio.pages.dev/">
+  <meta property="og:image" content="https://webcraft-studio.pages.dev/assets/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="WebCraft Studio, estudio de diseño web en Barcelona">
+  <meta property="og:image:alt" content="WebCraft Studio, diseño web a medida en Barcelona">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="assets/fonts/syne-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/manrope-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/styles.css">
+  <script src="js/config.js"></script>
   <script>
-    // ¿Viaje 3D? Solo con WebGL, sin "reducir movimiento" y en dispositivos con capacidad
-    (function (d) {
+    (function (d, C) {
       d.classList.add("js");
-      try {
-        var c = navigator.connection || {}, m = navigator.deviceMemory, h = navigator.hardwareConcurrency;
-        var weak = c.saveData || /2g/.test(c.effectiveType || "") || (m && m <= 2) || (h && h <= 2);
-        var rm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        var gl = document.createElement("canvas").getContext("webgl2") || document.createElement("canvas").getContext("webgl");
-        if (gl && !weak && !rm && !/[?&]sin3d/.test(location.search)) d.classList.add("has-3d");
-      } catch (e) {}
-    })(document.documentElement);
+      d.setAttribute("data-accent", (C && C.ACENTO) === "dorado" ? "dorado" : "celeste");
+      var q = /[?&]acento=(dorado|celeste)/.exec(location.search); if (q) d.setAttribute("data-accent", q[1]); // para comparar
+    })(document.documentElement, window.WEBCRAFT_CONFIG);
   </script>
 </head>
 <body>
   <a class="skip-link" href="#main">Saltar al contenido</a>
 
-  <!-- Fondo: galaxia fija con estrellas, estrellas fugaces y rocas volcánicas flotando -->
-  <div class="space" aria-hidden="true">
-    <canvas class="space__3d" id="journey-canvas"></canvas>
-    <img class="space__galaxy" id="space-galaxy" src="assets/space/galaxia.webp" alt="" decoding="async">
-    <canvas class="space__canvas" id="space-canvas"></canvas>
-  </div>
+  <!-- Fondo: estrellas sutiles y casi quietas -->
+  <canvas class="stars" id="stars" aria-hidden="true"></canvas>
 
-  <!-- SVG sprite: iconos propios, trazo 1.5 -->
+  <!-- Iconos propios, trazo 1.5 -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
     <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
@@ -58,7 +50,6 @@
   <!-- ===== Aviso de pre-apertura ===== -->
   <div class="prelaunch" id="prelaunch" data-only="pre">
     <div class="container prelaunch__inner">
-      <span class="prelaunch__dot" aria-hidden="true"></span>
       <p><strong>WebCraft Studio está arrancando.</strong> Aún no aceptamos proyectos: abrimos <span data-fecha>muy pronto</span>.</p>
       <a href="#contacto" class="prelaunch__link">Avísame cuando abráis <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
     </div>
@@ -68,72 +59,76 @@
   <header class="header" id="header">
     <div class="container header__inner">
       <a href="#inicio" class="logo" aria-label="WebCraft Studio, inicio">
-        <!-- Logo: la W es una ventana al cielo nocturno; dentro titilan estrellas y cruzan estrellas fugaces -->
         <svg class="logo__mark" viewBox="0 0 64 64" width="34" height="34" aria-hidden="true">
           <defs>
             <linearGradient id="lg-sky" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#14204A"/><stop offset=".6" stop-color="#0A1028"/><stop offset="1" stop-color="#05070F"/></linearGradient>
-            <linearGradient id="lg-trail" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#fff"/><stop offset=".25" stop-color="#22D3EE"/><stop offset="1" stop-color="#A78BFA" stop-opacity="0"/></linearGradient>
             <mask id="lg-w" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64">
               <path d="M11 18l8.5 28 7-17.5 5.5 17.5 5.5-17.5 7 17.5 8.5-28" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
             </mask>
           </defs>
-          <rect width="64" height="64" rx="16" fill="#100F0E"/>
-          <rect x=".75" y=".75" width="62.5" height="62.5" rx="15.25" fill="none" stroke="#2C2A28" stroke-width="1.5"/>
-          <path d="M11 18l8.5 28 7-17.5 5.5 17.5 5.5-17.5 7 17.5 8.5-28" fill="none" stroke="#9AB8E6" stroke-opacity=".45" stroke-width="11.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect width="64" height="64" rx="16" fill="#0B0D16"/>
+          <rect x=".75" y=".75" width="62.5" height="62.5" rx="15.25" fill="none" stroke="#262A38" stroke-width="1.5"/>
+          <path class="logo__edge" d="M11 18l8.5 28 7-17.5 5.5 17.5 5.5-17.5 7 17.5 8.5-28" fill="none" stroke-width="11.5" stroke-linecap="round" stroke-linejoin="round"/>
           <g mask="url(#lg-w)">
             <rect width="64" height="64" fill="url(#lg-sky)"/>
             <g fill="#EEF3FF">
-              <circle class="lg-star" cx="13" cy="22" r=".9"/><circle class="lg-star lg-star--b" cx="20" cy="40" r=".7"/>
-              <circle class="lg-star lg-star--c" cx="27" cy="31" r="1"/><circle class="lg-star" cx="32" cy="43" r=".6"/>
-              <circle class="lg-star lg-star--b" cx="38" cy="32" r=".8"/><circle class="lg-star lg-star--c" cx="45" cy="42" r=".9"/>
-              <circle class="lg-star" cx="51" cy="22" r=".7"/><circle class="lg-star lg-star--b" cx="16" cy="30" r=".5"/>
-              <circle cx="48" cy="30" r=".6" fill="#22D3EE"/><circle cx="23" cy="35" r=".6" fill="#A78BFA"/>
+              <circle cx="13" cy="22" r=".9"/><circle cx="20" cy="40" r=".7"/><circle cx="27" cy="31" r="1"/><circle cx="32" cy="43" r=".6"/>
+              <circle cx="38" cy="32" r=".8"/><circle cx="45" cy="42" r=".9"/><circle cx="51" cy="22" r=".7"/><circle cx="16" cy="30" r=".5"/>
             </g>
-            <g class="lg-shoot"><line x1="0" y1="0" x2="-18" y2="-9" stroke="url(#lg-trail)" stroke-width="1.6" stroke-linecap="round"/><circle r="1.2" fill="#fff"/></g>
-            <g class="lg-shoot lg-shoot--2"><line x1="0" y1="0" x2="-14" y2="-11" stroke="url(#lg-trail)" stroke-width="1.3" stroke-linecap="round"/><circle r="1" fill="#fff"/></g>
           </g>
         </svg>
         <span>WebCraft <em>Studio</em></span>
       </a>
       <div class="header__actions">
         <a href="#contacto" class="btn btn--primary btn--sm header__cta" data-cta>Avísame cuando abráis</a>
-        <button class="nav-toggle" id="nav-toggle" aria-label="Abrir el mapa del viaje" aria-expanded="false" aria-controls="nav">
+        <button class="nav-toggle" id="nav-toggle" aria-label="Abrir el menú" aria-expanded="false" aria-controls="nav">
           <span></span><span></span>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- ===== Mapa del viaje (menú) ===== -->
-  <nav class="nav" id="nav" aria-label="Mapa del viaje">
+  <!-- ===== Menú (mapa del viaje) ===== -->
+  <nav class="nav" id="nav" aria-label="Menú">
     <div class="container nav__inner">
       <p class="eyebrow">Mapa del viaje</p>
       <ol class="nav__list">
-        <li><a href="#inicio"><span class="nav__n">00</span><span class="nav__name">Inicio</span><span class="nav__place">La galaxia</span></a></li>
-        <li><a href="#animacion"><span class="nav__n">01</span><span class="nav__name">La idea</span><span class="nav__place">Cinturón de rocas</span></a></li>
-        <li><a href="#servicios"><span class="nav__n">02</span><span class="nav__name">Servicios</span><span class="nav__place">El Sol</span></a></li>
-        <li><a href="#proceso"><span class="nav__n">03</span><span class="nav__name">Cómo trabajamos</span><span class="nav__place">Asteroides</span></a></li>
-        <li><a href="#proyectos"><span class="nav__n">04</span><span class="nav__name">Proyectos</span><span class="nav__place">Júpiter</span></a></li>
-        <li><a href="#preguntas"><span class="nav__n">05</span><span class="nav__name">Preguntas</span><span class="nav__place">La Tierra</span></a></li>
-        <li><a href="#contacto"><span class="nav__n">06</span><span class="nav__name">Contacto</span><span class="nav__place">La Luna</span></a></li>
+        <li><a href="#inicio"><span class="nav__n">00</span><span class="nav__name">Inicio</span><span class="nav__place">La Tierra</span></a></li>
+        <li><a href="#animacion"><span class="nav__n">01</span><span class="nav__name">La idea</span><span class="nav__place">La Luna</span></a></li>
+        <li><a href="#servicios"><span class="nav__n">02</span><span class="nav__name">Servicios</span><span class="nav__place">Marte</span></a></li>
+        <li><a href="#proceso"><span class="nav__n">03</span><span class="nav__name">Cómo trabajamos</span><span class="nav__place">Júpiter</span></a></li>
+        <li><a href="#proyectos"><span class="nav__n">04</span><span class="nav__name">Proyectos</span><span class="nav__place">Saturno</span></a></li>
+        <li><a href="#preguntas"><span class="nav__n">05</span><span class="nav__name">Preguntas</span><span class="nav__place">Neptuno</span></a></li>
+        <li><a href="#contacto"><span class="nav__n">06</span><span class="nav__name">Contacto</span><span class="nav__place">El Sol</span></a></li>
       </ol>
       <a href="#contacto" class="btn btn--primary nav__cta" data-cta>Avísame cuando abráis</a>
     </div>
   </nav>
 
+  <!-- Mapa del viaje lateral (solo ordenador) -->
+  <nav class="journey" id="journey" aria-label="Mapa del viaje">
+    <ol>
+      <li><a href="#inicio" data-planet="earth"><span class="journey__dot"></span><span class="journey__label">Inicio · La Tierra</span></a></li>
+      <li><a href="#animacion" data-planet="moon"><span class="journey__dot"></span><span class="journey__label">La idea · La Luna</span></a></li>
+      <li><a href="#servicios" data-planet="mars"><span class="journey__dot"></span><span class="journey__label">Servicios · Marte</span></a></li>
+      <li><a href="#proceso" data-planet="jupiter"><span class="journey__dot"></span><span class="journey__label">Cómo trabajamos · Júpiter</span></a></li>
+      <li><a href="#proyectos" data-planet="saturn"><span class="journey__dot"></span><span class="journey__label">Proyectos · Saturno</span></a></li>
+      <li><a href="#preguntas" data-planet="neptune"><span class="journey__dot"></span><span class="journey__label">Preguntas · Neptuno</span></a></li>
+      <li><a href="#contacto" data-planet="sun"><span class="journey__dot"></span><span class="journey__label">Contacto · El Sol</span></a></li>
+    </ol>
+  </nav>
+
   <main id="main">
-    <!-- ===== Hero ===== -->
+    <!-- ===== Inicio · La Tierra ===== -->
     <section class="hero" id="inicio">
+      <div class="planet-slot planet-slot--hero" data-planet="earth" aria-hidden="true"></div>
       <div class="container">
         <p class="eyebrow" data-reveal>Estudio de diseño web · Barcelona</p>
-        <h1 class="hero__title" data-reveal="lines">Webs a medida con forma <span class="hl">propia.</span></h1>
-        <div class="hero__bottom">
-          <p class="hero__lead" data-reveal>Diseñamos y desarrollamos páginas web para negocios de Barcelona. Sin plantillas: claras, rápidas en el móvil y pensadas para que tus clientes te contacten.</p>
-          <!-- TODO: concretar el tipo de negocio al que nos dirigimos cuando lo tengas definido -->
-          <div class="hero__actions" data-reveal>
-            <a href="#contacto" class="btn btn--primary magnetic" data-cta>Avísame cuando abráis <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
-            <a href="#proceso" class="btn btn--ghost magnetic">Ver cómo trabajamos</a>
-          </div>
+        <h1 class="hero__title" data-reveal="lines">Webs a medida, con forma <span class="hl">propia.</span></h1>
+        <p class="hero__lead" data-reveal>Diseñamos y desarrollamos webs para negocios de Barcelona: claras, rápidas en el móvil y pensadas para que tus clientes te encuentren y te escriban.</p>
+        <div class="hero__actions" data-reveal>
+          <a href="#contacto" class="btn btn--primary magnetic" data-cta>Avísame cuando abráis <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a href="#proceso" class="btn btn--ghost magnetic">Ver cómo trabajamos</a>
         </div>
         <ul class="hero__meta" data-reveal>
           <li><span>Ubicación</span>Barcelona</li>
@@ -141,21 +136,23 @@
           <li data-only="pre"><span>Apertura</span><b data-fecha>muy pronto</b></li>
         </ul>
       </div>
-      <div class="ground" aria-hidden="true"><div class="ground__rock"></div></div>
     </section>
 
-    <!-- ===== Diapositiva animada (secuencia de imágenes ligada al scroll) ===== -->
-    <section class="slide" id="animacion" aria-label="Animación: de metal líquido a portátil">
+    <!-- ===== Diapositiva · La Luna (metal líquido con WebGL) ===== -->
+    <section class="slide" id="animacion" aria-label="De la idea a tu web">
+      <div class="planet-slot planet-slot--slide" data-planet="moon" aria-hidden="true"></div>
       <div class="slide__pin">
         <div class="container slide__container">
           <figure class="slide__card">
-            <canvas class="slide__canvas" id="seq-canvas" aria-hidden="true"></canvas>
-            <img class="slide__still" id="seq-still" alt="Portátil de obsidiana pulida con una web en pantalla" src="assets/hero/escritorio/f_096.webp" width="1600" height="900" loading="lazy" decoding="async">
-            <span class="slide__badge" id="seq-badge" hidden>Marcador de posición · vídeo pendiente</span>
-            <figcaption class="slide__captions" aria-hidden="true">
-              <span class="slide__caption is-active">Partimos de una idea en bruto.</span>
-              <span class="slide__caption">Le damos forma, a medida.</span>
-              <span class="slide__caption">Y te la entregamos lista para trabajar.</span>
+            <canvas class="slide__canvas" id="metal-canvas" aria-hidden="true"></canvas>
+            <picture class="slide__still">
+              <source media="(max-width: 640px)" srcset="assets/metal/metal-movil.webp">
+              <img src="assets/metal/metal.webp" alt="Una gota de metal oscuro, como obsidiana pulida, flotando en el espacio" width="1600" height="900" loading="lazy" decoding="async">
+            </picture>
+            <figcaption class="slide__captions">
+              <span class="slide__caption is-active">Todo empieza con una idea.</span>
+              <span class="slide__caption">Le damos forma a medida.</span>
+              <span class="slide__caption">Y la convertimos en tu web.</span>
             </figcaption>
             <div class="slide__progress" aria-hidden="true"><span id="seq-progress"></span></div>
           </figure>
@@ -163,44 +160,46 @@
       </div>
     </section>
 
-    <!-- ===== Servicios ===== -->
+    <!-- ===== Servicios · Marte ===== -->
     <section class="section" id="servicios">
+      <div class="planet-slot" data-planet="mars" aria-hidden="true"></div>
       <div class="container">
         <header class="section__head">
           <p class="eyebrow" data-reveal>Servicios</p>
-          <h2 data-reveal="lines">Lo que hacemos, <span class="hl hl--violet">sin rodeos.</span></h2>
+          <h2 data-reveal="lines">Todo lo que tu negocio necesita para estar en internet.</h2>
         </header>
         <ol class="services">
           <li class="service" data-reveal>
             <span class="service__num">01</span>
-            <h3>Diseño web a medida</h3>
-            <p>Partimos de tu negocio, no de una plantilla. Estructura, textos y diseño pensados para lo que vendes y para quién lo compra.</p>
+            <h3>Diseño a medida</h3>
+            <p>Partimos de tu negocio, no de una plantilla: textos, estructura y diseño pensados para lo que vendes y para quién te compra.</p>
           </li>
           <li class="service" data-reveal>
             <span class="service__num">02</span>
             <h3>Desarrollo y publicación</h3>
-            <p>Construimos la web con código limpio, rápida en el móvil y lista para aparecer en Google. Nos ocupamos de dejarla publicada.</p>
+            <p>Código limpio, rápido en el móvil y preparado para aparecer en Google. Nos encargamos de dejarla publicada.</p>
           </li>
           <li class="service" data-reveal>
             <span class="service__num">03</span>
             <h3>Dominio, correo y puesta en marcha</h3>
-            <p>Te ayudamos a elegir el dominio, conectarlo y dejar el formulario de contacto funcionando, para que no tengas que pelearte con nada técnico.</p>
+            <p>Elegimos y conectamos tu dominio, configuramos tu correo profesional y dejamos el formulario funcionando. Tú no tocas nada técnico.</p>
           </li>
           <li class="service" data-reveal>
             <span class="service__num">04</span>
             <h3>Cambios y mantenimiento</h3>
-            <p>Cuando necesites actualizar textos, fotos u horarios, nos lo pides y lo hacemos. Tu web no se queda abandonada.</p>
+            <p>¿Nuevos horarios, fotos o precios? Nos lo pides y lo cambiamos. Tu web siempre al día.</p>
           </li>
         </ol>
       </div>
     </section>
 
-    <!-- ===== Proceso ===== -->
-    <section class="section section--alt" id="proceso">
+    <!-- ===== Cómo trabajamos · Júpiter ===== -->
+    <section class="section" id="proceso">
+      <div class="planet-slot" data-planet="jupiter" aria-hidden="true"></div>
       <div class="container">
         <header class="section__head">
           <p class="eyebrow" data-reveal>Cómo trabajamos</p>
-          <h2 data-reveal="lines">Cuatro pasos, <span class="hl">sin sorpresas.</span></h2>
+          <h2 data-reveal="lines">De la idea a tu web, en cuatro pasos.</h2>
         </header>
         <ol class="steps">
           <li class="step" data-reveal>
@@ -211,7 +210,7 @@
           <li class="step" data-reveal>
             <span class="step__num">2</span>
             <h3>Propuesta</h3>
-            <p>Te enviamos qué secciones tendrá, cómo se verá, el plazo y el presupuesto cerrado. Sin compromiso.</p>
+            <p>Te enviamos las secciones, el estilo, el plazo y un precio cerrado. Sin compromiso.</p>
           </li>
           <li class="step" data-reveal>
             <span class="step__num">3</span>
@@ -221,100 +220,108 @@
           <li class="step" data-reveal>
             <span class="step__num">4</span>
             <h3>Publicación</h3>
-            <p>La revisamos juntos en móvil y ordenador, la publicamos y te explicamos cómo funciona.</p>
+            <p>La revisamos juntos en móvil y ordenador, la publicamos y te enseñamos a usarla.</p>
           </li>
         </ol>
       </div>
     </section>
 
-    <!-- ===== Proyectos ===== -->
+    <!-- ===== Proyectos · Saturno ===== -->
     <section class="section" id="proyectos">
+      <div class="planet-slot" data-planet="saturn" aria-hidden="true"></div>
       <div class="container">
         <header class="section__head">
           <p class="eyebrow" data-reveal>Proyectos</p>
-          <h2 data-reveal="lines">Trabajo real y <span class="hl hl--violet">conceptos.</span></h2>
-          <p class="section__sub" data-reveal>Estamos empezando, así que te enseñamos lo que hay: un proyecto real y conceptos de estudio, marcados como tal.</p>
+          <h2 data-reveal="lines">Trabajo real, sin adornos.</h2>
+          <p class="section__sub" data-reveal>Estamos empezando, así que te enseñamos lo que hay: un proyecto real y algunos conceptos de estudio, marcados como tal.</p>
         </header>
         <div class="projects">
-          <article class="project project--real rock-surface" data-reveal>
+          <article class="project project--real" data-reveal>
             <div class="project__media">
-              <img src="assets/proyectos/vesta.webp" alt="Página de inicio de la web de Vesta Caterings" width="1200" height="750" loading="lazy" decoding="async">
+              <!-- TODO: sustituir por la captura actual de vesta-eventos.pages.dev (ordenador) en assets/proyectos/vesta-eventos.webp -->
+              <div class="project__pending" id="vesta-pending">
+                <span>Vesta Eventos</span>
+                <small>TODO · Falta la captura actual de la web</small>
+              </div>
             </div>
             <div class="project__body">
               <span class="tag tag--real">Proyecto real</span>
-              <h3>Vesta Caterings</h3>
-              <p>Web para un servicio de catering de bodas y eventos, con formulario para agendar reuniones.</p>
-              <!-- TODO: confirmar que Vesta es un proyecto real publicado y su enlace (VESTA_URL en config.js) -->
+              <h3>Vesta Eventos</h3>
+              <p>Web para una empresa de personal para eventos en Barcelona: lista de espera, eventos con foto y vídeo, y pensada primero para el móvil.</p>
               <a class="link-arrow" id="vesta-link" href="#" target="_blank" rel="noopener" hidden>Ver web <svg aria-hidden="true"><use href="#i-arrow-up"/></svg></a>
             </div>
           </article>
-          <article class="project project--concept rock-surface" data-reveal>
-            <div class="project__media project__media--concept concept-a" aria-hidden="true">
-              <span class="concept__name">Panadería<br>de barrio</span>
-              <span class="concept__line"></span>
+          <article class="project" data-reveal>
+            <div class="project__media">
+              <img src="assets/proyectos/concepto-panaderia.webp" alt="Maqueta de concepto: web de una panadería de barrio con la carta del día" width="1200" height="750" loading="lazy" decoding="async">
             </div>
             <div class="project__body">
               <span class="tag">Concepto</span>
-              <h3>Web para una panadería</h3>
-              <p>Estudio de diseño: carta del día, horarios y encargos por WhatsApp.</p>
+              <h3>Panadería de barrio</h3>
+              <p>Carta del día, horarios y encargos por WhatsApp.</p>
             </div>
           </article>
-          <article class="project project--concept rock-surface" data-reveal>
-            <div class="project__media project__media--concept concept-b" aria-hidden="true">
-              <span class="concept__name">Estudio de<br>fisioterapia</span>
-              <span class="concept__line"></span>
+          <article class="project" data-reveal>
+            <div class="project__media">
+              <img src="assets/proyectos/concepto-fisioterapia.webp" alt="Maqueta de concepto: web de un estudio de fisioterapia con reserva de cita" width="1200" height="750" loading="lazy" decoding="async">
             </div>
             <div class="project__body">
               <span class="tag">Concepto</span>
-              <h3>Web para una clínica</h3>
-              <p>Estudio de diseño: tratamientos claros y reserva de cita en dos pasos.</p>
+              <h3>Estudio de fisioterapia</h3>
+              <p>Tratamientos explicados con claridad y cita en dos pasos.</p>
             </div>
           </article>
-          <!-- TODO: sustituir los conceptos por diseños reales de concepto (o por proyectos reales) cuando los tengas -->
         </div>
       </div>
     </section>
 
-    <!-- ===== Preguntas frecuentes ===== -->
-    <section class="section section--alt" id="preguntas">
+    <!-- ===== Preguntas · Neptuno ===== -->
+    <section class="section" id="preguntas">
+      <div class="planet-slot" data-planet="neptune" aria-hidden="true"></div>
       <div class="container container--narrow">
         <header class="section__head">
           <p class="eyebrow" data-reveal>Preguntas frecuentes</p>
-          <h2 data-reveal="lines">Lo que nos suelen <span class="hl">preguntar.</span></h2>
+          <h2 data-reveal="lines">Lo que querrás saber.</h2>
         </header>
         <div class="faq">
           <details class="faq__item" data-reveal>
             <summary>¿Cuándo empezáis a aceptar proyectos?</summary>
-            <div class="faq__body"><p data-only="pre">Abrimos <span data-fecha>muy pronto</span>. Si te apuntas a la lista, te escribimos en cuanto podamos atender tu proyecto.</p><p data-only="open">Ya estamos aceptando proyectos. Escríbenos y te respondemos lo antes posible.</p></div>
+            <div class="faq__body"><p data-only="pre">Abrimos <span data-fecha>muy pronto</span>. Si te apuntas, te escribimos en cuanto podamos atender tu proyecto.</p><p data-only="open">Ya estamos aceptando proyectos. Escríbenos y te respondemos lo antes posible.</p></div>
           </details>
           <details class="faq__item" data-reveal>
             <summary>¿Cuánto cuesta una web?</summary>
-            <div class="faq__body"><p>Depende de lo que necesites: no es lo mismo una página de presentación que una web con varias secciones o tienda. Por eso no publicamos precios: te preparamos un presupuesto cerrado después de hablar contigo.</p></div>
+            <div class="faq__body"><p>Depende de lo que necesites: no es lo mismo una página sencilla que una web con varias secciones o tienda. Por eso no publicamos precios: después de hablar contigo te enviamos un precio cerrado, sin compromiso.</p></div>
           </details>
           <details class="faq__item" data-reveal>
             <summary>¿Cuánto se tarda?</summary>
-            <div class="faq__body"><p>Te damos un plazo concreto en la propuesta, antes de empezar. Depende sobre todo del tamaño de la web y de tener los textos y fotos a tiempo.</p></div>
+            <div class="faq__body"><p>Depende del tamaño de la web y de tener a tiempo los textos y las fotos. Te damos un plazo concreto en la propuesta, antes de empezar.</p></div>
           </details>
           <details class="faq__item" data-reveal>
-            <summary>¿La web se verá bien en el móvil?</summary>
-            <div class="faq__body"><p>Sí. La mayoría de tus clientes te buscará desde el móvil, así que diseñamos pensando primero en él y revisamos cada página en móvil y ordenador antes de publicarla.</p></div>
+            <summary>¿Se verá bien en el móvil?</summary>
+            <div class="faq__body"><p>Sí. Diseñamos primero para el móvil y revisamos cada página en móvil y ordenador antes de publicarla.</p></div>
           </details>
           <details class="faq__item" data-reveal>
             <summary>No tengo dominio ni nada técnico, ¿es un problema?</summary>
-            <div class="faq__body"><p>No. Te ayudamos a elegir y conectar el dominio y dejamos todo funcionando. Tú solo tienes que contarnos tu negocio.</p></div>
+            <div class="faq__body"><p>No. Elegimos y conectamos tu dominio, configuramos tu correo y dejamos todo funcionando.</p></div>
+          </details>
+          <!-- TODO: añadir "¿La web será mía?" cuando esté decidida la forma de trabajar -->
+          <details class="faq__item" data-reveal>
+            <summary>¿Qué necesito para empezar?</summary>
+            <div class="faq__body"><p>Contarnos qué hace tu negocio y, si los tienes, tu logo, fotos y textos. Si te falta algo, lo vemos juntos en la primera conversación.</p></div>
           </details>
         </div>
       </div>
     </section>
 
-    <!-- ===== Contacto ===== -->
+    <!-- ===== Contacto · El Sol ===== -->
     <section class="section contact" id="contacto">
+      <div class="planet-slot planet-slot--sun" data-planet="sun" aria-hidden="true"></div>
       <div class="container contact__grid">
         <div class="contact__intro">
           <p class="eyebrow" data-reveal>Contacto</p>
-          <h2 data-reveal="lines"><span data-only="pre">Te avisamos cuando <span class="hl hl--violet">abramos.</span></span><span data-only="open">Cuéntanos tu <span class="hl hl--violet">proyecto.</span></span></h2>
+          <h2 data-reveal="lines"><span data-only="pre">Te avisamos cuando abramos.</span><span data-only="open">Cuéntanos tu proyecto.</span></h2>
           <p class="contact__lead" data-reveal data-only="pre">Déjanos tu email y serás de los primeros en saberlo. Un solo aviso, sin newsletters.</p>
-          <p class="contact__lead" data-reveal data-only="open">Cuéntanos qué necesitas y te respondemos con una propuesta y un presupuesto cerrado.</p>
+          <p class="contact__lead" data-reveal data-only="open">Cuéntanos qué necesitas y te respondemos con una propuesta y un precio cerrado.</p>
           <ul class="socials" id="socials" data-reveal>
             <li data-social="email" hidden><a href="#" class="social"><svg aria-hidden="true"><use href="#i-mail"/></svg><span><small>Email</small><b></b></span></a></li>
             <li data-social="instagram" hidden><a href="#" class="social" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-instagram"/></svg><span><small>Instagram</small><b></b></span></a></li>
@@ -322,7 +329,7 @@
           </ul>
         </div>
 
-        <form class="form rock-surface" id="contact-form" novalidate data-reveal>
+        <form class="form" id="contact-form" novalidate data-reveal>
           <div class="field">
             <label for="f-email">Email *</label>
             <input type="email" id="f-email" name="email" autocomplete="email" inputmode="email" required>
@@ -345,10 +352,12 @@
           </div>
           <label class="check">
             <input type="checkbox" name="consentimiento" id="f-consent" required>
-            <span><span data-only="pre">Acepto que uséis mi email solo para avisarme de la apertura.</span><span data-only="open">Acepto que uséis mis datos solo para responder a mi solicitud.</span> <a href="#" id="privacy-link" target="_blank" rel="noopener" hidden>Política de privacidad</a> *</span>
-            <!-- TODO: enlazar la política de privacidad (PRIVACIDAD_URL en config.js) antes de activar el formulario -->
+            <span><span data-only="pre">Acepto que uséis mi email solo para avisarme de la apertura.</span><span data-only="open">Acepto que uséis mis datos solo para responder a mi solicitud.</span> <a href="#" id="privacy-link" target="_blank" rel="noopener" hidden>Ver política de privacidad.</a> *</span>
+            <!-- TODO: enlace a la política de privacidad (PRIVACIDAD_URL). El formulario no se activa sin ella. -->
           </label>
-          <button type="submit" class="btn btn--primary btn--block magnetic" id="submit-btn" data-cta>Avísame cuando abráis</button>
+          <button type="submit" class="btn btn--primary btn--block" id="submit-btn" data-cta>Avísame cuando abráis</button>
+          <a class="btn btn--primary btn--block" id="submit-instagram" href="#" target="_blank" rel="noopener" hidden><svg aria-hidden="true"><use href="#i-instagram"/></svg> Mientras tanto, síguenos en Instagram</a>
+          <p class="form__note" id="form-note" hidden>El formulario se activará cuando abramos.</p>
           <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
         </form>
       </div>
@@ -358,7 +367,7 @@
   <!-- ===== Pie ===== -->
   <footer class="footer">
     <div class="container">
-      <p class="footer__word" aria-hidden="true">WebCraft Studio</p>
+      <p class="footer__brand">WebCraft Studio <span><i aria-hidden="true">· </i>Diseño web a medida en Barcelona</span></p>
       <div class="footer__row">
         <nav class="footer__nav" aria-label="Pie de página">
           <a href="#servicios">Servicios</a>
@@ -387,13 +396,12 @@
   <a href="#contacto" class="mobile-cta" id="mobile-cta" data-cta>Avísame cuando abráis</a>
   <div class="cursor" aria-hidden="true"><span class="cursor__ring"></span></div>
 
-  <script src="js/config.js"></script>
   <script src="vendor/gsap.min.js" defer></script>
   <script src="vendor/ScrollTrigger.min.js" defer></script>
   <script src="vendor/SplitText.min.js" defer></script>
   <script src="vendor/lenis.min.js" defer></script>
-  <script src="js/space.js" defer></script>
+  <script src="js/planets.js" defer></script>
+  <script src="js/metal.js" defer></script>
   <script src="js/main.js" defer></script>
-  <script type="module" src="js/journey.js"></script>
 </body>
 </html>

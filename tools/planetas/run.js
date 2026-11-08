@@ -1,13 +1,14 @@
+// Genera las texturas equirectangulares de los planetas (assets/planetas/).
+// Uso: npm i playwright && node tools/planetas/run.js [nombre…]
 const { chromium } = require('playwright');
 const fs = require('fs'); const path = require('path');
 const { NOISE, SH } = require('./shaders.js');
-const OUT = '/home/user/WebCraft-Studio/assets/planets/';
+const OUT = path.join(__dirname, '../../assets/planetas/');
 fs.mkdirSync(OUT, { recursive: true });
 const ONLY = process.argv.slice(2);
 const jobs0 = [
-  ['jupiter', 2048, 1024, 1.0], ['saturn', 2048, 1024, 2.0], ['uranus', 1024, 512, 3.0], ['neptune', 1024, 512, 4.0],
-  ['mars', 2048, 1024, 5.0], ['mars_bump', 1024, 512, 5.0], ['mercury', 1024, 512, 6.0], ['mercury_bump', 1024, 512, 6.0],
-  ['venus', 1024, 512, 7.0], ['clouds', 2048, 1024, 8.0], ['rock', 1024, 512, 9.0], ['rock_bump', 1024, 512, 9.0]
+  ['earth', 1024, 512, 3.0], ['moon', 1024, 512, 6.0], ['mars', 1024, 512, 5.0],
+  ['jupiter', 1024, 512, 1.0], ['saturn', 1024, 512, 2.0], ['neptune', 1024, 512, 4.0]
 ];
 const jobs = ONLY.length ? jobs0.filter(j => ONLY.includes(j[0])) : jobs0;
 (async () => {
@@ -31,9 +32,9 @@ const jobs = ONLY.length ? jobs0.filter(j => ONLY.includes(j[0])) : jobs0;
       const o = document.createElement('canvas'); o.width = w; o.height = h; const x = o.getContext('2d');
       x.translate(0, h); x.scale(1, -1); x.drawImage(c, 0, 0);
       return o.toDataURL(alpha ? 'image/png' : 'image/webp', 0.86);
-    }, { src: NOISE + SH[name], w, h, seed, alpha: name === 'clouds' });
+    }, { src: NOISE + SH[name], w, h, seed, alpha: false });
     if (data.startsWith('ERR')) { console.log(name, data); continue; }
-    const ext = name === 'clouds' ? 'png' : 'webp';
+    const ext = 'webp';
     fs.writeFileSync(OUT + name + '.' + ext, Buffer.from(data.split(',')[1], 'base64'));
     console.log(name, w + 'x' + h, (fs.statSync(OUT + name + '.' + ext).size / 1024 | 0) + 'KB', (Date.now() - t0) + 'ms');
   }

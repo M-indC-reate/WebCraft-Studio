@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://mind-glitch-ceate.github.io/WebCraft-Studio/sitemap.xml
+Sitemap: https://webcraft-studio.pages.dev/sitemap.xml

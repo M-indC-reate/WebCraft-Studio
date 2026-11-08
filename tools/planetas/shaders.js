@@ -39,6 +39,28 @@ vec3 sph(){ vec2 uv=gl_FragCoord.xy/uRes; float lon=uv.x*6.2831853; float lat=(u
 float latv(){ return gl_FragCoord.y/uRes.y*2.0-1.0; }
 `;
 const SH = {
+earth: `
+void main(){ vec3 p=sph(); float lat=p.y;
+  float h=fbm(p*0.9+uSeed)+0.3*fbm(p*3.0+2.0)-0.02;
+  vec3 deep=vec3(0.05,0.16,0.34), shallow=vec3(0.10,0.30,0.52);
+  vec3 col=mix(deep,shallow,smoothstep(-0.2,0.12,h));
+  if(h>0.12){ float k=smoothstep(0.12,0.6,h);
+    vec3 green=vec3(0.16,0.32,0.15), dry=vec3(0.48,0.40,0.26), high=vec3(0.36,0.33,0.28);
+    col=mix(green,dry,smoothstep(0.25,0.55,1.0-abs(lat)*1.6+0.2*fbm(p*6.0)));
+    col=mix(col,high,k*0.6); col*=0.9+0.15*fbm(p*20.0); }
+  float ice=smoothstep(0.975,0.985,abs(lat)+0.01*fbm(p*6.0)); col=mix(col,vec3(0.9,0.93,0.96),ice);
+  vec3 w=vec3(fbm(p*2.2+7.0),fbm(p*2.2+3.0),0.0);
+  float cl=smoothstep(0.15,0.6,fbm(vec3(p.x*2.0,p.y*4.0,p.z*2.0)+w*1.6));
+  col=mix(col,vec3(0.94,0.95,0.97),cl*0.75);
+  gl_FragColor=vec4(col,1.0); }`,
+moon: `
+void main(){ vec3 p=sph();
+  float c=craters(p*5.0)+craters(p*12.0)*0.6+craters(p*28.0)*0.35;
+  float maria=smoothstep(0.05,0.35,fbm(p*1.4+uSeed));
+  vec3 col=mix(vec3(0.66,0.66,0.68),vec3(0.38,0.39,0.42),maria);
+  col*=0.86+0.22*c+0.06*fbm(p*30.0);
+  gl_FragColor=vec4(col,1.0); }`,
+
 jupiter: `
 void main(){ vec3 p=sph(); float lat=p.y;
   vec3 q=p*2.0+uSeed; vec3 w=vec3(fbm(q*1.5),fbm(q*1.5+5.2),fbm(q*1.5+9.1));

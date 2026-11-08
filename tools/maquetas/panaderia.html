@@ -1,0 +1,45 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>Concepto · Panadería de barrio</title>
+<!-- Maqueta de CONCEPTO para el portfolio de WebCraft Studio (no es un cliente real). Se captura con tools/maquetas/capturar.js -->
+<style>
+@font-face{font-family:"Instrument Serif";src:url(fonts/instrument-serif-latin-400-normal.woff2)}
+@font-face{font-family:"Instrument Serif";font-style:italic;src:url(fonts/instrument-serif-latin-400-italic.woff2)}
+@font-face{font-family:"Hanken";src:url(fonts/hanken-grotesk-latin-400-normal.woff2);font-weight:400}
+@font-face{font-family:"Hanken";src:url(fonts/hanken-grotesk-latin-500-normal.woff2);font-weight:500}
+@font-face{font-family:"Hanken";src:url(fonts/hanken-grotesk-latin-600-normal.woff2);font-weight:600}
+:root{--bg:#F6F1E8;--ink:#2A1E16;--muted:#6D5D50;--wheat:#C99A4A;--crust:#9A5B2E;--line:#E4D9C8;--card:#FFFBF4}
+*{box-sizing:border-box}body{margin:0;width:1440px;height:900px;background:var(--bg);color:var(--ink);font-family:Hanken,sans-serif;overflow:hidden}
+nav{display:flex;align-items:center;justify-content:space-between;padding:28px 80px;border-bottom:1px solid var(--line)}
+.brand{font-family:"Instrument Serif";font-size:30px;display:flex;align-items:center;gap:12px}.brand i{color:var(--crust)}
+.brand svg{width:34px;height:34px}
+.links{display:flex;gap:36px;font-weight:500;color:var(--muted);font-size:16px}
+.cta{background:var(--ink);color:var(--bg);padding:13px 22px;border-radius:999px;font-weight:600;font-size:15px}
+main{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;padding:70px 80px 0}
+.eyebrow{font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--crust);font-weight:600}
+h1{font-family:"Instrument Serif";font-weight:400;font-size:86px;line-height:.95;letter-spacing:-.02em;margin:18px 0 22px}
+h1 i{color:var(--crust)}
+p.lead{font-size:19px;line-height:1.6;color:var(--muted);max-width:30em;margin:0}
+.btns{display:flex;gap:12px;margin-top:34px}
+.b1{background:#2F6B3F;color:#fff;padding:16px 24px;border-radius:999px;font-weight:600;display:flex;gap:10px;align-items:center}
+.b2{border:1px solid var(--ink);padding:15px 24px;border-radius:999px;font-weight:600}
+.hours{display:flex;gap:40px;margin-top:46px;padding-top:24px;border-top:1px solid var(--line);font-size:15px}
+.hours b{display:block;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:4px}
+.menu{background:var(--card);border:1px solid var(--line);border-radius:28px;padding:34px 36px;position:relative;box-shadow:0 30px 60px -40px rgba(60,30,10,.4)}
+.menu h2{font-family:"Instrument Serif";font-weight:400;font-size:40px;margin:0 0 6px}
+.menu small{color:var(--muted);font-size:14px}
+.menu ul{list-style:none;padding:0;margin:22px 0 0}
+.menu li{display:flex;justify-content:space-between;align-items:baseline;padding:14px 0;border-bottom:1px dashed var(--line);font-size:18px}
+.menu li span{color:var(--muted);font-size:14px}
+.tagnew{background:#E9F1E5;color:#2F6B3F;font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px}
+.loaf{position:absolute;right:-30px;top:-70px;width:200px}
+</style></head><body>
+<nav><div class="brand"><svg viewBox="0 0 40 40"><ellipse cx="20" cy="24" rx="17" ry="11" fill="#C98A4E"/><path d="M9 21c3-3 6-4 9-4M15 26c4-4 8-5 12-5M22 30c3-2 6-3 9-3" stroke="#F6E6CC" stroke-width="2" fill="none" stroke-linecap="round"/></svg>Panadería <i>de barrio</i></div>
+<div class="links"><span>La carta</span><span>Horarios</span><span>Encargos</span><span>Dónde estamos</span></div><span class="cta">Encargar por WhatsApp</span></nav>
+<main><div><div class="eyebrow">Horno de leña · Desde primera hora</div>
+<h1>Pan de masa madre, <i>recién hecho</i> cada mañana.</h1>
+<p class="lead">Consulta la carta del día, mira a qué hora abrimos y encarga tu pan por WhatsApp para recogerlo sin esperar.</p>
+<div class="btns"><span class="b1"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6"><path d="M4.5 19.5 5.6 16A8.5 8.5 0 1 1 8.4 18.6Z"/></svg>Encargar por WhatsApp</span><span class="b2">Ver la carta de hoy</span></div>
+<div class="hours"><div><b>Lunes a sábado</b>7:30 – 14:00 · 17:00 – 20:30</div><div><b>Domingo</b>8:00 – 14:00</div><div><b>Encargos</b>Hasta las 20:00 del día anterior</div></div></div>
+<div class="menu"><svg class="loaf" viewBox="0 0 200 140"><ellipse cx="100" cy="88" rx="92" ry="48" fill="#B8733D"/><ellipse cx="100" cy="80" rx="88" ry="44" fill="#CF8F52"/><path d="M38 72c18-14 36-20 54-20M68 92c22-18 44-24 66-24M104 108c18-12 36-17 54-17" stroke="#F3DEBB" stroke-width="7" fill="none" stroke-linecap="round"/></svg>
+<h2>Carta de hoy</h2><small>Se actualiza cada mañana</small>
+<ul><li>Hogaza de masa madre <span>Centeno y trigo</span></li><li>Barra rústica <span>Fermentación lenta</span></li><li>Croissant de mantequilla <span class="tagnew">Recién salido</span></li><li>Coca de llardons <span>Solo fines de semana</span></li><li>Pan de semillas <span>Sésamo, lino y pipas</span></li></ul></div></main>
+</body></html>
