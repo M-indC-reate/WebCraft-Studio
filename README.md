@@ -46,7 +46,7 @@ Sitio estático (HTML + CSS + JS). Las librerías (GSAP, ScrollTrigger, SplitTex
 - Todos generados por código con el mismo método (`tools/planetas/`); el Sol se dibuja en vivo.
 - Sin WebGL, con "reducir movimiento" o en móviles lentos: planetas quietos o sin animar, y la diapositiva muestra su imagen fija.
 - Para ver la imagen fija de la diapositiva: `?metalfijo`.
-- Solo tres planetas son interactivos (botones con `aria-label`, funcionan con teclado): Saturno (mensaje sobre Vesta), Neptuno (una vez por visita al final de las preguntas) y el Sol (contactos de `EMAIL`, `INSTAGRAM` y `WHATSAPP`; si están vacíos, sin botones). El resto es decoración.
+- Solo tres planetas son interactivos (botones con `aria-label`, funcionan con teclado): Saturno (mensaje sobre Vesta), Neptuno (una vez por visita al final de las preguntas) y el Sol (contactos de `EMAIL`, `INSTAGRAM` y `WHATSAPP`; si están vacíos, sin botones). La pista del contacto solo lleva hasta el Sol; el mensaje se descubre tocándolo. El resto es decoración.
 
 ## Ver en local
 

@@ -113,6 +113,9 @@
 /* Planetas interactivos (Saturno, Neptuno y el Sol): botón que contiene el lienzo */
 .planet-btn { display: block; width: 100%; height: 100%; padding: 0; border: 0; border-radius: 50%; background: none; color: inherit; cursor: pointer; pointer-events: auto; position: relative; }
 .planet-btn .planet { cursor: pointer; }
+/* Al pulsar la pista, el Sol "late" una vez para que lo veas */
+.planet-slot--sun.is-called::after { content: ""; position: absolute; inset: 8%; border-radius: 50%; pointer-events: none; box-shadow: 0 0 0 2px rgba(255, 200, 110, .7); animation: sunCall 1.6s .6s ease-out 2 both; }
+@keyframes sunCall { 0% { opacity: 0; transform: scale(.9); } 30% { opacity: 1; } 100% { opacity: 0; transform: scale(1.35); } }
 .planet-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 8px; }
 /* La pista se "escribe" cuando choca la estrella fugaz */
 .hint.is-hidden { -webkit-mask-image: linear-gradient(90deg, #000 var(--rv, -12%), transparent calc(var(--rv, -12%) + 12%)); mask-image: linear-gradient(90deg, #000 var(--rv, -12%), transparent calc(var(--rv, -12%) + 12%)); }

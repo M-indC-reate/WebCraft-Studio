@@ -9,7 +9,8 @@
      js/config.js (EMAIL, INSTAGRAM y WHATSAPP). Si están vacíos, no hay botones.
    Cada planeta interactivo es un <button> de verdad (index.html, .planet-btn),
    con aria-label y teclado. Con "reducir movimiento" no hay animaciones.
-   La pista del contacto aparece cuando una estrella fugaz choca con ella.
+   La pista del contacto aparece cuando una estrella fugaz choca con ella;
+   al pulsarla te lleva hasta el Sol (sin abrir el mensaje: eso lo descubres tú).
    ========================================================= */
 (function () {
   "use strict";
@@ -91,7 +92,7 @@
   }
   card.querySelector(".planet-msg__close").addEventListener("click", function () { close(); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") close(); });
-  document.addEventListener("pointerdown", function (e) { if (!card.hidden && !card.contains(e.target) && !e.target.closest(".planet-btn, .hint")) close(true); });
+  document.addEventListener("pointerdown", function (e) { if (!card.hidden && !card.contains(e.target) && !e.target.closest(".planet-btn")) close(true); });
 
   // ---------- Planetas interactivos: botones de verdad ----------
   buttons.forEach(function (b) {
@@ -116,8 +117,14 @@
     hint.type = "button"; hint.className = "hint";
     hint.textContent = PISTAS[Math.floor(Math.random() * PISTAS.length)] + " ";
     hint.insertAdjacentHTML("beforeend", '<svg aria-hidden="true" width="16" height="16"><use href="#i-destello"/></svg>');
-    hint.setAttribute("aria-haspopup", "dialog");
-    hint.addEventListener("click", function () { open("sun", hint); });
+    // La pista no abre el mensaje: te lleva hasta el Sol y el resto lo descubres tú
+    hint.addEventListener("click", function () {
+      var sun = document.querySelector(".planet-slot--sun"), btn = sun && sun.querySelector(".planet-btn");
+      if (!sun) return;
+      sun.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "center" });
+      if (btn) setTimeout(function () { btn.focus({ preventScroll: true }); }, reduced ? 0 : 700);
+      if (!reduced) { sun.classList.remove("is-called"); void sun.offsetWidth; sun.classList.add("is-called"); }
+    });
     var anchor = $("#socials");
     intro.insertBefore(hint, anchor && anchor.parentNode === intro ? anchor : null);
   }
