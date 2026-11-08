@@ -304,6 +304,7 @@ html:not(.motion) .slide__progress { display: none; }
 .project { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--surface); display: flex; flex-direction: column; }
 .project__media { position: relative; overflow: hidden; aspect-ratio: 16 / 10; background: var(--surface-2); }
 .project__media picture { display: contents; }
+.project--real .project__media { aspect-ratio: 1600 / 941; } /* la captura entera, sin recortar */
 .project__media img { width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform 1.2s var(--ease); }
 .project:hover .project__media img { transform: scale(1.03); }
 .project__pending { position: absolute; inset: 0; display: grid; place-content: center; gap: 8px; text-align: center; padding: 20px; border: 1px dashed var(--line-2); border-radius: inherit; }

@@ -33,8 +33,7 @@ Casi todo se cambia en **`js/config.js`**: no hace falta tocar el resto del cód
       (está marcada con TODO en `index.html`).
 
 ## 5. Contenido pendiente
-- [ ] Captura ACTUAL de Vesta Eventos (ordenador) en `assets/proyectos/vesta-eventos.webp` (+ `.jpg`)
-      y sustituir el bloque `project__pending` de `index.html` por la imagen (hay un TODO). La anterior estaba anticuada.
+- [x] Captura actual de Vesta Eventos (ordenador) en `assets/proyectos/vesta-eventos.webp` y `.jpg`.
 - [x] Color de acento: celeste (decidido).
 
 ## 6. Dirección de la web
