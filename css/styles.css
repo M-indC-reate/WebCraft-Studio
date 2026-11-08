@@ -246,6 +246,7 @@ html.is-open [data-only="pre"], html:not(.is-open) [data-only="open"] { display:
 .slide.is-static .slide__canvas { display: none; }
 /* Pantalla del portátil: logo real en HTML, se enciende al final del scroll */
 .slide__screen { position: absolute; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .7em; opacity: 0; pointer-events: none; text-align: center; }
+.slide__screen::after { content: ""; position: absolute; inset: 0; background: linear-gradient(118deg, rgba(255,255,255,.055) 0%, rgba(255,255,255,.018) 38%, transparent 38.2%); pointer-events: none; }
 .slide__screen svg { width: 3.6em; height: 3.6em; filter: drop-shadow(0 0 1.2em var(--accent-soft)); }
 .slide__screen span { font-family: var(--font-display); font-weight: 700; font-size: 1.35em; letter-spacing: -.01em; color: var(--text); white-space: nowrap; }
 .slide__screen em { font-style: normal; font-weight: 600; color: var(--muted); }
