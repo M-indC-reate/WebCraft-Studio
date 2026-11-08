@@ -278,7 +278,9 @@
   }
 
   /* ---------- Girar con el ratón o el dedo (arrastre horizontal) ---------- */
+  var tap = null;
   canvas.addEventListener("pointerdown", function (e) {
+    tap = { x: e.clientX, y: e.clientY, t: performance.now() };
     drag = { x: e.clientX, t: performance.now(), v: 0 };
     canvas.setPointerCapture && canvas.setPointerCapture(e.pointerId);
     canvas.classList.add("is-drag");
@@ -291,7 +293,13 @@
     if (reduced || !running) draw();
   });
   function endDrag() { if (!drag) return; rotVel = Math.max(-6, Math.min(6, drag.v * 0.6)); drag = null; canvas.classList.remove("is-drag"); }
-  canvas.addEventListener("pointerup", endDrag);
+  canvas.addEventListener("pointerup", function (e) {
+    // Toque corto sin arrastrar: avisa a la web (los planetas guardan sorpresas, ver js/sorpresas.js)
+    if (tap && Math.hypot(e.clientX - tap.x, e.clientY - tap.y) < 8 && performance.now() - tap.t < 450) {
+      document.dispatchEvent(new CustomEvent("wc:planet-tap", { detail: { name: current, slot: slotNow } }));
+    }
+    tap = null; endDrag();
+  });
   canvas.addEventListener("pointercancel", endDrag);
 
   /* ---------- El planeta más visible se lleva el lienzo; el siguiente se precarga ---------- */
