@@ -13,6 +13,7 @@ Casi todo se cambia en **`js/config.js`**: no hace falta tocar el resto del cód
 ## 2. Contacto y redes
 - [ ] `EMAIL`: email de contacto.
 - [ ] `INSTAGRAM`: usuario sin @.
+      Mientras el formulario esté desactivado, el bloque de contacto usa estos dos; si los dos están vacíos, solo dice que muy pronto se podrá escribir.
 - [ ] `WHATSAPP`: número con prefijo, sin espacios ni + (p. ej. `34600000000`).
       Se abre con el mensaje de `WHATSAPP_MENSAJE`.
 - Si una variable se deja vacía, su enlace no aparece.
@@ -32,10 +33,9 @@ Casi todo se cambia en **`js/config.js`**: no hace falta tocar el resto del cód
       (está marcada con TODO en `index.html`).
 
 ## 5. Contenido pendiente
-- [x] Captura de ordenador de Vesta Eventos en `assets/proyectos/vesta-eventos.webp` (sacada de su repositorio; si la web publicada cambia, repetirla)
-      y sustituir el bloque `project__pending` de `index.html` por la imagen (hay un TODO).
-- [ ] Elegir el color de acento definitivo: `ACENTO: "celeste"` o `"dorado"`.
-      Si es dorado, cambiar también el color del icono en `assets/favicon.svg` (`#22D3EE` → `#E8C27A`).
+- [ ] Captura ACTUAL de Vesta Eventos (ordenador) en `assets/proyectos/vesta-eventos.webp` (+ `.jpg`)
+      y sustituir el bloque `project__pending` de `index.html` por la imagen (hay un TODO). La anterior estaba anticuada.
+- [x] Color de acento: celeste (decidido).
 
 ## 6. Dirección de la web
 - [ ] Comprobar que el nombre está libre en Cloudflare Pages (provisional: `webcraft-studio.pages.dev`;

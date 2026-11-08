@@ -54,6 +54,7 @@ python3 -m http.server 8000
 
 ## Licencias
 
+- Imágenes: todas propias. Planetas, Sol, portátil, cielo e imagen para redes están generados por código (`tools/planetas/`, `js/planets.js`, `js/metal.js`, `js/sky.js`); las maquetas de concepto, con `tools/maquetas/`; la captura de Vesta Eventos es de nuestra propia web. No se usa ninguna imagen de la NASA ni de bancos de imágenes.
 - GSAP: licencia estándar de GSAP, gratuita también para uso comercial.
 - Lenis: MIT.
 - Syne, Manrope, Instrument Serif y Hanken Grotesk: SIL Open Font License.

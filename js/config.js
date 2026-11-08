@@ -28,8 +28,9 @@ window.WEBCRAFT_CONFIG = {
 
   /* ---------- Formulario ----------
      Desactivado hasta tener servicio de envío y política de privacidad.
-     Mientras sea false: no envía nada; el botón dice "Muy pronto podrás apuntarte"
-     (o lleva a Instagram si INSTAGRAM tiene valor). */
+     Mientras sea false: el formulario no se muestra ni guarda nada; en su lugar
+     aparece "Escríbenos un email" / "Escríbenos por Instagram" con EMAIL e INSTAGRAM.
+     Al ponerlo en true, el formulario vuelve a mostrarse solo. */
   FORMULARIO_ACTIVO: false,
   FORM_ENDPOINT: "", // TODO: endpoint del servicio elegido al lanzar
 

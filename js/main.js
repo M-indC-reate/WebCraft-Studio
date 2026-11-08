@@ -88,7 +88,7 @@
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && nav.classList.contains("is-open")) { setMenu(false); toggle.focus(); } });
 
   if ("IntersectionObserver" in window) {
-    new IntersectionObserver(function (en) { contactVisible = en[0].isIntersecting; onScroll(); }, { threshold: 0.02 }).observe($("#contact-form"));
+    new IntersectionObserver(function (en) { contactVisible = en[0].isIntersecting; onScroll(); }, { threshold: 0.02 }).observe(FORM_ON ? $("#contact-form") : $("#contact-alt"));
     var links = $$(".nav__list a, .journey a");
     var navObs = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
@@ -105,38 +105,28 @@
 
   /* =======================================================
      4. Formulario
-     Desactivado (FORMULARIO_ACTIVO: false): no envía nada ni lo promete.
+     Desactivado (FORMULARIO_ACTIVO: false): se oculta y se muestra el contacto por email/Instagram.
      ======================================================= */
   var form = $("#contact-form"), statusEl = $("#form-status"), submitBtn = $("#submit-btn");
-  var igBtn = $("#submit-instagram"), note = $("#form-note");
 
   if (!FORM_ON) {
-    $$("input, textarea", form).forEach(function (el) { el.disabled = true; });
-    if (insta) {
-      submitBtn.hidden = true;
-      igBtn.href = "https://instagram.com/" + insta; igBtn.hidden = false;
-    } else {
-      submitBtn.disabled = true; submitBtn.textContent = "Muy pronto podrás apuntarte";
-      submitBtn.removeAttribute("data-cta");
-    }
-    note.hidden = false;
-    form.addEventListener("submit", function (e) { e.preventDefault(); });
+    // Sin formulario: no se muestra ni se guarda nada; en su lugar, email o Instagram (si están configurados).
+    // Cuando FORMULARIO_ACTIVO pase a true, el formulario vuelve a mostrarse solo.
+    form.hidden = true;
+    $$("input, textarea, button", form).forEach(function (el) { el.disabled = true; });
+    var alt = $("#contact-alt"), altText = $("#contact-alt-text"), ways = [];
+    if (email) { var ae = $("#alt-email"); ae.href = "mailto:" + email + "?subject=" + encodeURIComponent("Avísame cuando abráis"); ae.hidden = false; ways.push("por email"); }
+    if (insta) { var ai = $("#alt-instagram"); ai.href = "https://instagram.com/" + insta; ai.hidden = false; ways.push("por Instagram"); }
+    if (ways.length) altText.textContent = "Mientras tanto, escríbenos " + ways.join(" o ") + " y te avisamos cuando abramos.";
+    alt.hidden = false;
+    var leadPre = $("#lead-pre");
+    if (leadPre) leadPre.textContent = ways.length ? "Escríbenos y te avisamos en cuanto abramos." : "Estamos preparando la apertura.";
+    var soc = $("#socials"); if (soc) soc.hidden = true; // ya están en el bloque
 
-    // Botones "Avísame cuando abráis": llevan al formulario, lo resaltan y explican que aún no está abierto
-    var toast = document.createElement("div");
-    toast.className = "toast"; toast.setAttribute("role", "status"); toast.setAttribute("aria-live", "polite");
-    toast.textContent = insta
-      ? "Aún no hemos abierto la lista de aviso. Mientras tanto, puedes seguirnos en Instagram."
-      : "Aún no hemos abierto la lista de aviso. Muy pronto podrás apuntarte aquí.";
-    document.body.appendChild(toast);
-    var toastTimer = null;
+    // Botones "Avísame cuando abráis": llevan a este bloque y lo resaltan
     $$('a[href="#contacto"]').forEach(function (a) {
       a.addEventListener("click", function () {
-        setTimeout(function () {
-          form.classList.remove("is-attention"); void form.offsetWidth; form.classList.add("is-attention");
-          toast.classList.add("is-visible"); clearTimeout(toastTimer);
-          toastTimer = setTimeout(function () { toast.classList.remove("is-visible"); }, 5000);
-        }, reduced ? 50 : 900);
+        setTimeout(function () { alt.classList.remove("is-attention"); void alt.offsetWidth; alt.classList.add("is-attention"); }, reduced ? 50 : 900);
       });
     });
   } else {

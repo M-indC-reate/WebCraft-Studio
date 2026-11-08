@@ -263,23 +263,27 @@
         <header class="section__head">
           <p class="eyebrow" data-reveal>Proyectos</p>
           <h2 data-reveal="lines">Trabajo real, sin adornos.</h2>
-          <p class="section__sub" data-reveal>Estamos empezando, así que te enseñamos lo que hay: un proyecto real y algunos conceptos de estudio, marcados como tal.</p>
+          <p class="section__sub" data-reveal>Estamos empezando, así que te enseñamos lo que hay: un proyecto propio y algunos conceptos de estudio, marcados como tal.</p>
         </header>
         <div class="projects">
           <article class="project project--real" data-reveal>
             <div class="project__media">
-              <img src="assets/proyectos/vesta-eventos.webp" alt="Portada de la web de Vesta Eventos en ordenador: «El equipo que te falta, cuando lo necesitas.»" width="1800" height="1125" loading="lazy" decoding="async">
+              <!-- TODO: captura actual de Vesta Eventos (ordenador) en assets/proyectos/vesta-eventos.webp + .jpg; la anterior estaba anticuada -->
+              <div class="project__pending" id="vesta-pending">
+                <span>Vesta Eventos</span>
+                <small>TODO · Falta la captura actual de la web</small>
+              </div>
             </div>
             <div class="project__body">
-              <span class="tag tag--real">Proyecto real</span>
+              <span class="tag tag--real">Proyecto propio</span>
               <h3>Vesta Eventos</h3>
-              <p>Web para una empresa de personal para eventos en Barcelona: lista de espera, eventos con foto y vídeo, y pensada primero para el móvil.</p>
+              <p>Web de Vesta Eventos, una empresa propia de personal para eventos en Barcelona: lista de espera, eventos con foto y vídeo, y pensada primero para el móvil.</p>
               <a class="link-arrow" id="vesta-link" href="#" target="_blank" rel="noopener" hidden>Ver web <svg aria-hidden="true"><use href="#i-arrow-up"/></svg></a>
             </div>
           </article>
           <article class="project" data-reveal>
             <div class="project__media">
-              <img src="assets/proyectos/concepto-panaderia.webp" alt="Maqueta de concepto: web de una panadería de barrio con la carta del día" width="1200" height="750" loading="lazy" decoding="async">
+              <picture><source srcset="assets/proyectos/concepto-panaderia.webp" type="image/webp"><img src="assets/proyectos/concepto-panaderia.jpg" alt="Maqueta de concepto: web de una panadería de barrio con la carta del día" width="1200" height="750" decoding="async"></picture>
             </div>
             <div class="project__body">
               <span class="tag">Concepto</span>
@@ -289,7 +293,7 @@
           </article>
           <article class="project" data-reveal>
             <div class="project__media">
-              <img src="assets/proyectos/concepto-fisioterapia.webp" alt="Maqueta de concepto: web de un estudio de fisioterapia con reserva de cita" width="1200" height="750" loading="lazy" decoding="async">
+              <picture><source srcset="assets/proyectos/concepto-fisioterapia.webp" type="image/webp"><img src="assets/proyectos/concepto-fisioterapia.jpg" alt="Maqueta de concepto: web de un estudio de fisioterapia con reserva de cita" width="1200" height="750" decoding="async"></picture>
             </div>
             <div class="project__body">
               <span class="tag">Concepto</span>
@@ -316,7 +320,7 @@
           </details>
           <details class="faq__item" data-reveal>
             <summary>¿Cuánto cuesta una web?</summary>
-            <div class="faq__body"><p>Depende de lo que necesites: no es lo mismo una página sencilla que una web con varias secciones o tienda. Por eso no publicamos precios: después de hablar contigo te enviamos un precio cerrado, sin compromiso.</p></div>
+            <div class="faq__body"><p>Depende de lo que necesites. Antes de empezar te damos un precio cerrado, sin sorpresas.</p></div>
           </details>
           <details class="faq__item" data-reveal>
             <summary>¿Cuánto se tarda?</summary>
@@ -346,7 +350,7 @@
         <div class="contact__intro">
           <p class="eyebrow" data-reveal>Contacto</p>
           <h2 data-reveal="lines"><span data-only="pre">Te avisamos cuando abramos.</span><span data-only="open">Cuéntanos tu proyecto.</span></h2>
-          <p class="contact__lead" data-reveal data-only="pre">Déjanos tu email y serás de los primeros en saberlo. Un solo aviso, sin newsletters.</p>
+          <p class="contact__lead" id="lead-pre" data-reveal data-only="pre">Déjanos tu email y serás de los primeros en saberlo. Un solo aviso, sin newsletters.</p>
           <p class="contact__lead" data-reveal data-only="open">Cuéntanos qué necesitas y te respondemos con una propuesta y un precio cerrado.</p>
           <ul class="socials" id="socials" data-reveal>
             <li data-social="email" hidden><a href="#" class="social"><svg aria-hidden="true"><use href="#i-mail"/></svg><span><small>Email</small><b></b></span></a></li>
@@ -382,10 +386,19 @@
             <!-- TODO: enlace a la política de privacidad (PRIVACIDAD_URL). El formulario no se activa sin ella. -->
           </label>
           <button type="submit" class="btn btn--primary btn--block" id="submit-btn" data-cta>Avísame cuando abráis</button>
-          <a class="btn btn--primary btn--block" id="submit-instagram" href="#" target="_blank" rel="noopener" hidden><svg aria-hidden="true"><use href="#i-instagram"/></svg> Mientras tanto, síguenos en Instagram</a>
-          <p class="form__note" id="form-note" hidden>El formulario se activará cuando abramos.</p>
           <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
         </form>
+
+        <!-- Mientras FORMULARIO_ACTIVO sea false: contacto sin formulario (no guarda datos). Usa EMAIL e INSTAGRAM de js/config.js -->
+        <div class="form contact-alt" id="contact-alt" hidden>
+          <p class="contact-alt__title">El formulario aún no está abierto.</p>
+          <p class="contact-alt__text" id="contact-alt-text">Muy pronto podrás escribirnos desde aquí.</p>
+          <div class="contact-alt__actions">
+            <a class="btn btn--primary btn--block" id="alt-email" href="#" hidden><svg aria-hidden="true"><use href="#i-mail"/></svg> Escríbenos un email</a>
+            <a class="btn btn--ghost btn--block" id="alt-instagram" href="#" target="_blank" rel="noopener" hidden><svg aria-hidden="true"><use href="#i-instagram"/></svg> Escríbenos por Instagram</a>
+          </div>
+          <p class="form__note">Esta web no guarda ningún dato.</p>
+        </div>
       </div>
     </section>
   </main>
