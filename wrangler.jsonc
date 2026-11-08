@@ -1,0 +1,10 @@
+// Configuración para publicar la web en Cloudflare (Workers con archivos estáticos).
+// No hay que compilar nada: se sirven tal cual los archivos de la raíz.
+{
+  "name": "webcraft-studio",
+  "compatibility_date": "2025-09-01",
+  "assets": {
+    "directory": ".",
+    "not_found_handling": "404-page"
+  }
+}
