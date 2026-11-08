@@ -59,7 +59,7 @@
   /* =======================================================
      3. Cabecera, menú, mapa del viaje y botón fijo
      ======================================================= */
-  var header = $("#header"), nav = $("#nav"), toggle = $("#nav-toggle"), mobileCta = $("#mobile-cta");
+  var header = $("#header"), nav = $("#nav"), toggle = $("#nav-toggle");
   var hero = $("#inicio"), lenis = null, contactVisible = false, lastY = window.scrollY, ctaShown = false;
 
   // Botón fijo: solo tras el inicio; se esconde al bajar, vuelve al subir; nunca con el formulario a la vista
@@ -70,7 +70,6 @@
     if (!pastHero || contactVisible) ctaShown = false;
     else if (goingUp) ctaShown = true;
     else if (goingDown) ctaShown = false;
-    mobileCta.classList.toggle("is-visible", ctaShown);
     if (goingUp || goingDown) lastY = y;
   }
   window.addEventListener("scroll", onScroll, { passive: true });

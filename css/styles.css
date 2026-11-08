@@ -128,7 +128,8 @@ html.is-open [data-only="pre"], html:not(.is-open) [data-only="open"] { display:
 .header.menu-open .nav-toggle span:nth-child(1) { top: 23px; transform: rotate(45deg); }
 .header.menu-open .nav-toggle span:nth-child(2) { top: 23px; transform: rotate(-45deg); }
 .nav-toggle:hover { border-color: var(--accent); }
-.header.menu-open { background: transparent !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; border-color: transparent !important; }
+.header.menu-open { position: fixed; left: 0; right: 0; top: 0; background: transparent !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; border-color: transparent !important; }
+.header.menu-open .logo { opacity: 0; pointer-events: none; }
 
 /* ---------- Menú a pantalla completa ---------- */
 .nav {
@@ -218,6 +219,16 @@ html.is-open [data-only="pre"], html:not(.is-open) [data-only="open"] { display:
 /* Títulos animados por líneas: margen para que no se recorten letras */
 .line-mask { padding: .06em 0 .14em; margin: -.06em 0 -.14em; }
 
+/* ---------- Logo: estrellas que titilan y estrellas fugaces dentro de la W ---------- */
+.lg-star { animation: lgTwinkle 3.2s ease-in-out infinite; }
+.lg-star--b { animation-duration: 4.4s; animation-delay: -1.3s; }
+.lg-star--c { animation-duration: 2.6s; animation-delay: -.7s; }
+@keyframes lgTwinkle { 0%, 100% { opacity: .9; } 50% { opacity: .25; } }
+.lg-shoot { opacity: 0; animation: lgShoot 5.5s cubic-bezier(.3,.1,.6,1) infinite .8s; }
+.lg-shoot--2 { animation: lgShoot2 8.5s cubic-bezier(.3,.1,.6,1) infinite 3.6s; }
+@keyframes lgShoot { 0% { opacity: 0; transform: translate(4px, 10px); } 4%, 22% { opacity: 1; } 28%, 100% { opacity: 0; transform: translate(70px, 44px); } }
+@keyframes lgShoot2 { 0% { opacity: 0; transform: translate(14px, 2px); } 4%, 20% { opacity: 1; } 26%, 100% { opacity: 0; transform: translate(62px, 46px); } }
+
 /* ---------- Diapositiva (metal líquido) ---------- */
 .slide { position: relative; }
 .hero, .section, .slide { overflow-x: clip; }
@@ -233,6 +244,16 @@ html.is-open [data-only="pre"], html:not(.is-open) [data-only="open"] { display:
 .slide__still { display: none; }
 .slide.is-static .slide__still { display: block; }
 .slide.is-static .slide__canvas { display: none; }
+/* Pantalla del portátil: logo real en HTML, se enciende al final del scroll */
+.slide__screen { position: absolute; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .7em; opacity: 0; pointer-events: none; text-align: center; }
+.slide__screen svg { width: 3.6em; height: 3.6em; filter: drop-shadow(0 0 1.2em var(--accent-soft)); }
+.slide__screen span { font-family: var(--font-display); font-weight: 700; font-size: 1.35em; letter-spacing: -.01em; color: var(--text); white-space: nowrap; }
+.slide__screen em { font-style: normal; font-weight: 600; color: var(--muted); }
+/* Móvil en horizontal: la diapositiva también se pone horizontal */
+@media (max-width: 767px) and (orientation: landscape) {
+  .slide__card { aspect-ratio: 16 / 9; width: min(100%, calc((100svh - var(--header-h) - 24px) * 16 / 9)); }
+  .slide__captions { font-size: 1rem; bottom: 26px; }
+}
 .slide__captions { position: absolute; left: clamp(20px, 3vw, 40px); right: 20px; bottom: clamp(32px, 4vw, 52px); min-height: 2.6em; color: var(--text); font-family: var(--font-display); font-weight: 700; font-size: clamp(1.15rem, 2.4vw, 1.8rem); letter-spacing: -.02em; line-height: 1.2; }
 .slide__caption { position: absolute; left: 0; bottom: 0; right: 0; opacity: 0; transform: translateY(10px); transition: opacity .5s var(--ease), transform .5s var(--ease); }
 .slide__caption.is-active { opacity: 1; transform: none; }
@@ -367,20 +388,6 @@ html:not(.motion) .slide__progress { display: none; }
 .footer__social a:hover { border-color: var(--accent); }
 .footer__bottom { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: .88rem; }
 .footer__legal { display: flex; gap: 24px; }
-
-/* ---------- Botón fijo (móvil): solo tras el inicio, se esconde al bajar ---------- */
-.mobile-cta { display: none; }
-@media (max-width: 767px) {
-  .mobile-cta {
-    display: flex; align-items: center; justify-content: center; position: fixed; z-index: 90;
-    left: max(16px, env(safe-area-inset-left)); right: max(16px, env(safe-area-inset-right)); bottom: calc(12px + env(safe-area-inset-bottom)); min-height: 52px;
-    border-radius: 999px; background: var(--text); color: var(--ink); font-weight: 600;
-    box-shadow: 0 12px 32px -8px rgba(0,0,0,.8);
-    transform: translateY(170%); transition: transform .4s var(--ease);
-  }
-  .mobile-cta.is-visible { transform: none; }
-  .footer { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
-}
 
 /* ---------- Cursor (solo ordenador) ---------- */
 .cursor { display: none; }

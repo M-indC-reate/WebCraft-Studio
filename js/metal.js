@@ -3,8 +3,9 @@
    Raymarching en WebGL: una gota de obsidiana/basalto satinada,
    con destellos minerales y reflejo acero / bronce apagado, que
    flota en el vacío iluminada por un borde de luz.
-   El scroll la hace evolucionar (idea → forma → web) y reacciona
-   al ratón o al dedo. Sin vídeo.
+   El scroll la hace evolucionar: idea (gota) → forma a medida →
+   un portátil de metal plateado. Al final la pantalla se enciende con
+   el logo (HTML nítido encima del lienzo). Reacciona al ratón o al dedo.
    ========================================================= */
 (function () {
   "use strict";
@@ -13,6 +14,29 @@
   var canvas = document.getElementById("metal-canvas");
   if (!slide || !canvas) return;
   var card = slide.querySelector(".slide__card");
+  var screen = slide.querySelector(".slide__screen");
+  var mobile = function () { return window.innerWidth < 768; };
+  var forceVert = null;
+
+  // Tamaño del portátil y encuadre según la forma de la tarjeta (vertical u horizontal)
+  function geom() {
+    var r = card.getBoundingClientRect(), vert = forceVert != null ? forceVert : r.height > r.width;
+    return { vert: vert, k: vert ? 1.12 : 1.5, s: vert ? 1.4 : 1.0, y: vert ? 0.06 : 0.14, w: r.width, h: r.height };
+  }
+  // Coloca el logo (HTML nítido) exactamente sobre la pantalla del portátil, que al final queda de frente
+  function placeScreen() {
+    if (!screen) return;
+    var g = geom(); if (!g.w || !g.h) return;
+    var f = 1.55 / 3.6 / g.s;                    // proyección de la cámara a la distancia de la pantalla
+    var cy = 0.18 * g.k + g.y, hw = 0.585 * g.k, hh = 0.365 * g.k;
+    screen.style.left = (50 - hw * f * g.h / g.w * 100) + "%";
+    screen.style.width = (hw * 2 * f * g.h / g.w * 100) + "%";
+    screen.style.top = (50 - (cy + hh) * f * 100) + "%";
+    screen.style.height = (hh * 2 * f * 100) + "%";
+    screen.style.fontSize = (hh * 2 * f * g.h * 0.085).toFixed(1) + "px";
+  }
+  window.addEventListener("resize", placeScreen);
+  placeScreen();
 
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var slow = (function () {
@@ -20,19 +44,19 @@
     return !!(c.saveData || /(^|-)2g/.test(c.effectiveType || "") || (navigator.deviceMemory && navigator.deviceMemory <= 2) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2));
   })();
   var forceStill = /[?&]metalfijo/.test(location.search);
-  function makeStatic() { slide.classList.add("is-static"); window.__metal = { setProgress: function () {}, static: true }; }
+  function makeStatic() { slide.classList.add("is-static"); if (screen) screen.style.opacity = 1; window.__metal = { setProgress: function () {}, static: true }; }
   if ((reduced || slow || forceStill) && !window.__metalRender) { makeStatic(); return; }
 
   var gl = null;
   try { gl = canvas.getContext("webgl", { antialias: false, alpha: false, preserveDrawingBuffer: !!window.__metalRender, powerPreference: "high-performance" }); } catch (e) {}
   if (!gl) { makeStatic(); return; }
 
-  var mobile = function () { return window.innerWidth < 768; };
+  
 
   var VS = "attribute vec2 a; void main(){ gl_Position = vec4(a, 0.0, 1.0); }";
   var FS = [
     "precision highp float;",
-    "uniform vec2 uRes, uMouse; uniform float uTime, uProg, uVert, uSteps; uniform sampler2D uLogo; uniform vec3 uAccent;",
+    "uniform vec2 uRes, uMouse; uniform float uTime, uProg, uVert, uSteps, uK, uS, uY; uniform vec3 uAccent;",
     "vec3 mod289(vec3 x){return x-floor(x*(1.0/289.0))*289.0;} vec4 mod289(vec4 x){return x-floor(x*(1.0/289.0))*289.0;}",
     "vec4 permute(vec4 x){return mod289(((x*34.0)+1.0)*x);} vec4 tis(vec4 r){return 1.79284291400159-0.85373472095314*r;}",
     "float snoise(vec3 v){ const vec2 C=vec2(1.0/6.0,1.0/3.0); const vec4 D=vec4(0.0,0.5,1.0,2.0);",
@@ -48,10 +72,15 @@
     "mat2 rot(float a){ float c=cos(a), s=sin(a); return mat2(c,-s,s,c); }",
     "float sdRoundBox(vec3 p, vec3 b, float r){ vec3 q=abs(p)-b+r; return length(max(q,0.0))+min(max(q.x,max(q.y,q.z)),0.0)-r; }",
     "float hash13(vec3 p){ p=fract(p*0.1031); p+=dot(p,p.zyx+31.32); return fract((p.x+p.y)*p.z); }",
-    // forma: gota (idea) → forma retorcida (a medida) → panel tipo pantalla (tu web)
-    "vec3 panelQ(vec3 p){ float t=uTime*0.3; vec3 bq=p; bq.xz*=rot(-0.62+0.1*sin(t*0.4)); bq.yz*=rot(0.22); bq.xy*=rot(-0.06); return bq; }",
-    "vec3 panelS(){ return uVert>0.5 ? vec3(0.44,0.88,0.04) : vec3(0.92,0.58,0.045); }",
+    // forma: gota (idea) → forma retorcida (a medida) → portátil (tu web)
     "float sdBox2(vec2 p, vec2 b, float r){ vec2 q=abs(p)-b+r; return length(max(q,0.0))+min(max(q.x,q.y),0.0)-r; }",
+    // coordenadas locales del portátil: gira suavemente y al final queda de frente
+    "vec3 lapQ(vec3 p){ float a=1.0-smoothstep(0.62,0.97,uProg); float t=uTime*0.3;",
+    " vec3 q=(p-vec3(0.0,uY,-0.5))/uK; q.xz*=rot(a*(-0.7+0.12*sin(t*0.4))); q.yz*=rot(a*0.25); return q; }",
+    "float sdLaptop(vec3 q){",
+    " float scr=sdRoundBox(q-vec3(0.0,0.18,0.0), vec3(0.62,0.4,0.018), 0.03);",
+    " float base=sdRoundBox(q-vec3(0.0,-0.235,0.38), vec3(0.66,0.016,0.4), 0.02);",
+    " return min(scr,base); }",
     "float map(vec3 p){",
     " float t=uTime*0.3; float P=uProg;",
     " float s1=1.0-smoothstep(0.22,0.5,P); float s3=smoothstep(0.6,0.92,P); float s2=(1.0-s1)*(1.0-s3);",
@@ -60,11 +89,10 @@
     " q.xz*=rot(q.y*s2*1.3);",
     " float rad=mix(0.5,0.8,smoothstep(0.0,0.45,P));",
     " float n=snoise(q*1.5+vec3(0.0,t,0.0))*0.55+snoise(q*3.1-vec3(t*0.6))*0.2;",
-    " vec3 st=mix(vec3(1.0), uVert>0.5 ? vec3(0.8,1.12,0.8) : vec3(1.25,0.85,0.9), s2);",
+    " vec3 st=mix(vec3(1.0), vec3(1.25,0.85,0.9), s2);",
     " float blob=length(q/st)*min(st.x,min(st.y,st.z))-rad-n*mix(0.1,0.2,s2)-bulge;",
-    " vec3 bq=panelQ(p); vec3 bs=panelS();",
-    " float panel=sdRoundBox(bq,bs,uVert>0.5?0.09:0.06)-n*0.006-bulge*0.4;",
-    " return mix(blob,panel,s3);",
+    " float lap=sdLaptop(lapQ(p))*uK-n*0.004*(1.0-smoothstep(0.85,1.0,P))-bulge*0.3*(1.0-s3);",
+    " return mix(blob,lap,s3);",
     "}",
     "vec3 calcN(vec3 p){ vec2 e=vec2(0.0025,-0.0025);",
     " return normalize(e.xyy*map(p+e.xyy)+e.yyx*map(p+e.yyx)+e.yxy*map(p+e.yxy)+e.xxx*map(p+e.xxx)); }",
@@ -79,15 +107,15 @@
     " vec2 g=floor(uv*vec2(160.0)); float s=hash13(vec3(g,7.0)); c+=step(0.996,s)*0.05*vec3(0.85,0.9,1.0);",
     " return c; }",
     "void main(){",
-    " vec2 uv=(gl_FragCoord.xy-0.5*uRes)/uRes.y*(uVert>0.5?1.5:1.0);",
+    " vec2 uv=(gl_FragCoord.xy-0.5*uRes)/uRes.y*uS;",
     " vec3 ro=vec3(0.0,0.0,3.1); vec3 rd=normalize(vec3(uv,-1.55));",
     " vec3 col=sky(uv);",
     // halo suave detrás: el objeto iluminado en el vacío
     " col+=vec3(0.006,0.008,0.012)*exp(-dot(uv,uv)*3.0);",
-    " float b=dot(ro,rd); float c=dot(ro,ro)-2.1; float disc=b*b-c;",
+    " float b=dot(ro,rd); float c=dot(ro,ro)-4.4; float disc=b*b-c;",
     " if(disc>0.0){",
     "  float tt=max(0.0,-b-sqrt(disc)); float hit=-1.0;",
-    "  for(int i=0;i<64;i++){ if(float(i)>=uSteps) break; vec3 pp=ro+rd*tt; float d=map(pp); if(d<0.0015){ hit=tt; break; } tt+=d*0.85; if(tt>5.0) break; }",
+    "  for(int i=0;i<96;i++){ if(float(i)>=uSteps) break; vec3 pp=ro+rd*tt; float d=map(pp); if(d<0.0008){ hit=tt; break; } tt+=d*0.9; if(tt>6.0) break; }",
     "  if(hit>0.0){",
     "   vec3 pos=ro+rd*hit; vec3 N=calcN(pos); vec3 V=-rd; vec3 R=reflect(rd,N);",
     "   float ndv=max(dot(N,V),0.0); float fres=0.04+0.96*pow(1.0-ndv,5.0);",
@@ -104,25 +132,31 @@
     // destellos minerales
     "   float sp=step(0.994,hash13(floor(pos*150.0)))*pow(max(dot(R,L1),0.0),3.0)*(0.4+0.6*fres);",
     "   m+=sp*vec3(0.9,0.93,1.0)*0.6;",
-    // al final la forma es un móvil (o una pantalla): marco de metal plateado y pantalla de cristal con el logo
+    // al final: portátil de aluminio plateado, pantalla de cristal y teclado
     "   float s3=smoothstep(0.6,0.92,uProg);",
     "   if(s3>0.01){",
-    "    vec3 bq=panelQ(pos); vec3 bs=panelS(); vec2 inner=bs.xy-vec2(uVert>0.5?0.03:0.04);",
-    "    float face=smoothstep(bs.z*0.55,bs.z*0.85,abs(bq.z));",
-    "    float scr=face*(1.0-smoothstep(-0.006,0.004,sdBox2(bq.xy,inner,uVert>0.5?0.07:0.045)));",
-    // plata: base clara, reflejo nítido del entorno y brillos fuertes
-    "    vec3 silver=vec3(0.16,0.165,0.175)*(0.2+0.8*max(dot(N,L1),0.0))+env(R)*3.4*(0.6+0.4*fres)+pow(max(dot(R,L1),0.0),70.0)*vec3(1.0)*2.4+pow(max(dot(R,L1),0.0),12.0)*vec3(0.75,0.78,0.82)*0.35+pow(max(dot(R,L2),0.0),22.0)*vec3(0.85,0.87,0.9)*0.6;",
-    "    silver+=rim*vec3(0.75,0.8,0.88)*0.6;",
-    // pantalla: cristal muy oscuro con un brillo suave y el logo al encenderse
-    "    vec2 luv=vec2(bq.x/(inner.x*2.0)+0.5, 0.5-bq.y/(inner.y*2.0));",
-    "    vec4 logo=texture2D(uLogo, luv);",
+    "    vec3 q=lapQ(pos);",
+    "    vec3 silver=vec3(0.2,0.205,0.215)*(0.25+0.75*max(dot(N,L1),0.0))+env(R)*3.0*(0.6+0.4*fres)+pow(max(dot(R,L1),0.0),70.0)*vec3(1.0)*2.2+pow(max(dot(R,L1),0.0),10.0)*vec3(0.75,0.78,0.82)*0.3+pow(max(dot(R,L2),0.0),22.0)*vec3(0.85,0.87,0.9)*0.5;",
+    "    silver+=rim*vec3(0.75,0.8,0.88)*0.5;",
+    "    vec3 matc=silver;",
+    // pantalla (cara delantera)
+    "    float front=step(0.008,q.z)*step(-0.24,q.y);",
+    "    float scr=front*(1.0-smoothstep(-0.004,0.002,sdBox2(q.xy-vec2(0.0,0.18),vec2(0.585,0.365),0.012)));",
     "    float on=smoothstep(0.86,1.0,uProg);",
-    "    vec3 glass=vec3(0.004,0.005,0.008)+env(R)*0.1*fres+pow(max(dot(R,L1),0.0),120.0)*0.35;",
-    "    glass+=uAccent*0.018*on*max(0.0,1.0-length((luv-0.5)*2.0));",
-    "    glass+=logo.rgb*logo.a*on*1.15;",
-    "    if(uVert>0.5){ float cam=1.0-smoothstep(0.011,0.015,length((luv-vec2(0.5,0.035))*vec2(inner.x/inner.y,1.0))); glass=mix(glass,vec3(0.0)+env(R)*0.25,cam); }",
-    "    vec3 phone=mix(silver,glass,scr);",
-    "    m=mix(m,phone,s3);",
+    "    vec3 glass=vec3(0.006,0.008,0.013)+env(R)*0.08*fres+pow(max(dot(R,L1),0.0),140.0)*0.25;",
+    "    glass+=uAccent*0.03*on*max(0.0,1.0-length((q.xy-vec2(0.0,0.18))*vec2(1.2,1.8)));",
+    "    matc=mix(matc,glass,scr);",
+    // cámara
+    "    float cam=front*(1.0-smoothstep(0.006,0.009,length(q.xy-vec2(0.0,0.565))));",
+    "    matc=mix(matc,vec3(0.01),cam);",
+    // teclado y panel táctil en la base
+    "    float top=step(-0.222,q.y)*step(q.y,-0.2)*step(q.z,0.79);",
+    "    float kb=top*step(abs(q.x),0.54)*step(0.06,q.z)*step(q.z,0.38);",
+    "    vec2 kg=fract(vec2(q.x*16.0,q.z*15.0)); float key=step(0.12,kg.x)*step(kg.x,0.88)*step(0.14,kg.y)*step(kg.y,0.86);",
+    "    matc=mix(matc, mix(vec3(0.015),vec3(0.03)+env(R)*0.15,key), kb);",
+    "    float tp=top*(1.0-smoothstep(-0.002,0.002,sdBox2(vec2(q.x,q.z-0.6),vec2(0.17,0.11),0.02)));",
+    "    matc=mix(matc, silver*0.82, tp);",
+    "    m=mix(m,matc,s3);",
     "   }",
     "   col=m;",
     "  }",
@@ -139,58 +173,35 @@
   var prog = gl.createProgram(); gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog); gl.useProgram(prog);
   var buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
   var aLoc = gl.getAttribLocation(prog, "a"); gl.enableVertexAttribArray(aLoc); gl.vertexAttribPointer(aLoc, 2, gl.FLOAT, false, 0, 0);
-  var U = {}; ["uRes", "uMouse", "uTime", "uProg", "uVert", "uSteps", "uLogo", "uAccent"].forEach(function (n) { U[n] = gl.getUniformLocation(prog, n); });
+  var U = {}; ["uRes", "uMouse", "uTime", "uProg", "uVert", "uSteps", "uK", "uS", "uY", "uAccent"].forEach(function (n) { U[n] = gl.getUniformLocation(prog, n); });
 
-  /* ---------- Logo de WebCraft Studio para la pantalla del móvil ---------- */
   function accent() {
     var c = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#22D3EE";
     var n = parseInt(c.replace("#", ""), 16); return [((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255];
   }
-  var logoTex = gl.createTexture(), logoVert = null;
-  function buildLogo() {
-    var vert = mobile(); logoVert = vert;
-    var W = vert ? 512 : 1024, H = vert ? Math.round(512 * 0.85 / 0.41) : Math.round(1024 * 0.54 / 0.88);
-    var c = document.createElement("canvas"); c.width = W; c.height = H; var x = c.getContext("2d");
-    var acc = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#22D3EE";
-    var size = vert ? W * 0.42 : H * 0.36, cx = W / 2, cy = vert ? H * 0.44 : H * 0.42;
-    // la W del logo (mismo trazo que el icono)
-    x.save(); x.translate(cx - size / 2, cy - size / 2); x.scale(size / 64, size / 64);
-    var path = function () { x.beginPath(); x.moveTo(11, 18); x.lineTo(19.5, 46); x.lineTo(26.5, 28.5); x.lineTo(32, 46); x.lineTo(37.5, 28.5); x.lineTo(44.5, 46); x.lineTo(53, 18); };
-    x.lineCap = "round"; x.lineJoin = "round";
-    x.shadowColor = acc; x.shadowBlur = 14; x.strokeStyle = acc; x.globalAlpha = 0.55; x.lineWidth = 11.5; path(); x.stroke();
-    x.shadowBlur = 0; x.globalAlpha = 1; x.strokeStyle = "#ECEAE6"; x.lineWidth = 7; path(); x.stroke();
-    x.restore();
-    // nombre de la marca
-    x.fillStyle = "#ECEAE6"; x.textAlign = "center"; x.textBaseline = "middle";
-    var fs = vert ? W * 0.085 : H * 0.085;
-    x.font = "700 " + fs + "px Syne, 'Arial Black', sans-serif";
-    x.fillText("WebCraft", cx, cy + size * 0.72);
-    x.fillStyle = "rgba(236,234,230,0.6)"; x.font = "600 " + (fs * 0.62) + "px Syne, 'Arial Black', sans-serif";
-    x.fillText("STUDIO", cx, cy + size * 0.72 + fs * 1.05);
-    gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, logoTex);
-    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, c);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-  }
-  buildLogo(); gl.uniform1i(U.uLogo, 0);
-  if (document.fonts) document.fonts.ready.then(buildLogo);
 
-  var progT = 0, progC = 0, mouseT = [0, 0], mouseC = [0, 0], quality = mobile() ? 0.5 : 0.62, times = [], last = 0, inView = false, running = false;
+  var progT = 0, progC = 0, mouseT = [0, 0], mouseC = [0, 0], quality = 1, times = [], last = 0, inView = false, running = false;
 
+  // Resolución nítida: densidad de píxeles real limitada (1,5 en móvil, 1,75 en ordenador)
   function size() {
-    var r = card.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = Math.max(64, Math.round(r.width * dpr * quality)); canvas.height = Math.max(64, Math.round(r.height * dpr * quality));
+    var r = card.getBoundingClientRect();
+    var d = Math.min(window.devicePixelRatio || 1, mobile() ? 1.5 : 1.75) * quality;
+    // tope de píxeles para mantener la fluidez (nítido, pero sin pasarse)
+    var budget = mobile() ? 520000 : 1300000; d = Math.min(d, Math.sqrt(budget / Math.max(1, r.width * r.height)));
+    canvas.width = Math.max(64, Math.round(r.width * d)); canvas.height = Math.max(64, Math.round(r.height * d));
     gl.viewport(0, 0, canvas.width, canvas.height);
+    placeScreen();
   }
   function render(t) {
+    var g = geom();
     gl.uniform2f(U.uRes, canvas.width, canvas.height);
     gl.uniform2f(U.uMouse, mouseC[0], mouseC[1]);
     gl.uniform1f(U.uTime, t / 1000); gl.uniform1f(U.uProg, progC);
-    if (logoVert !== mobile()) buildLogo();
     var a = accent(); gl.uniform3f(U.uAccent, a[0], a[1], a[2]);
-    gl.uniform1f(U.uVert, mobile() ? 1 : 0); gl.uniform1f(U.uSteps, mobile() ? 40 : 64);
+    gl.uniform1f(U.uVert, g.vert ? 1 : 0); gl.uniform1f(U.uK, g.k); gl.uniform1f(U.uS, g.s); gl.uniform1f(U.uY, g.y);
+    gl.uniform1f(U.uSteps, mobile() ? 72 : 96);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
+    screen.style.opacity = Math.max(0, Math.min(1, (progC - 0.86) / 0.12)).toFixed(3);
   }
   function loop(t) {
     if (!inView) { running = false; return; }
@@ -200,7 +211,7 @@
     mouseC[0] += (mouseT[0] - mouseC[0]) * Math.min(1, dt * 3); mouseC[1] += (mouseT[1] - mouseC[1]) * Math.min(1, dt * 3);
     times.push(dt); if (times.length > 45) {
       var avg = times.reduce(function (a, b) { return a + b; }, 0) / times.length; times = [];
-      if (avg > 0.026 && quality > 0.3) { quality = Math.max(0.3, quality - 0.1); size(); }
+      if (avg > 0.028 && quality > 0.6) { quality = Math.max(0.6, quality - 0.1); size(); }
     }
     render(t);
   }
@@ -225,5 +236,5 @@
   window.__metal = { setProgress: function (p) { progT = p; } };
   // Para generar la imagen fija con el mismo efecto (herramientas)
   window.__metalRender = window.__metalRender || null;
-  window.__metalStill = function (p, w, h) { progT = progC = p; quality = 1; canvas.width = w; canvas.height = h; gl.viewport(0, 0, w, h); render(9000); return canvas.toDataURL("image/webp", 0.86); };
+  window.__metalStill = function (p, w, h, vert) { progT = progC = p; forceVert = vert; canvas.width = w; canvas.height = h; gl.viewport(0, 0, w, h); render(9000); forceVert = null; return canvas.toDataURL("image/webp", 0.88); };
 })();

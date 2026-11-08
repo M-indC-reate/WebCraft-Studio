@@ -53,6 +53,12 @@
     " vec4 norm=tis(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3))); p0*=norm.x; p1*=norm.y; p2*=norm.z; p3*=norm.w;",
     " vec4 m=max(0.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.0); m=m*m; return 42.0*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3))); }",
     "float lum(vec3 c){ return dot(c, vec3(0.299,0.587,0.114)); }",
+    // celdas de granulación solar (Voronoi 3D): centros brillantes y bordes oscuros
+    "vec3 h33(vec3 p){ p=vec3(dot(p,vec3(127.1,311.7,74.7)),dot(p,vec3(269.5,183.3,246.1)),dot(p,vec3(113.5,271.9,124.6))); return fract(sin(p)*43758.5453); }",
+    "vec2 cells(vec3 p, float t){ vec3 i=floor(p), f=fract(p); float d1=8.0, d2=8.0;",
+    " for(int x=-1;x<=1;x++) for(int y=-1;y<=1;y++) for(int z=-1;z<=1;z++){ vec3 g=vec3(float(x),float(y),float(z)); vec3 o=h33(i+g); o=0.5+0.42*sin(t*0.35+6.2831*o);",
+    "  float d=length(g+o-f); if(d<d1){ d2=d1; d1=d; } else if(d<d2) d2=d; }",
+    " return vec2(d1,d2); }",
     // anillos (perfil radial con división de Cassini)
     "vec4 ring(float rr){",
     " if(rr<1.28||rr>2.3) return vec4(0.0);",
@@ -85,14 +91,23 @@
     "  vec3 c;",
     "  if(uKind>0.5 && uKind<1.5){",
     "   float t=uTime;",
-    "   float big=snoise(s*2.4+vec3(t*0.02,0.0,-t*0.015));",
-    "   float gr=snoise(s*16.0+vec3(0.0,t*0.12,0.0))*0.55+snoise(s*34.0-vec3(t*0.18))*0.3+snoise(s*70.0+vec3(t*0.25))*0.15;",
-    "   float spots=smoothstep(0.74,0.86,snoise(s*2.3+vec3(4.0,1.0,t*0.01)));",
-    "   float k=0.66+big*0.12+gr*0.16-spots*0.4;",
+    "   float big=snoise(s*2.2+vec3(t*0.02,0.0,-t*0.015));",
+    // granulación: celdas (supergranulación + gránulos) con bordes oscuros
+    "   vec2 cg=cells(s*44.0, t); float gran=smoothstep(0.0,0.5,cg.y-cg.x);",
+    "   vec2 cs=cells(s*9.0+3.0, t*0.4); float sup=smoothstep(0.0,0.35,cs.y-cs.x);",
+    "   float fine=snoise(s*90.0+vec3(t*0.3))*0.5+0.5;",
+    // manchas solares con umbra y penumbra
+    "   float sn=snoise(s*2.3+vec3(4.0,1.0,t*0.01)); float umbra=smoothstep(0.84,0.9,sn); float pen=smoothstep(0.76,0.84,sn)-umbra;",
+    // fáculas: zonas brillantes cerca del borde
+    "   float fac=smoothstep(0.3,0.8,snoise(s*6.0+vec3(1.7,t*0.02,0.0)))*pow(1.0-mu,1.5);",
+    "   float k=0.56+big*0.16+gran*0.12+sup*0.1+fine*0.04;",
     "   c=sunCol(k);",
-    "   c*=0.32+0.68*pow(mu,0.42);",
-    "   c=mix(c, vec3(0.95,0.35,0.08)*0.7, pow(1.0-mu,3.0)*0.5);",
-    "   c*=0.92;",
+    "   c=mix(c, vec3(0.55,0.2,0.04)*0.8, pen*0.7*(0.6+0.4*fine)); c=mix(c, vec3(0.12,0.03,0.0), umbra*0.9);",
+    "   c+=vec3(1.0,0.85,0.6)*fac*0.35;",
+    // oscurecimiento del borde (más rojizo hacia fuera)
+    "   c*=0.3+0.7*pow(mu,0.5);",
+    "   c=mix(c, vec3(0.9,0.32,0.06)*0.75, pow(1.0-mu,2.5)*0.55);",
+    "   c*=0.95;",
     "  } else {",
     "   float uvLat=0.5-lat/3.1415926; float uvLon=lon/6.2831853;",
     "   if(uKind>1.5 && uKind<3.5){",
@@ -139,11 +154,13 @@
     "  float g;",
     "  if(uKind>0.5&&uKind<1.5){",
     "   float ang=atan(p.y,p.x); float t=uTime;",
-    "   float rays=snoise(vec3(cos(ang)*2.5,sin(ang)*2.5,t*0.06))*0.5+snoise(vec3(cos(ang)*7.0,sin(ang)*7.0,t*0.1+r))*0.3;",
+    "   float rays=snoise(vec3(cos(ang)*2.5,sin(ang)*2.5,t*0.06))*0.5+snoise(vec3(cos(ang)*7.0,sin(ang)*7.0,t*0.1+r))*0.3+snoise(vec3(cos(ang)*18.0,sin(ang)*18.0,r*3.0-t*0.15))*0.2;",
+    "   float prom=smoothstep(0.55,0.8,snoise(vec3(cos(ang)*4.0,sin(ang)*4.0,7.0+t*0.03)))*exp(-(r-1.0)*22.0)*smoothstep(0.0,0.02,r-1.0);",
     "   g=exp(-(r-1.0)*4.2)*(0.62+0.38*rays)+exp(-(r-1.0)*14.0)*0.6;",
     "   vec3 cc=mix(vec3(1.0,0.48,0.14),vec3(1.0,0.78,0.45),exp(-(r-1.0)*10.0));",
     "   g*=1.0-smoothstep(0.82,1.0,length(p));",
-    "   col.rgb+=cc*g*(1.0-col.a*0.7); col.a=max(col.a,g*0.95);",
+    "   g+=prom*0.9;",
+    "   col.rgb+=cc*g*(1.0-col.a*0.7)+vec3(1.0,0.4,0.15)*prom*0.5; col.a=max(col.a,g*0.95);",
     "  } else {",
     "   g=exp(-(r-1.0)*16.0)*0.34*(0.35+0.65*smoothstep(-0.6,0.6,dot(normalize(p),L.xy)));",
     "   g*=1.0-smoothstep(0.85,1.0,length(p));",
@@ -241,7 +258,12 @@
   }
 
   function activate(slot) {
-    if (slot === slotNow) return;
+    if (slot === slotNow) {
+      // vuelve a la vista el mismo planeta (al subir): reanudar
+      canvas.classList.add("is-on");
+      if (!reduced && !running) { running = true; last = 0; requestAnimationFrame(loop); }
+      return;
+    }
     var name = slot.getAttribute("data-planet");
     canvas.classList.remove("is-on");
     setTimeout(function () {
