@@ -88,7 +88,14 @@
   if (lead) {
     var hint = document.createElement("button");
     hint.type = "button"; hint.className = "hint";
-    hint.innerHTML = '<svg aria-hidden="true" width="16" height="16"><use href="#i-destello"/></svg> Pista: el planeta más caliente de esta web guarda algo. Tócalo, a ver qué pasa.';
+    // Una pista distinta en cada visita
+    var PISTAS = [
+      "Algo brilla más de lo normal por aquí. ¿Te atreves a tocarlo?",
+      "No todo en esta web es decoración. Busca la estrella más cercana.",
+      "¿Quieres hablar con nosotros? Ponte al Sol."
+    ];
+    hint.innerHTML = '<svg aria-hidden="true" width="16" height="16"><use href="#i-destello"/></svg> ';
+    hint.appendChild(document.createTextNode(PISTAS[Math.floor(Math.random() * PISTAS.length)]));
     hint.addEventListener("click", function () { open("sun", hint); });
     var socials = $("#socials");
     lead.insertBefore(hint, socials || null);
