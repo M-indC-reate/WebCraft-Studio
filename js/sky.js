@@ -52,7 +52,7 @@
 
   /* ---------- Estrellas fugaces (fondo, discretas) ---------- */
   var cv = document.getElementById("shooting"), ctx = cv && cv.getContext("2d");
-  var W = 0, H = 0, dpr = 1, shooters = [], running = false;
+  var W = 0, H = 0, dpr = 1, shooters = [], glints = [], running = false;
   function size() {
     if (!cv) return; W = window.innerWidth; H = window.innerHeight; dpr = Math.min(window.devicePixelRatio || 1, 2);
     cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -84,10 +84,29 @@
       g.addColorStop(1, "rgba(" + acc + ",0)");
       ctx.strokeStyle = g; ctx.lineWidth = s.w; ctx.lineCap = "round";
       ctx.beginPath(); ctx.moveTo(s.x, s.y); ctx.lineTo(tx, ty); ctx.stroke();
-      if (s.life >= s.max) shooters.splice(i, 1);
+      if (s.life >= s.max) {
+        // al apagarse deja un destello ("cling"): un brillo en estrella de cuatro puntas
+        if (s.x > 0 && s.x < W && s.y > 0 && s.y < H) glints.push({ x: s.x, y: s.y, t: 0, max: 46, r: s.w < 1 ? 5 : rand(7, 10), rot: rand(0, 0.6) });
+        shooters.splice(i, 1);
+      }
     }
-    if (shooters.length && !document.hidden) requestAnimationFrame(frame);
-    else { running = false; ctx.clearRect(0, 0, W, H); shooters = []; }
+    for (var j = glints.length - 1; j >= 0; j--) {
+      var gl = glints[j]; gl.t++;
+      var p = gl.t / gl.max, a = p < 0.18 ? p / 0.18 : Math.pow(Math.max(0, 1 - (p - 0.18) / 0.82), 1.6), r = gl.r * (0.6 + 0.6 * Math.min(1, p / 0.18));
+      var hg = ctx.createRadialGradient(gl.x, gl.y, 0, gl.x, gl.y, r * 1.6);
+      hg.addColorStop(0, "rgba(255,255,255," + (0.9 * a) + ")"); hg.addColorStop(0.3, "rgba(" + acc + "," + (0.35 * a) + ")"); hg.addColorStop(1, "rgba(" + acc + ",0)");
+      ctx.fillStyle = hg; ctx.beginPath(); ctx.arc(gl.x, gl.y, r * 1.6, 0, 7); ctx.fill();
+      ctx.save(); ctx.translate(gl.x, gl.y); ctx.rotate(gl.rot + p * 0.5); ctx.lineCap = "round";
+      for (var q = 0; q < 4; q++) {
+        var L = (q % 2 ? 0.75 : 1) * r * 2.4, sg = ctx.createLinearGradient(0, 0, L, 0);
+        sg.addColorStop(0, "rgba(255,255,255," + (0.95 * a) + ")"); sg.addColorStop(1, "rgba(" + acc + ",0)");
+        ctx.strokeStyle = sg; ctx.lineWidth = 1.1; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(L, 0); ctx.stroke(); ctx.rotate(Math.PI / 2);
+      }
+      ctx.restore();
+      if (gl.t >= gl.max) glints.splice(j, 1);
+    }
+    if ((shooters.length || glints.length) && !document.hidden) requestAnimationFrame(frame);
+    else { running = false; ctx.clearRect(0, 0, W, H); shooters = []; glints = []; }
   }
   if (cv) {
     size(); window.addEventListener("resize", size);

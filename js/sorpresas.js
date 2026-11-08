@@ -94,8 +94,9 @@
       "No todo en esta web es decoración. Busca la estrella más cercana.",
       "¿Quieres hablar con nosotros? Ponte al Sol."
     ];
-    hint.innerHTML = '<svg aria-hidden="true" width="16" height="16"><use href="#i-destello"/></svg> ';
-    hint.appendChild(document.createTextNode(PISTAS[Math.floor(Math.random() * PISTAS.length)]));
+    // la estrellita va al final, para que el texto quede alineado con el resto
+    hint.textContent = PISTAS[Math.floor(Math.random() * PISTAS.length)] + "\u00A0";
+    hint.insertAdjacentHTML("beforeend", '<svg aria-hidden="true" width="16" height="16"><use href="#i-destello"/></svg>');
     hint.addEventListener("click", function () { open("sun", hint); });
     var socials = $("#socials");
     lead.insertBefore(hint, socials || null);
