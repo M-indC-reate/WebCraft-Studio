@@ -11,7 +11,7 @@ Casi todo se cambia en **`js/config.js`**: no hace falta tocar el resto del cód
       `AVISO_LEGAL_URL` y `PRIVACIDAD_URL`. Con eso aparecen los enlaces del pie y el de la casilla del formulario.
 
 ## 2. Contacto y redes
-- [ ] `EMAIL`: email de contacto.
+- [x] `EMAIL`: holawebcarftstudio@gmail.com
 - [ ] `INSTAGRAM`: usuario sin @.
       Mientras el formulario esté desactivado, el bloque de contacto usa estos dos; si los dos están vacíos, solo dice que muy pronto se podrá escribir.
 - [ ] `WHATSAPP`: número con prefijo, sin espacios ni + (p. ej. `34600000000`).
