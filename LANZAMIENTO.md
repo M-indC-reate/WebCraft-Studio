@@ -29,8 +29,8 @@ Casi todo se cambia en **`js/config.js`**: no hace falta tocar el resto del cód
 - [ ] Si todavía no se aceptan proyectos: dejar `PREAPERTURA: true` y poner la fecha en `FECHA_APERTURA`
       (p. ej. `"en enero de 2027"`).
 - [ ] Si ya se aceptan: `PREAPERTURA: false` (desaparece el aviso y los botones pasan a "Pedir presupuesto").
-- [ ] Revisar la pregunta "¿Cuándo empezáis a aceptar proyectos?" y, si procede, añadir "¿La web será mía?"
-      (está marcada con TODO en `index.html`).
+- [ ] Revisar la pregunta "¿Cuándo empezáis a aceptar proyectos?": habla de escribir por email o Instagram,
+      así que `EMAIL` o `INSTAGRAM` deben estar rellenados antes de publicar.
 
 ## 5. Contenido pendiente
 - [x] Captura actual de Vesta Eventos (ordenador) en `assets/proyectos/vesta-eventos.webp` y `.jpg`.
