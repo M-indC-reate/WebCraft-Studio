@@ -110,6 +110,12 @@
 .hint svg { display: inline-block; vertical-align: -2px; color: var(--accent); filter: drop-shadow(0 0 4px var(--accent)); }
 .hint:hover { color: var(--text); }
 .footer__ps { color: var(--muted); font-size: .9rem; font-style: italic; margin-top: 6px; }
-.planet-slot--sun .planet, .planet-slot[data-planet="neptune"] .planet { cursor: pointer; }
+/* Planetas interactivos (Saturno, Neptuno y el Sol): botón que contiene el lienzo */
+.planet-btn { display: block; width: 100%; height: 100%; padding: 0; border: 0; border-radius: 50%; background: none; color: inherit; cursor: pointer; pointer-events: auto; position: relative; }
+.planet-btn .planet { cursor: pointer; }
+.planet-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 8px; }
+/* La pista se "escribe" cuando choca la estrella fugaz */
+.hint.is-hidden { -webkit-mask-image: linear-gradient(90deg, #000 var(--rv, -12%), transparent calc(var(--rv, -12%) + 12%)); mask-image: linear-gradient(90deg, #000 var(--rv, -12%), transparent calc(var(--rv, -12%) + 12%)); }
+.hint-fx { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 60; }
 
 @media (prefers-reduced-motion: reduce) { .planet-msg { transition: none; translate: none; scale: none; } }
