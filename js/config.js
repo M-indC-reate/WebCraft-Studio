@@ -21,7 +21,7 @@ window.WEBCRAFT_CONFIG = {
 
   /* ---------- Contacto y redes ----------
      Si una está vacía, su enlace NO aparece. */
-  EMAIL: "",      // TODO: email de contacto
+  EMAIL: "holawebcarftstudio@gmail.com", // correo del estudio
   INSTAGRAM: "",  // TODO: usuario sin @
   WHATSAPP: "",   // TODO: número con prefijo, sin espacios ni + (p. ej. 34600000000)
   WHATSAPP_MENSAJE: "Hola, he visto vuestra web y me interesa una web para mi negocio.",
