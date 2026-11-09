@@ -111,17 +111,21 @@
       '<linearGradient id="' + id + 'sh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#0A1022" stop-opacity=".3"/></linearGradient>' +
       '<linearGradient id="' + id + 'ped" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3A4A7E"/><stop offset="1" stop-color="#151C3A"/></linearGradient>' +
       // Zapatilla de diseño propio (marca inventada): el color de la tela es currentColor
-      '<symbol id="' + id + 'sn" viewBox="0 0 100 50">' +
-        '<path d="M3 37C1 25 5 12 15 9c6-2 12 0 15 4 3 4 7 6 12 6 9 10 28 10 44 11 8 1 12 3 11 8z" fill="currentColor"/>' +
-        '<path d="M28 13c2-7 9-8 13-3l3 10z" fill="currentColor"/>' +
-        '<path d="M3 37C1 25 5 12 15 9c6-2 12 0 15 4 3 4 7 6 12 6 9 10 28 10 44 11 8 1 12 3 11 8z" fill="url(#' + id + 'sh)"/>' +
-        '<path d="M4 21c4 2 9 2 13 0l2 16H3c-1-6-.5-11 1-16z" fill="rgba(10,16,34,.16)"/>' +
-        '<ellipse cx="21.5" cy="11.2" rx="8" ry="2.6" transform="rotate(8 21.5 11.2)" fill="rgba(10,16,34,.55)"/>' +
-        '<path d="M76 30c9 0 19 1 21 7H80z" fill="rgba(255,255,255,.4)"/>' +
-        '<path d="M18 29c16 5 34-1 52 3" stroke="var(--st, #22D3EE)" stroke-width="2.6" fill="none" stroke-linecap="round"/><circle cx="71.5" cy="32" r="2.1" fill="var(--st, #22D3EE)"/>' +
-        '<path d="M43 20l5-3M48 23l5-3M53 26l5-3" stroke="rgba(10,16,34,.5)" stroke-width="1.5" stroke-linecap="round"/>' +
-        '<path d="M2 36h96c1 5-2 9-9 9H12c-7 0-10-4-10-9z" fill="#F7F9FC"/><path d="M4 41h93c-1 3-4 4-8 4H12c-4 0-7-1-8-4z" fill="#AEB9CE"/>' +
-        '<path d="M2 36h96" stroke="rgba(10,16,34,.28)" stroke-width=".8"/><path d="M20 40.5h8M36 40.5h8M52 40.5h8M68 40.5h8" stroke="rgba(10,16,34,.22)" stroke-width="1"/>' +
+      '<symbol id="' + id + 'sn" viewBox="0 0 100 60">' +
+        '<path d="M5 42C4 34 5 24 8 16c1-3 4-4 6-2 3 5 10 7 15 3l5-8c2-3 7-3 9 0l4 6c7 9 17 14 29 16 10 1 19 4 21 11z" fill="currentColor"/>' +
+        '<path d="M5 42C4 34 5 24 8 16c1-3 4-4 6-2 3 5 10 7 15 3l5-8c2-3 7-3 9 0l4 6c7 9 17 14 29 16 10 1 19 4 21 11z" fill="url(#' + id + 'sh)"/>' +
+        '<path d="M10 14c4 5 14 7 19 3-5-1-13-4-19-3z" fill="rgba(10,16,34,.5)"/>' +                                   // interior de la caña
+        '<path d="M5 42C4 34 5 26 7 19c4 3 9 5 13 5l2 18z" fill="rgba(10,16,34,.13)"/>' +                               // contrafuerte del talón
+        '<path d="M7.2 17.5l4.2 1.2-1.2 6.5-4-1.3z" fill="var(--st, #22D3EE)"/>' +                                       // tirador
+        '<path d="M33 12l14 4c7 9 15 13 25 15l-6 3c-10-2-20-7-28-14z" fill="rgba(10,16,34,.1)"/>' +                      // pala de los cordones
+        '<path d="M38.5 16.5l6.5-2.5M43.5 20.5l6.5-3M49 24.5l6.5-3M55 27.8l6.5-2.6" stroke="rgba(10,16,34,.5)" stroke-width="1.5" stroke-linecap="round"/>' +
+        '<path d="M78 31.5c10 1.5 17 5 19 10.5H74c0-4 1-8 4-10.5z" fill="rgba(255,255,255,.42)"/>' +                 // puntera
+        '<path d="M22 36c14 4 30-6 46-1" stroke="var(--st, #22D3EE)" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="69.5" cy="35.3" r="2.3" fill="var(--st, #22D3EE)"/>' +
+        '<path d="M5 41C3 48 5 54 13 54h71c8 0 13-3 14-8 0-2-1-4-3-5z" fill="#F7F9FC"/>' +                              // mediasuela
+        '<path d="M4.6 48.5C6 52 9 54 13 54h71c7 0 12-2 13.8-6.5C88 50 30 50 4.6 48.5z" fill="#AEB9CE"/>' +
+        '<path d="M5 41.5h90" stroke="rgba(10,16,34,.28)" stroke-width=".8"/>' +
+        '<rect x="11" y="44" width="17" height="3" rx="1.5" fill="var(--st, #22D3EE)" opacity=".85"/>' +              // cámara del talón
+        '<path d="M36 45.5h7M49 45.5h7M62 45.5h7M75 45.5h7" stroke="rgba(10,16,34,.2)" stroke-width="1"/>' +
       '</symbol>' +
       '<clipPath id="' + id + 'win"><rect x="12" y="20" width="296" height="176" rx="0"/></clipPath>' +
       '<clipPath id="' + id + 'ph"><rect x="3" y="9" width="50" height="91" rx="6"/></clipPath>';
@@ -147,7 +151,7 @@
     color.innerHTML =
       '<rect width="320" height="200" fill="url(#' + id + 'bg)"/>' +
       '<circle cx="28" cy="23" r="4.2" fill="none" stroke="#22D3EE" stroke-width="1.4"/><circle cx="31.4" cy="20" r="1.5" fill="#F1F4FA"/>' +
-      '<text x="37" y="27" class="mw-logo">Afelio</text>' +
+      '<text x="37" y="27" class="mw-logo">Nimbo</text>' +
       '<text x="208" y="26" class="mw-nav">Nuevo</text><text x="236" y="26" class="mw-nav">Modelos</text><text x="274" y="26" class="mw-nav">Cesta</text>' +
       '<line x1="14" y1="36" x2="306" y2="36" stroke="rgba(255,255,255,.08)"/>' +
       '<text x="24" y="60" class="mw-h1">Cometa 01.</text><text x="24" y="77" class="mw-h1">Pisa <tspan fill="#22D3EE">ligero.</tspan></text>' +
@@ -159,15 +163,15 @@
       '<ellipse cx="236" cy="122" rx="42" ry="6.5" fill="url(#' + id + 'ped)"/><ellipse cx="236" cy="120.5" rx="42" ry="6" fill="#2B3767" stroke="rgba(142,235,250,.35)" stroke-width=".6"/>' +
       '<ellipse cx="236" cy="120.5" rx="26" ry="3" fill="rgba(4,8,20,.55)" class="mw-shadow"/>' +
       '<g class="mw-float">' +
-        '<ellipse cx="236" cy="86" rx="58" ry="13" transform="rotate(-12 236 86)" fill="none" stroke="rgba(142,235,250,.4)" stroke-width=".9"/>' +
-        '<use href="#' + id + 'sn" x="186" y="60" width="100" height="50" color="#EEF2F8" transform="rotate(-12 236 85)"/>' +
-        '<ellipse cx="236" cy="86" rx="58" ry="13" transform="rotate(-12 236 86)" fill="none" stroke="#8EEBFA" stroke-width="1.1" pathLength="2" stroke-dasharray="1 1"/>' +
-        '<circle cx="181" cy="99" r="2.6" fill="#F1F4FA"/>' +
+        '<ellipse cx="236" cy="86" rx="56" ry="14" transform="rotate(-10 236 86)" fill="none" stroke="rgba(142,235,250,.4)" stroke-width=".9"/>' +
+        '<use href="#' + id + 'sn" x="191" y="53" width="92" height="55.2" color="#EEF2F8" transform="rotate(-10 236 82)"/>' +
+        '<ellipse cx="236" cy="86" rx="56" ry="14" transform="rotate(-10 236 86)" fill="none" stroke="#8EEBFA" stroke-width="1.1" pathLength="2" stroke-dasharray="1 1"/>' +
+        '<circle cx="182" cy="97" r="2.6" fill="#F1F4FA"/>' +
       '</g>' +
       ['Blanco:#EEF2F8:24', 'Coral:#FF8A7A:118', 'Lima:#B6F36B:212'].map(function (c) {
         var a = c.split(":"), x = +a[2];
         return '<rect x="' + x + '" y="144" width="' + (x === 212 ? 86 : 84) + '" height="42" rx="7" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.09)"/>' +
-          '<use href="#' + id + 'sn" x="' + (x + 6) + '" y="149" width="36" height="18" color="' + a[1] + '"' + (a[0] === 'Blanco' ? '' : ' style="--st:#F1F4FA"') + '/>' +
+          '<use href="#' + id + 'sn" x="' + (x + 6) + '" y="147" width="36" height="21.6" color="' + a[1] + '"' + (a[0] === 'Blanco' ? '' : ' style="--st:#F1F4FA"') + '/>' +
           '<text x="' + (x + 47) + '" y="162" class="mw-card">' + a[0] + '</text>' +
           '<line x1="' + (x + 8) + '" y1="176" x2="' + (x + 62) + '" y2="176" stroke="rgba(255,255,255,.16)" stroke-width="3" stroke-linecap="round"/>';
       }).join("");
@@ -177,10 +181,14 @@
     var paths = SHAPES.map(function () { return el("path", { pathLength: 1 }, lines); });
     // Extras del boceto: zapatilla dibujada, flecha y notas a mano
     var sketchX = el("g", { fill: "none", stroke: "rgb(47,91,208)", "stroke-width": 1.3, "stroke-linecap": "round" }, svg);
-    var doodles = ["M192 106c-2-13 3-24 11-26 5-1 9 2 12 6 3 3 6 5 10 5 9 9 24 9 38 10 7 1 10 3 9 8l-1 5h-76z", "M192 106h80M227 91l5-3M232 95l5-3M206 102c12 3 26 0 40 2", "M96 126l-6 -4 7 -1"]
-      .map(function (d) { return el("path", { d: d, pathLength: 1 }, sketchX); });
+    var SK = "translate(196 60) scale(.8)"; // la zapatilla del boceto usa las mismas coordenadas que el dibujo final
+    var doodles = [
+      { d: "M5 42C4 34 5 24 8 16c1-3 4-4 6-2 3 5 10 7 15 3l5-8c2-3 7-3 9 0l4 6c7 9 17 14 29 16 10 1 19 4 21 11z", t: SK },
+      { d: "M5 42C3 48 5 54 13 54h71c8 0 13-3 14-8M39 16l6-2M44 20l6-3M50 24l6-3M22 36c14 4 30-6 46-1", t: SK },
+      { d: "M96 126l-6 -4 7 -1" }
+    ].map(function (o) { var e = el("path", { d: o.d, pathLength: 1 }, sketchX); if (o.t) e.setAttribute("transform", o.t); return e; });
     var notes = [
-      { x: 25, y: 27, t: "Afelio", s: 10, r: -3 },
+      { x: 25, y: 27, t: "Nimbo", s: 10, r: -3 },
       { x: 92, y: 121, t: "botón: ¡ver!", s: 10, r: -4 },
       { x: 174, y: 141, t: "¡zapatilla en 3D!", s: 10.5, r: -3 },
       { x: 220, y: 47, t: "¿que flote?", s: 9.5, r: 6 }
@@ -206,7 +214,7 @@
       '<circle cx="23" cy="12" r="2.4" fill="#FF5F57"/><circle cx="31" cy="12" r="2.4" fill="#FEBC2E"/><circle cx="39" cy="12" r="2.4" fill="#28C840"/>' +
       '<rect x="96" y="7" width="128" height="10" rx="5" fill="rgba(0,0,0,.35)"/>' +
       '<path d="M138 10.6v-.8a1.6 1.6 0 0 1 3.2 0v.8M137.4 10.6h4.4v3.4h-4.4z" fill="none" stroke="#8B95AD" stroke-width=".7"/>' +
-      '<text x="145" y="14.2" class="mw-url">afelio.ejemplo</text>';
+      '<text x="145" y="14.2" class="mw-url">nimbo.ejemplo</text>';
     svg.insertBefore(chrome, wrap); // el marco va detrás del contenido
     var phone = el("g", {}, svg);
     phone.innerHTML =
@@ -214,7 +222,7 @@
       '<g clip-path="url(#' + id + 'ph)"><rect x="3" y="9" width="50" height="91" fill="url(#' + id + 'bg)"/>' +
       '<circle cx="9" cy="15" r="2" fill="none" stroke="#22D3EE" stroke-width="1"/><rect x="13" y="13.6" width="14" height="3" rx="1.5" fill="#F1F4FA"/>' +
       '<rect x="7" y="24" width="38" height="4" rx="2" fill="#F1F4FA"/><rect x="7" y="31" width="28" height="4" rx="2" fill="#22D3EE"/>' +
-      '<rect x="7" y="40" width="42" height="28" rx="4" fill="url(#' + id + 'img)"/><use href="#' + id + 'sn" x="10" y="45" width="36" height="18" color="#EEF2F8" transform="rotate(-10 28 54)"/>' +
+      '<rect x="7" y="40" width="42" height="28" rx="4" fill="url(#' + id + 'img)"/><use href="#' + id + 'sn" x="10" y="43" width="36" height="21.6" color="#EEF2F8" transform="rotate(-10 28 54)"/>' +
       '<rect x="7" y="74" width="30" height="8" rx="4" fill="#22D3EE"/><rect x="7" y="87" width="40" height="2.4" rx="1.2" fill="rgba(255,255,255,.18)"/></g>' +
       '<rect x="22" y="3.5" width="12" height="2.4" rx="1.2" fill="rgba(255,255,255,.2)"/>';
 
@@ -244,7 +252,7 @@
       }
     }
     add(70, [170, 46, 128, 84], ["#22699A", "#1B4B7A", "#16305A", "#8EEBFA"]);
-    add(90, [170, 46, 128, 84], ["#EEF2F8", "#DCE3EE", "#F7F9FC", "#22D3EE"], function (x, y) { var dx = (x - 236) / 46, dy = (y - 87 + (x - 236) * .2) / 15; return dx * dx + dy * dy < 1; });
+    add(90, [170, 46, 128, 84], ["#EEF2F8", "#DCE3EE", "#F7F9FC", "#22D3EE"], function (x, y) { var dx = (x - 236) / 42, dy = (y - 84 + (x - 236) * .17) / 20; return dx * dx + dy * dy < 1; });
     add(40, [24, 108, 62, 18], ["#22D3EE", "#5EE5F5", "#A5F3FC"]);
     add(46, [24, 50, 128, 28], ["#F1F4FA", "#DCE3EE", "#22D3EE"]);
     add(20, [24, 84, 126, 16], ["#9AA6BF", "#C6CEDD"]);
@@ -345,7 +353,11 @@
   steps.forEach(function (st) { st.removeAttribute("data-reveal"); }); // el paso visible lo decide el scroll
   // La sección se queda fija como una diapositiva: el recorrido se reparte en 4 tramos, uno por paso.
   // En cada tramo se ve solo su texto y la mini web pasa a su fase en el primer 60 % del tramo.
-  function setHeader() { var h = document.getElementById("header"); document.documentElement.style.setProperty("--hdr", (h ? h.offsetHeight : 72) + "px"); }
+  function setHeader() {
+    var h = document.getElementById("header"), hh = h ? h.offsetHeight : 72;
+    // se queda fija centrada en el hueco que deja la cabecera
+    document.documentElement.style.setProperty("--proc-top", Math.round(hh + Math.max(8, (window.innerHeight - hh - stageEl.offsetHeight) / 2)) + "px");
+  }
   setHeader();
   function stageNow() {
     var top = parseFloat(getComputedStyle(stageEl).top) || 0, r = wrap.getBoundingClientRect();
@@ -361,6 +373,8 @@
   function update() { ticking = false; if (visible) draw(m, stageNow()); }
   function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
   draw(m, stageNow());
+  window.addEventListener("load", function () { setHeader(); onScroll(); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { setHeader(); onScroll(); });
   new IntersectionObserver(function (en) { visible = en[0].isIntersecting; draw(m, stageNow()); }, { rootMargin: "80px 0px" }).observe(document.querySelector("#proceso"));
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("resize", function () { setHeader(); m.last = -1; onScroll(); });
