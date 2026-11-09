@@ -33,6 +33,7 @@
   <link rel="preload" href="assets/fonts/manrope-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/espacial.css">
+  <link rel="stylesheet" href="css/proceso.css">
   <script src="js/config.js"></script>
   <script>
     (function (d, C) {
@@ -247,23 +248,28 @@
             <span class="step__num" aria-hidden="true">1<svg class="step__star"><use href="#i-destello"/></svg></span>
             <h3>Hablamos</h3>
             <p>Nos cuentas qué hace tu negocio, a quién quieres llegar y qué necesitas que haga tu web.</p>
+            <figure class="mini" data-stage="1" aria-hidden="true"></figure>
           </li>
           <li class="step" data-reveal>
             <span class="step__num" aria-hidden="true">2<svg class="step__star"><use href="#i-destello"/></svg></span>
             <h3>Propuesta</h3>
             <p>Te enviamos las secciones, el estilo, el plazo y un precio cerrado. Sin compromiso.</p>
+            <figure class="mini" data-stage="2" aria-hidden="true"></figure>
           </li>
           <li class="step" data-reveal>
             <span class="step__num" aria-hidden="true">3<svg class="step__star"><use href="#i-destello"/></svg></span>
             <h3>Diseño y desarrollo</h3>
             <p>Primero ves el diseño y lo ajustamos contigo. Cuando te convence, lo construimos.</p>
+            <figure class="mini" data-stage="3" aria-hidden="true"></figure>
           </li>
           <li class="step" data-reveal>
             <span class="step__num" aria-hidden="true">4<svg class="step__star"><use href="#i-destello"/></svg></span>
             <h3>Publicación</h3>
             <p>La revisamos juntos en móvil y ordenador, la publicamos y te enseñamos a usarla.</p>
+            <figure class="mini" data-stage="4" aria-hidden="true"></figure>
           </li>
         </ol>
+        <p class="steps__note" data-reveal>La panadería de los dibujos es un ejemplo inventado.</p>
       </div>
     </section>
 
@@ -393,7 +399,7 @@
 
         <!-- Mientras FORMULARIO_ACTIVO sea false: contacto sin formulario (no guarda datos). Usa EMAIL e INSTAGRAM de js/config.js -->
         <div class="form contact-alt" id="contact-alt" hidden>
-          <p class="contact-alt__title">El formulario aún no está abierto.</p>
+          <p class="contact-alt__title">El formulario abrirá muy pronto.</p>
           <p class="contact-alt__text" id="contact-alt-text">Muy pronto podrás escribirnos desde aquí.</p>
           <div class="contact-alt__actions">
             <a class="btn btn--primary btn--block" id="alt-email" href="#" hidden><svg aria-hidden="true"><use href="#i-mail"/></svg> Escríbenos un email</a>
@@ -445,6 +451,7 @@
   <script src="js/metal.js" defer></script>
   <script src="js/main.js" defer></script>
   <script src="js/espacial.js" defer></script>
+  <script src="js/proceso.js" defer></script>
   <script src="js/sorpresas.js" defer></script>
 </body>
 </html>

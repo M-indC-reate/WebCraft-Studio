@@ -299,16 +299,7 @@ html:not(.motion) .slide__progress { display: none; }
 @keyframes stepTwinkle { 0%, 100% { opacity: 1; transform: scale(1) rotate(0deg); } 50% { opacity: .55; transform: scale(.78) rotate(12deg); } }
 .step h3 { font-size: 1.3rem; margin-bottom: 8px; }
 .step p { color: var(--muted); }
-@media (min-width: 768px) {
-  .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 40px; }
-}
-@media (min-width: 1100px) {
-  .steps { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; }
-  .step { padding: 0 28px 0 0; border-top: 0; }
-  .step + .step { padding-left: 28px; border-left: 1px solid var(--line); }
-  .step__num { position: relative; display: inline-block; font-size: 4rem; margin-bottom: 30px; }
-  .step__star { width: 30px; height: 30px; right: -24px; top: -16px; }
-}
+/* Disposición de los pasos con su mini web: css/proceso.css */
 
 /* Proyectos */
 .projects { display: grid; grid-template-columns: 1fr; gap: 20px; }

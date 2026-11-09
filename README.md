@@ -19,6 +19,7 @@ Sitio estático (HTML + CSS + JS). Las librerías (GSAP, ScrollTrigger, SplitTex
 ├── js/metal.js            # Diapositiva de metal líquido (WebGL)
 ├── js/espacial.js         # UI espacial: paneles de cristal que flotan y se inclinan en 3D (css/espacial.css)
 ├── js/sorpresas.js        # Planetas interactivos (Saturno, Neptuno y el Sol) y la pista del contacto
+├── js/proceso.js          # "Cómo trabajamos": mini web de ejemplo que evoluciona paso a paso (css/proceso.css)
 ├── assets/planetas/       # Texturas de los planetas (y versiones -m para móvil)
 ├── assets/metal/          # Imagen fija del metal (móviles lentos / reducir movimiento)
 ├── assets/proyectos/      # Captura de Vesta Eventos
@@ -66,4 +67,5 @@ python3 -m http.server 8000
 - Imágenes: todas propias. Planetas, Sol, portátil, cielo e imagen para redes están generados por código (`tools/planetas/`, `js/planets.js`, `js/metal.js`, `js/sky.js`); la captura de Vesta Eventos es de nuestra propia web. No se usa ninguna imagen de la NASA ni de bancos de imágenes.
 - GSAP: licencia estándar de GSAP, gratuita también para uso comercial.
 - Lenis: MIT.
-- Syne, Manrope, Instrument Serif y Hanken Grotesk: SIL Open Font License.
+- Syne, Manrope y Caveat (notas a mano de la mini web): SIL Open Font License.
+- La panadería de las mini webs de "Cómo trabajamos" es un ejemplo inventado, dibujado con código.

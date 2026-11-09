@@ -117,10 +117,10 @@
     var alt = $("#contact-alt"), altText = $("#contact-alt-text"), ways = [];
     if (email) { var ae = $("#alt-email"); ae.href = "mailto:" + email + "?subject=" + encodeURIComponent("Avísame cuando abráis"); ae.hidden = false; ways.push("por email"); }
     if (insta) { var ai = $("#alt-instagram"); ai.href = "https://instagram.com/" + insta; ai.hidden = false; ways.push("por Instagram"); }
-    if (ways.length) altText.textContent = "Mientras tanto, escríbenos " + ways.join(" o ") + " y te avisamos cuando abramos.";
+    if (ways.length) altText.textContent = "Mientras tanto, escríbenos " + ways.join(" o ") + ".";
     alt.hidden = false;
     var leadPre = $("#lead-pre");
-    if (leadPre) leadPre.textContent = ways.length ? "Escríbenos y te avisamos en cuanto abramos." : "Estamos preparando la apertura.";
+    if (leadPre) leadPre.textContent = ways.length ? "¿Tienes una idea en mente? Cuéntanosla." : "Estamos preparando la apertura.";
     var soc = $("#socials"); if (soc) soc.hidden = true; // ya están en el bloque
 
     // Botones "Avísame cuando abráis": llevan a este bloque y lo resaltan

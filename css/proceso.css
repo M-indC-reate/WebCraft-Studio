@@ -1,0 +1,59 @@
+/* =========================================================
+   WebCraft Studio — "Cómo trabajamos" con mini web de ejemplo (js/proceso.js)
+   Móvil: la mini web va debajo del texto de cada paso.
+   Ordenador: texto a la izquierda y mini web a la derecha, paso a paso.
+   ========================================================= */
+@font-face { font-family: "Caveat"; src: url("../assets/fonts/caveat-latin-600-normal.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+
+.mini {
+  position: relative; margin: 20px 0 4px -80px; width: calc(100% + 80px); max-width: 520px;
+  aspect-ratio: 320 / 200; border-radius: 16px; overflow: hidden; isolation: isolate;
+  border: 1px solid rgba(200, 212, 240, .12);
+  box-shadow: 0 30px 50px -30px rgba(0, 0, 0, .9), 0 10px 30px -20px rgba(34, 211, 238, .18);
+  background: #070A16;
+}
+.mini:empty { display: none; }
+.mini__svg { display: block; width: 100%; height: 100%; }
+.mini__fx { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+
+/* Textos de la mini web */
+.mini text { font-family: var(--font-body); }
+.mw-logo { font-family: var(--font-display) !important; font-weight: 700; font-size: 11px; fill: #F1F4FA; }
+.mw-nav { font-size: 7px; font-weight: 600; fill: #9AA6BF; }
+.mw-h1 { font-family: var(--font-display) !important; font-weight: 700; font-size: 14.5px; fill: #F1F4FA; }
+.mw-p { font-size: 7px; fill: #9AA6BF; }
+.mw-btn { font-size: 7px; font-weight: 700; fill: #05070F; text-anchor: middle; }
+.mw-card { font-size: 7.5px; font-weight: 600; fill: #F1F4FA; }
+.mw-url { font-size: 6.5px; fill: #AEB7CB; }
+.mw-note { font-family: "Caveat", "Segoe Print", "Bradley Hand", cursive !important; font-weight: 600; fill: rgb(47, 91, 208); }
+.mw-label text { font-size: 5.6px; font-weight: 600; letter-spacing: .12em; fill: rgba(142, 235, 250, .85); }
+
+/* Brillo holográfico al terminar el paso 4 (una vez) */
+.mini__holo {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0; mix-blend-mode: screen;
+  background: linear-gradient(115deg, transparent 30%, rgba(34, 211, 238, .28) 42%, rgba(255, 150, 235, .22) 50%, rgba(150, 190, 255, .28) 58%, transparent 70%);
+  background-size: 260% 100%; background-position: 120% 0;
+}
+.mini.is-shine .mini__holo { animation: miniHolo 1.6s .15s cubic-bezier(.4, 0, .2, 1) both; }
+@keyframes miniHolo { 0% { opacity: 0; background-position: 120% 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { opacity: 0; background-position: -20% 0; } }
+
+.steps__note { margin-top: 18px; color: var(--muted); font-size: .85rem; }
+
+@media (min-width: 560px) { .mini { margin-left: 0; width: 100%; } }
+
+/* Ordenador y tablet horizontal: texto | mini web */
+@media (min-width: 900px) {
+  .steps { grid-template-columns: 1fr; }
+  .step {
+    display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); grid-template-rows: auto 1fr;
+    column-gap: clamp(32px, 5vw, 72px); align-items: start; padding: 44px 0 44px 96px;
+  }
+  .step__num { top: 40px; font-size: 3.6rem; }
+  .step h3 { grid-column: 1; grid-row: 1; margin-top: 6px; }
+  .step p { grid-column: 1; grid-row: 2; max-width: 34ch; }
+  .mini { grid-column: 2; grid-row: 1 / span 2; margin: 0; width: 100%; max-width: 560px; justify-self: end; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mini__holo { display: none; }
+}
