@@ -54,6 +54,27 @@
   .mini { grid-column: 2; grid-row: 1 / span 2; margin: 0; width: 100%; max-width: 560px; justify-self: end; }
 }
 
+/* ---------- Versión compacta: una sola mini web fija que evoluciona (con movimiento) ---------- */
+.mini-stage { display: none; }
+.mini-scrub .step .mini { display: none; }
+.mini-scrub .mini-stage {
+  display: block; position: sticky; top: 74px; z-index: 2; margin: 0 -20px 6px; padding: 8px 20px 18px;
+  background: linear-gradient(#05070F 82%, rgba(5, 7, 15, 0));
+}
+.mini-scrub .mini--sticky { margin: 0 auto; width: 100%; max-width: 520px; }
+.mini-scrub .step { min-height: 22vh; transition: opacity .4s; }
+.mini-scrub .step:not(.is-current) { opacity: .42; }
+
+/* Ordenador y móvil en horizontal: pasos | mini web (la misma condición está en js/proceso.js) */
+@media (min-width: 900px), (min-width: 640px) and (orientation: landscape) {
+  .mini-scrub .steps-wrap { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); column-gap: clamp(32px, 5vw, 72px); align-items: start; }
+  .mini-scrub .steps { grid-column: 1; grid-row: 1; }
+  .mini-scrub .mini-stage { grid-column: 2; grid-row: 1; top: max(84px, calc(50vh - 170px)); margin: 0; padding: 0; background: none; }
+  .mini-scrub .step { display: block; min-height: 24vh; padding: 28px 0 28px 96px; }
+  .mini-scrub .step__num { top: 24px; }
+  .mini-scrub .step h3 { margin-top: 6px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .mini__holo { display: none; }
 }

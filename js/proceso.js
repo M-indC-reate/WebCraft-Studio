@@ -14,9 +14,12 @@
    ========================================================= */
 (function () {
   "use strict";
-  var figs = [].slice.call(document.querySelectorAll(".mini[data-stage]"));
-  if (!figs.length) return;
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // Con movimiento: una sola mini web fija (data-stage="0") que recorre las 4 fases mientras pasan los pasos.
+  // Con "reducir movimiento": una mini web quieta en cada paso (data-stage 1-4).
+  var sticky = document.querySelector(".mini[data-stage='0']"), steps = [].slice.call(document.querySelectorAll("#proceso .step"));
+  var figs = reduced || !sticky ? [].slice.call(document.querySelectorAll(".step .mini[data-stage]")) : [sticky];
+  if (!figs.length) return;
   var NS = "http://www.w3.org/2000/svg";
   var W = 320, H = 200, N = 44;
 
@@ -198,8 +201,8 @@
     fig.appendChild(svg);
     var canvas = null;
     var stage = +fig.getAttribute("data-stage");
-    if (stage === 3 && !reduced) { canvas = document.createElement("canvas"); canvas.className = "mini__fx"; fig.appendChild(canvas); }
-    if (stage === 4) { var holo = document.createElement("div"); holo.className = "mini__holo"; fig.appendChild(holo); }
+    if ((stage === 3 || stage === 0) && !reduced) { canvas = document.createElement("canvas"); canvas.className = "mini__fx"; fig.appendChild(canvas); }
+    if (stage === 4 || stage === 0) { var holo = document.createElement("div"); holo.className = "mini__holo"; fig.appendChild(holo); }
 
     return { id: id, wrap: wrap, fig: fig, stage: stage, svg: svg, blueBg: blueBg, grid: grid, napkin: napkin, content: content, color: color, paths: paths,
       doodles: doodles, sketchX: sketchX, notes: notes, cross: cross, blueX: blueX, labels: labelEls, chrome: chrome, phone: phone,
@@ -307,31 +310,33 @@
     var ph = easeOut(seg(v, 3.45, 3.95));
     m.phone.setAttribute("transform", "translate(" + lerp(330, 252, ph).toFixed(1) + " " + lerp(96, 84, ph).toFixed(1) + ")");
     m.phone.style.display = ph <= 0 ? "none" : "";
-    if (m.stage === 4 && v >= 3.98 && !m.shone && !reduced) { m.shone = true; m.fig.classList.add("is-shine"); }
+    if ((m.stage === 4 || m.stage === 0) && v >= 3.98 && !m.shone && !reduced) { m.shone = true; m.fig.classList.add("is-shine"); }
   }
 
   /* ---------- montaje y scroll ---------- */
   var minis = figs.map(build);
 
-  if (reduced) { minis.forEach(function (m) { draw(m, m.stage); m.fig.classList.add("is-static"); }); return; }
+  if (reduced || figs[0] !== sticky) { minis.forEach(function (m) { draw(m, m.stage); m.fig.classList.add("is-static"); }); return; }
 
-  minis.forEach(function (m) { draw(m, m.stage - 1); });
-  var visible = new Set(), ticking = false;
-  function progress(m) {
-    // empieza cuando la parte de arriba entra por abajo de la pantalla y termina cuando su centro llega al 45 %
-    var r = m.fig.getBoundingClientRect(), vh = window.innerHeight;
-    return clamp((vh * .98 - r.top) / (vh * .98 - (vh * .45 - r.height / 2)), 0, 1);
+  document.documentElement.classList.add("mini-scrub");
+  var m = minis[0], visible = false, ticking = false, active = -1;
+  var twoCols = window.matchMedia("(min-width: 900px), (min-width: 640px) and (orientation: landscape)");
+  // Cada paso suma de 0 a 1 mientras cruza una línea imaginaria de la pantalla:
+  // en móvil, por debajo de la mini web fija; en ordenador, al 62 % de la altura.
+  function stageNow() {
+    var vh = window.innerHeight, fr = m.fig.getBoundingClientRect();
+    var line = twoCols.matches ? vh * .62 : fr.bottom + (vh - fr.bottom) * .45, v = 0, cur = 0;
+    steps.forEach(function (st, i) {
+      var r = st.getBoundingClientRect(), t = clamp((line - r.top) / (r.height * .6), 0, 1);
+      v += t; if (line >= r.top) cur = i;
+    });
+    if (cur !== active) { active = cur; steps.forEach(function (st, i) { st.classList.toggle("is-current", i === cur); }); }
+    return v;
   }
-  function update() {
-    ticking = false;
-    visible.forEach(function (m) { draw(m, m.stage - 1 + progress(m)); });
-  }
+  function update() { ticking = false; if (visible) draw(m, stageNow()); }
   function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
-  var io = new IntersectionObserver(function (en) {
-    en.forEach(function (e) { var m = minis[figs.indexOf(e.target)]; if (e.isIntersecting) visible.add(m); else { visible.delete(m); draw(m, m.stage - 1 + progress(m)); } });
-    onScroll();
-  }, { rootMargin: "60px 0px" });
-  figs.forEach(function (f) { io.observe(f); });
+  draw(m, stageNow());
+  new IntersectionObserver(function (en) { visible = en[0].isIntersecting; draw(m, stageNow()); }, { rootMargin: "80px 0px" }).observe(document.querySelector("#proceso"));
   window.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", function () { minis.forEach(function (m) { m.last = -1; }); onScroll(); });
+  window.addEventListener("resize", function () { m.last = -1; onScroll(); });
 })();

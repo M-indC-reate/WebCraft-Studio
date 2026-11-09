@@ -210,7 +210,7 @@
     var st = ScrollTrigger.create({
       trigger: slide.querySelector(".slide__pin"),
       start: "center center+=" + Math.round(header.offsetHeight / 2),
-      end: "+=" + Math.round(window.innerHeight * (ctx.conditions.mobile ? 1.4 : 1.9)),
+      end: "+=" + Math.round(window.innerHeight * (ctx.conditions.mobile ? 0.95 : 1.9)),
       pin: true, scrub: 0.4, anticipatePin: 1,
       onUpdate: function (self) {
         var p = self.progress;
