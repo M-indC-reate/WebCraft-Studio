@@ -48,6 +48,12 @@ Sitio estático (HTML + CSS + JS). Las librerías (GSAP, ScrollTrigger, SplitTex
 - Para ver la imagen fija de la diapositiva: `?metalfijo`.
 - Solo tres planetas son interactivos (botones con `aria-label`, funcionan con teclado): Saturno (mensaje sobre Vesta), Neptuno (una vez por visita al final de las preguntas) y el Sol (contactos de `EMAIL`, `INSTAGRAM` y `WHATSAPP`; si están vacíos, sin botones). La pista del contacto solo lleva hasta el Sol; el mensaje se descubre tocándolo. El resto es decoración.
 
+## Publicación
+
+- Cloudflare Workers (archivos estáticos, configuración en `wrangler.jsonc`; lo que no se publica, en `.assetsignore`).
+- Cada cambio en la rama `correcciones-prelanzamiento` se publica solo en https://webcraft-studio.webcraftstudio-bcn.workers.dev
+- En pre-apertura la web está cerrada con Cloudflare Access y lleva `noindex` (ver LANZAMIENTO.md).
+
 ## Ver en local
 
 ```bash
