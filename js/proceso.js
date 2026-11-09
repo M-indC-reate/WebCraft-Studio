@@ -1,6 +1,6 @@
 /* =========================================================
    WebCraft Studio — "Cómo trabajamos": una mini web de ejemplo
-   (una panadería inventada) que evoluciona paso a paso.
+   (una tienda de zapatillas inventada) que evoluciona paso a paso.
 
    Todas las mini webs se dibujan con la misma escena y un único valor
    de "etapa" v (0 → 4):
@@ -107,8 +107,22 @@
       '<pattern id="' + id + 'g" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M10 0H0V10" fill="none" stroke="rgba(142,235,250,.13)" stroke-width=".5"/></pattern>' +
       '<pattern id="' + id + 'G" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M50 0H0V50" fill="none" stroke="rgba(142,235,250,.22)" stroke-width=".7"/></pattern>' +
       '<linearGradient id="' + id + 'bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#121B36"/><stop offset="1" stop-color="#0A1022"/></linearGradient>' +
-      '<linearGradient id="' + id + 'img" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F7E3BC"/><stop offset="1" stop-color="#E7B676"/></linearGradient>' +
-      '<radialGradient id="' + id + 'loaf" cx=".45" cy=".35" r=".7"><stop offset="0" stop-color="#EDB66C"/><stop offset=".6" stop-color="#C9813A"/><stop offset="1" stop-color="#93501E"/></radialGradient>' +
+      '<radialGradient id="' + id + 'img" cx=".52" cy=".45" r=".75"><stop offset="0" stop-color="#22699A"/><stop offset=".55" stop-color="#13294F"/><stop offset="1" stop-color="#0B1330"/></radialGradient>' +
+      '<linearGradient id="' + id + 'sh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#0A1022" stop-opacity=".3"/></linearGradient>' +
+      '<linearGradient id="' + id + 'ped" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3A4A7E"/><stop offset="1" stop-color="#151C3A"/></linearGradient>' +
+      // Zapatilla de diseño propio (marca inventada): el color de la tela es currentColor
+      '<symbol id="' + id + 'sn" viewBox="0 0 100 50">' +
+        '<path d="M3 37C1 25 5 12 15 9c6-2 12 0 15 4 3 4 7 6 12 6 9 10 28 10 44 11 8 1 12 3 11 8z" fill="currentColor"/>' +
+        '<path d="M28 13c2-7 9-8 13-3l3 10z" fill="currentColor"/>' +
+        '<path d="M3 37C1 25 5 12 15 9c6-2 12 0 15 4 3 4 7 6 12 6 9 10 28 10 44 11 8 1 12 3 11 8z" fill="url(#' + id + 'sh)"/>' +
+        '<path d="M4 21c4 2 9 2 13 0l2 16H3c-1-6-.5-11 1-16z" fill="rgba(10,16,34,.16)"/>' +
+        '<ellipse cx="21.5" cy="11.2" rx="8" ry="2.6" transform="rotate(8 21.5 11.2)" fill="rgba(10,16,34,.55)"/>' +
+        '<path d="M76 30c9 0 19 1 21 7H80z" fill="rgba(255,255,255,.4)"/>' +
+        '<path d="M18 29c16 5 34-1 52 3" stroke="var(--st, #22D3EE)" stroke-width="2.6" fill="none" stroke-linecap="round"/><circle cx="71.5" cy="32" r="2.1" fill="var(--st, #22D3EE)"/>' +
+        '<path d="M43 20l5-3M48 23l5-3M53 26l5-3" stroke="rgba(10,16,34,.5)" stroke-width="1.5" stroke-linecap="round"/>' +
+        '<path d="M2 36h96c1 5-2 9-9 9H12c-7 0-10-4-10-9z" fill="#F7F9FC"/><path d="M4 41h93c-1 3-4 4-8 4H12c-4 0-7-1-8-4z" fill="#AEB9CE"/>' +
+        '<path d="M2 36h96" stroke="rgba(10,16,34,.28)" stroke-width=".8"/><path d="M20 40.5h8M36 40.5h8M52 40.5h8M68 40.5h8" stroke="rgba(10,16,34,.22)" stroke-width="1"/>' +
+      '</symbol>' +
       '<clipPath id="' + id + 'win"><rect x="12" y="20" width="296" height="176" rx="0"/></clipPath>' +
       '<clipPath id="' + id + 'ph"><rect x="3" y="9" width="50" height="91" rx="6"/></clipPath>';
 
@@ -132,38 +146,44 @@
     var color = el("g", {}, content);
     color.innerHTML =
       '<rect width="320" height="200" fill="url(#' + id + 'bg)"/>' +
-      '<circle cx="28" cy="23" r="5" fill="#E8B676"/><path d="M25.5 23.5c1.5-2 3.5-2 5 0" stroke="#7A4214" stroke-width="1" fill="none" stroke-linecap="round"/>' +
-      '<text x="37" y="27" class="mw-logo">Miga</text>' +
-      '<text x="214" y="26" class="mw-nav">Pan</text><text x="240" y="26" class="mw-nav">Dulces</text><text x="270" y="26" class="mw-nav">Pedidos</text>' +
+      '<circle cx="28" cy="23" r="4.2" fill="none" stroke="#22D3EE" stroke-width="1.4"/><circle cx="31.4" cy="20" r="1.5" fill="#F1F4FA"/>' +
+      '<text x="37" y="27" class="mw-logo">Afelio</text>' +
+      '<text x="208" y="26" class="mw-nav">Nuevo</text><text x="236" y="26" class="mw-nav">Modelos</text><text x="274" y="26" class="mw-nav">Cesta</text>' +
       '<line x1="14" y1="36" x2="306" y2="36" stroke="rgba(255,255,255,.08)"/>' +
-      '<text x="24" y="60" class="mw-h1">Pan de verdad,</text><text x="24" y="77" class="mw-h1">cada <tspan fill="#22D3EE">mañana.</tspan></text>' +
-      '<text x="24" y="91" class="mw-p">Masa madre y horno de leña.</text><text x="24" y="100" class="mw-p">Recién hecho en el barrio.</text>' +
-      '<rect x="24" y="108" width="62" height="18" rx="9" fill="#22D3EE"/><text x="55" y="119.6" class="mw-btn">Haz tu pedido</text>' +
+      '<text x="24" y="60" class="mw-h1">Cometa 01.</text><text x="24" y="77" class="mw-h1">Pisa <tspan fill="#22D3EE">ligero.</tspan></text>' +
+      '<text x="24" y="91" class="mw-p">Zapatilla urbana con suela</text><text x="24" y="100" class="mw-p">de nube. Edición limitada.</text>' +
+      '<rect x="24" y="108" width="62" height="18" rx="9" fill="#22D3EE"/><text x="55" y="119.6" class="mw-btn">Ver modelo</text>' +
+      // Imagen: la zapatilla flota sobre un pedestal, con un anillo que la orbita
       '<rect x="170" y="46" width="128" height="84" rx="8" fill="url(#' + id + 'img)"/>' +
-      '<ellipse cx="232" cy="113" rx="50" ry="8" fill="rgba(110,60,20,.25)"/>' +
-      '<path d="M190 106c-3-22 22-34 44-33 24 1 44 12 40 33-1 6-12 9-42 9s-41-3-42-9z" fill="url(#' + id + 'loaf)"/>' +
-      '<g stroke="#F8DDAE" stroke-width="2.2" stroke-linecap="round" fill="none" opacity=".9"><path d="M206 92c6-5 12-7 18-7"/><path d="M222 97c6-6 13-8 20-8"/><path d="M240 101c6-5 12-7 18-6"/></g>' +
-      '<circle cx="282" cy="114" r="9" fill="url(#' + id + 'loaf)"/><path d="M278 112c2-2 6-2 8 0" stroke="#F8DDAE" stroke-width="1.4" fill="none" stroke-linecap="round"/>' +
-      '<g fill="rgba(255,255,255,.65)"><circle cx="186" cy="60" r=".9"/><circle cx="200" cy="54" r=".7"/><circle cx="276" cy="62" r=".9"/><circle cx="288" cy="72" r=".7"/><circle cx="262" cy="56" r=".6"/></g>' +
-      ['Pan:#E8B676:24', 'Dulces:#F29BB0:118', 'Encargos:#22D3EE:212'].map(function (c) {
+      '<g fill="rgba(255,255,255,.7)"><circle cx="182" cy="62" r=".8"/><circle cx="201" cy="53" r=".6"/><circle cx="286" cy="58" r=".8"/><circle cx="290" cy="96" r=".6"/><circle cx="178" cy="100" r=".6"/></g>' +
+      '<ellipse cx="236" cy="122" rx="42" ry="6.5" fill="url(#' + id + 'ped)"/><ellipse cx="236" cy="120.5" rx="42" ry="6" fill="#2B3767" stroke="rgba(142,235,250,.35)" stroke-width=".6"/>' +
+      '<ellipse cx="236" cy="120.5" rx="26" ry="3" fill="rgba(4,8,20,.55)" class="mw-shadow"/>' +
+      '<g class="mw-float">' +
+        '<ellipse cx="236" cy="86" rx="58" ry="13" transform="rotate(-12 236 86)" fill="none" stroke="rgba(142,235,250,.4)" stroke-width=".9"/>' +
+        '<use href="#' + id + 'sn" x="186" y="60" width="100" height="50" color="#EEF2F8" transform="rotate(-12 236 85)"/>' +
+        '<ellipse cx="236" cy="86" rx="58" ry="13" transform="rotate(-12 236 86)" fill="none" stroke="#8EEBFA" stroke-width="1.1" pathLength="2" stroke-dasharray="1 1"/>' +
+        '<circle cx="181" cy="99" r="2.6" fill="#F1F4FA"/>' +
+      '</g>' +
+      ['Blanco:#EEF2F8:24', 'Coral:#FF8A7A:118', 'Lima:#B6F36B:212'].map(function (c) {
         var a = c.split(":"), x = +a[2];
         return '<rect x="' + x + '" y="144" width="' + (x === 212 ? 86 : 84) + '" height="42" rx="7" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.09)"/>' +
-          '<circle cx="' + (x + 12) + '" cy="157" r="5" fill="' + a[1] + '"/><text x="' + (x + 22) + '" y="160" class="mw-card">' + a[0] + '</text>' +
-          '<line x1="' + (x + 8) + '" y1="173" x2="' + (x + 62) + '" y2="173" stroke="rgba(255,255,255,.16)" stroke-width="3" stroke-linecap="round"/>';
+          '<use href="#' + id + 'sn" x="' + (x + 6) + '" y="149" width="36" height="18" color="' + a[1] + '"' + (a[0] === 'Blanco' ? '' : ' style="--st:#F1F4FA"') + '/>' +
+          '<text x="' + (x + 47) + '" y="162" class="mw-card">' + a[0] + '</text>' +
+          '<line x1="' + (x + 8) + '" y1="176" x2="' + (x + 62) + '" y2="176" stroke="rgba(255,255,255,.16)" stroke-width="3" stroke-linecap="round"/>';
       }).join("");
 
     /* Garabatos ↔ plano */
     var lines = el("g", { fill: "none", "stroke-linecap": "round", "stroke-linejoin": "round" }, svg);
     var paths = SHAPES.map(function () { return el("path", { pathLength: 1 }, lines); });
-    // Extras del boceto: barra de pan dibujada, flecha y notas a mano
+    // Extras del boceto: zapatilla dibujada, flecha y notas a mano
     var sketchX = el("g", { fill: "none", stroke: "rgb(47,91,208)", "stroke-width": 1.3, "stroke-linecap": "round" }, svg);
-    var doodles = ["M196 104c-2-18 18-28 38-27 20 1 38 10 35 27-1 5-12 8-37 8s-35-3-36-8z", "M210 93l10-6M226 97l12-8M243 101l11-6", "M96 126l-6 -4 7 -1"]
+    var doodles = ["M192 106c-2-13 3-24 11-26 5-1 9 2 12 6 3 3 6 5 10 5 9 9 24 9 38 10 7 1 10 3 9 8l-1 5h-76z", "M192 106h80M227 91l5-3M232 95l5-3M206 102c12 3 26 0 40 2", "M96 126l-6 -4 7 -1"]
       .map(function (d) { return el("path", { d: d, pathLength: 1 }, sketchX); });
     var notes = [
-      { x: 25, y: 27, t: "Miga", s: 10, r: -3 },
-      { x: 92, y: 121, t: "botón: ¡pedir!", s: 10, r: -4 },
-      { x: 174, y: 141, t: "¡fotos del pan!", s: 10.5, r: -3 },
-      { x: 220, y: 47, t: "¿cálida?", s: 9.5, r: 6 }
+      { x: 25, y: 27, t: "Afelio", s: 10, r: -3 },
+      { x: 92, y: 121, t: "botón: ¡ver!", s: 10, r: -4 },
+      { x: 174, y: 141, t: "¡zapatilla en 3D!", s: 10.5, r: -3 },
+      { x: 220, y: 47, t: "¿que flote?", s: 9.5, r: 6 }
     ].map(function (n, i) {
       var c = el("clipPath", { id: id + "n" + i }, defs), cr = el("rect", { x: n.x - 4, y: n.y - n.s - 4, width: 0, height: n.s + 10 }, c);
       var t = el("text", { x: n.x, y: n.y, class: "mw-note", "font-size": n.s, transform: "rotate(" + n.r + " " + n.x + " " + n.y + ")", "clip-path": "url(#" + id + "n" + i + ")" }, svg);
@@ -186,15 +206,15 @@
       '<circle cx="23" cy="12" r="2.4" fill="#FF5F57"/><circle cx="31" cy="12" r="2.4" fill="#FEBC2E"/><circle cx="39" cy="12" r="2.4" fill="#28C840"/>' +
       '<rect x="96" y="7" width="128" height="10" rx="5" fill="rgba(0,0,0,.35)"/>' +
       '<path d="M138 10.6v-.8a1.6 1.6 0 0 1 3.2 0v.8M137.4 10.6h4.4v3.4h-4.4z" fill="none" stroke="#8B95AD" stroke-width=".7"/>' +
-      '<text x="145" y="14.2" class="mw-url">miga.ejemplo</text>';
+      '<text x="145" y="14.2" class="mw-url">afelio.ejemplo</text>';
     svg.insertBefore(chrome, wrap); // el marco va detrás del contenido
     var phone = el("g", {}, svg);
     phone.innerHTML =
       '<rect x="0" y="0" width="56" height="109" rx="9" fill="#0B0F1C" stroke="rgba(255,255,255,.22)"/>' +
       '<g clip-path="url(#' + id + 'ph)"><rect x="3" y="9" width="50" height="91" fill="url(#' + id + 'bg)"/>' +
-      '<circle cx="9" cy="15" r="2.4" fill="#E8B676"/><rect x="13" y="13.6" width="14" height="3" rx="1.5" fill="#F1F4FA"/>' +
+      '<circle cx="9" cy="15" r="2" fill="none" stroke="#22D3EE" stroke-width="1"/><rect x="13" y="13.6" width="14" height="3" rx="1.5" fill="#F1F4FA"/>' +
       '<rect x="7" y="24" width="38" height="4" rx="2" fill="#F1F4FA"/><rect x="7" y="31" width="28" height="4" rx="2" fill="#22D3EE"/>' +
-      '<rect x="7" y="40" width="42" height="28" rx="4" fill="url(#' + id + 'img)"/><path d="M14 63c-1-8 8-13 16-12 8 0 15 4 13 12z" fill="url(#' + id + 'loaf)"/>' +
+      '<rect x="7" y="40" width="42" height="28" rx="4" fill="url(#' + id + 'img)"/><use href="#' + id + 'sn" x="10" y="45" width="36" height="18" color="#EEF2F8" transform="rotate(-10 28 54)"/>' +
       '<rect x="7" y="74" width="30" height="8" rx="4" fill="#22D3EE"/><rect x="7" y="87" width="40" height="2.4" rx="1.2" fill="rgba(255,255,255,.18)"/></g>' +
       '<rect x="22" y="3.5" width="12" height="2.4" rx="1.2" fill="rgba(255,255,255,.2)"/>';
 
@@ -223,13 +243,13 @@
         out.push({ sx: sx, sy: sy, tx: t[0], ty: t[1], c: colors[(r() * colors.length) | 0], d: r() * .32, bend: (r() - .5) * 26, s: 1.4 + r() * 1.4 });
       }
     }
-    add(70, [170, 46, 128, 84], ["#F6DDB0", "#EBC58C", "#F2D3A0"]);
-    add(90, [170, 46, 128, 84], ["#E7AE62", "#C9813A", "#A85F25", "#EDB66C"], function (x, y) { var dx = (x - 232) / 44, dy = (y - 97) / 20; return dx * dx + dy * dy < 1; });
+    add(70, [170, 46, 128, 84], ["#22699A", "#1B4B7A", "#16305A", "#8EEBFA"]);
+    add(90, [170, 46, 128, 84], ["#EEF2F8", "#DCE3EE", "#F7F9FC", "#22D3EE"], function (x, y) { var dx = (x - 236) / 46, dy = (y - 87 + (x - 236) * .2) / 15; return dx * dx + dy * dy < 1; });
     add(40, [24, 108, 62, 18], ["#22D3EE", "#5EE5F5", "#A5F3FC"]);
     add(46, [24, 50, 128, 28], ["#F1F4FA", "#DCE3EE", "#22D3EE"]);
     add(20, [24, 84, 126, 16], ["#9AA6BF", "#C6CEDD"]);
-    add(54, [24, 144, 274, 42], ["#E8B676", "#F29BB0", "#22D3EE", "#2A3352", "#3A4466"]);
-    add(24, [14, 12, 292, 22], ["#E8B676", "#F1F4FA", "#9AA6BF"]);
+    add(54, [24, 144, 274, 42], ["#EEF2F8", "#FF8A7A", "#B6F36B", "#2A3352", "#3A4466"]);
+    add(24, [14, 12, 292, 22], ["#22D3EE", "#F1F4FA", "#9AA6BF"]);
     return out;
   }
   function drawParticles(m, pp) {

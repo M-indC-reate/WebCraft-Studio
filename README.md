@@ -68,4 +68,4 @@ python3 -m http.server 8000
 - GSAP: licencia estándar de GSAP, gratuita también para uso comercial.
 - Lenis: MIT.
 - Syne, Manrope y Caveat (notas a mano de la mini web): SIL Open Font License.
-- La panadería de las mini webs de "Cómo trabajamos" es un ejemplo inventado, dibujado con código.
+- La tienda de zapatillas "Afelio" de la mini web de "Cómo trabajamos" es un ejemplo inventado; la zapatilla es un diseño propio dibujado con código.
