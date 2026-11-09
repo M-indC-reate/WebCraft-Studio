@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://webcraft-studio.pages.dev/sitemap.xml
+Sitemap: https://webcraft-studio.webcraftstudio-bcn.workers.dev/sitemap.xml

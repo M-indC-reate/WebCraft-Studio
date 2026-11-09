@@ -7,7 +7,7 @@ window.WEBCRAFT_CONFIG = {
      Una sola variable. Si cambia (otro subdominio o dominio propio),
      cámbiala aquí y ejecuta:  node tools/aplicar-url.mjs
      para actualizar canonical, Open Graph, sitemap.xml, robots.txt y 404.html. */
-  SITE_URL: "https://webcraft-studio.pages.dev", // TODO: confirmar que el nombre está libre en Cloudflare Pages
+  SITE_URL: "https://webcraft-studio.webcraftstudio-bcn.workers.dev", // dirección provisional en Cloudflare (sin dominio propio)
 
   /* ---------- Pre-apertura ----------
      true  → aviso arriba y botones "Avísame cuando abráis".

@@ -62,3 +62,9 @@ Casi todo se cambia en **`js/config.js`**: no hace falta tocar el resto del cód
 ## Icono en la pantalla de inicio
 - [ ] Una vez publicada, abrir la web en Safari (la dirección real, no la vista previa de Claude) → Compartir → "Añadir a pantalla de inicio".
       Debe salir el logo de la W y abrirse a pantalla completa, como una app. Iconos en `assets/icons/` y `manifest.webmanifest`.
+
+## Publicación cerrada (pre-apertura)
+- Dirección: https://webcraft-studio.webcraftstudio-bcn.workers.dev (Cloudflare Workers, rama `correcciones-prelanzamiento`, configuración en `wrangler.jsonc`).
+- Protegida con Cloudflare Access: solo entra el email autorizado.
+- Lleva `<meta name="robots" content="noindex, nofollow">` en `index.html` para que no aparezca en buscadores.
+- [ ] Al abrir al público: quitar Cloudflare Access, quitar esa etiqueta `noindex` de `index.html` y revisar `robots.txt`.
