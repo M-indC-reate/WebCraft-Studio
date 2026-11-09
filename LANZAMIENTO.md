@@ -37,8 +37,7 @@ Casi todo se cambia en **`js/config.js`**: no hace falta tocar el resto del cód
 - [x] Color de acento: celeste (decidido).
 
 ## 6. Dirección de la web
-- [ ] Comprobar que el nombre está libre en Cloudflare Pages (provisional: `webcraft-studio.pages.dev`;
-      alternativas: `webcraftstudio-bcn.pages.dev`, `webcraft-bcn.pages.dev`).
+- [x] Dirección provisional: `https://webcraft-studio.webcraftstudio-bcn.workers.dev` (Cloudflare Workers; subdominio de cuenta neutro, sin datos personales).
 - [ ] Si cambia, actualizar `SITE_URL` en `js/config.js` y ejecutar `node tools/aplicar-url.mjs`
       (actualiza canonical, Open Graph, `sitemap.xml`, `robots.txt` y `404.html`).
 
