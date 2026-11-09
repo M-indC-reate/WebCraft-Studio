@@ -320,17 +320,22 @@
 
   document.documentElement.classList.add("mini-scrub");
   var m = minis[0], visible = false, ticking = false, active = -1;
-  var twoCols = window.matchMedia("(min-width: 900px), (min-width: 640px) and (orientation: landscape)");
-  // Cada paso suma de 0 a 1 mientras cruza una línea imaginaria de la pantalla:
-  // en móvil, por debajo de la mini web fija; en ordenador, al 62 % de la altura.
+  var wrap = document.querySelector(".steps-wrap"), stageEl = document.querySelector(".proc-stage");
+  var dots = [].slice.call(document.querySelectorAll(".proc-dots i"));
+  steps.forEach(function (st) { st.removeAttribute("data-reveal"); }); // el paso visible lo decide el scroll
+  // La sección se queda fija como una diapositiva: el recorrido se reparte en 4 tramos, uno por paso.
+  // En cada tramo se ve solo su texto y la mini web pasa a su fase en el primer 60 % del tramo.
+  function setHeader() { var h = document.getElementById("header"); document.documentElement.style.setProperty("--hdr", (h ? h.offsetHeight : 72) + "px"); }
+  setHeader();
   function stageNow() {
-    var vh = window.innerHeight, fr = m.fig.getBoundingClientRect();
-    var line = twoCols.matches ? vh * .62 : fr.bottom + (vh - fr.bottom) * .45, v = 0, cur = 0;
-    steps.forEach(function (st, i) {
-      var r = st.getBoundingClientRect(), t = clamp((line - r.top) / (r.height * .6), 0, 1);
-      v += t; if (line >= r.top) cur = i;
-    });
-    if (cur !== active) { active = cur; steps.forEach(function (st, i) { st.classList.toggle("is-current", i === cur); }); }
+    var top = parseFloat(getComputedStyle(stageEl).top) || 0, r = wrap.getBoundingClientRect();
+    var D = Math.max(1, wrap.offsetHeight - stageEl.offsetHeight), p = clamp((top - r.top) / D, 0, 1) * 4;
+    var cur = Math.min(3, Math.floor(p)), v = cur + clamp((p - cur) / .6, 0, 1);
+    if (cur !== active) {
+      active = cur;
+      steps.forEach(function (st, i) { st.classList.toggle("is-current", i === cur); st.classList.toggle("is-past", i < cur); });
+      dots.forEach(function (d, i) { d.classList.toggle("is-on", i <= cur); });
+    }
     return v;
   }
   function update() { ticking = false; if (visible) draw(m, stageNow()); }
@@ -338,5 +343,5 @@
   draw(m, stageNow());
   new IntersectionObserver(function (en) { visible = en[0].isIntersecting; draw(m, stageNow()); }, { rootMargin: "80px 0px" }).observe(document.querySelector("#proceso"));
   window.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", function () { m.last = -1; onScroll(); });
+  window.addEventListener("resize", function () { setHeader(); m.last = -1; onScroll(); });
 })();
